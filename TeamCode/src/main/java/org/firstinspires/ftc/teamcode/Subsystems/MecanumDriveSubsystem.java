@@ -29,6 +29,8 @@ public class MecanumDriveSubsystem {
     DcMotorEx rightBack;
     boolean toggle;
 
+    double rotationOffset;
+
 //    DcMotorEx xThroughbore;
 //    DcMotorEx yThroughbore;
     private boolean slowModeOn;
@@ -67,7 +69,7 @@ public class MecanumDriveSubsystem {
        rightBack.setDirection(DcMotorEx.Direction.FORWARD);
 
    }
-    public void operate(Gamepad gamepad, Telemetry telemetry, Localization localization) {
+    public void operate(Gamepad gamepad, Telemetry telemetry, Localization localization, String alliance) {
 
         localization.getRobotPose();
         telemetry.addData("Pose X: ", localization.getPoseX());
@@ -75,13 +77,20 @@ public class MecanumDriveSubsystem {
         telemetry.addData("Rotation: ", localization.getPoseRotation());
         telemetry.update();
 
+        if (alliance.equals("RED")){
+            rotationOffset = 1;
+        }
+        else {
+            rotationOffset = -1;
+        }
+
 
         double y =  gamepad.left_stick_y;
         double x = gamepad.left_stick_x;
         double rx = gamepad.right_stick_x;
 
 
-        double botHeading = localization.getRotationRadians();
+        double botHeading = rotationOffset * localization.getRotationRadians();
         double rotX = x * Math.cos(botHeading) - y * Math.sin(botHeading);
         double rotY = x * Math.sin(botHeading) + y * Math.cos(botHeading);
         double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
@@ -140,15 +149,15 @@ public class MecanumDriveSubsystem {
         rightFront.setPower(power);
     }
 
-public double[] encoderReading () {
-    double[] encoderReading = new double[4];
-    encoderReading[0] = leftFront.getCurrentPosition();
-    encoderReading[1] = leftBack.getCurrentPosition();
-    encoderReading[2] = rightFront.getCurrentPosition();
-    encoderReading[3] = rightBack.getCurrentPosition();
+    public double[] encoderReading () {
+        double[] encoderReading = new double[4];
+        encoderReading[0] = leftFront.getCurrentPosition();
+        encoderReading[1] = leftBack.getCurrentPosition();
+        encoderReading[2] = rightFront.getCurrentPosition();
+        encoderReading[3] = rightBack.getCurrentPosition();
 
-    return encoderReading;
-}
+        return encoderReading;
+    }
 
 
 

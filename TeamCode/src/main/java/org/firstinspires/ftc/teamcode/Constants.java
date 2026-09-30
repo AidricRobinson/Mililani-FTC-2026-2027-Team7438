@@ -34,6 +34,9 @@ public class Constants {
         public static final double[] kBottomRedHive = {1, 0};
         public static final double[] kTopBlueHive = {0, 1};
         public static final double[] kBottomBlueHive = {0, 0};
+
+        public static final String blueAlliance = "BLUE";
+        public static final String redAlliance = "RED";
     }
     public static class EncoderConstants{
 

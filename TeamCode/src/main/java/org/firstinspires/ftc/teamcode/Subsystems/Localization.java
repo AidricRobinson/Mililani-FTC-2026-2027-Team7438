@@ -69,9 +69,16 @@ public class Localization {
     }
 
     // PINPOINT METHODS
-
-    public Pose2D getRobotPose() {
-        return pinpoint.getPosition();
+    public void resetRotation(double degrees) {
+        pose = new Pose2D(DistanceUnit.INCH,
+                pose.getX(DistanceUnit.INCH),
+                pose.getY(DistanceUnit.INCH),
+                AngleUnit.DEGREES,
+                degrees);
+        pinpoint.setHeading(degrees, AngleUnit.DEGREES);
+    }
+    public static Pose2D getRobotPose() {
+        return pose;
     }
     public static double getPoseX() {
         return pose.getX(DistanceUnit.INCH);

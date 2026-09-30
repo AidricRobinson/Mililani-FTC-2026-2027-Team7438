@@ -61,7 +61,12 @@ public class AutoAlignCommand {
         while (gamepad.left_bumper && Math.abs(error) > 0.5) {
             error = getError(targetRotation, Localization.getPoseRotation());
             output = kP * error + Math.copySign(kFF, error);
+            mecanumDriveSubsystem.setRightFrontPower(output);
+            mecanumDriveSubsystem.setRightBackPower(output);
+            mecanumDriveSubsystem.setLeftFrontPower(-output);
+            mecanumDriveSubsystem.setLeftBackPower(-output);
         }
+
     }
 
     public void shutdown() {
