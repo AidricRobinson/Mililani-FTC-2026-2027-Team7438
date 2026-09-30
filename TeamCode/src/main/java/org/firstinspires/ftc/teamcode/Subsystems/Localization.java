@@ -22,8 +22,8 @@ public class Localization {
 
     private static double latestRotation;
 
-    public Localization () {
-//        pinpoint = opMode.hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
+    public Localization (OpMode opMode) {
+        pinpoint = opMode.hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
         pinpoint.setEncoderResolution(Constants.PinpointConstants.kEncoderResolution, DistanceUnit.MM);
         pinpoint.setOffsets(Constants.PinpointConstants.kPodXOffset,
                 Constants.PinpointConstants.kPodYOffset,
@@ -34,11 +34,12 @@ public class Localization {
 
         pinpoint.initialize();
 
-        pinpoint.setPosX(12, DistanceUnit.INCH);
-        pinpoint.setPosY(12, DistanceUnit.INCH);
-        pinpoint.setHeading(90, AngleUnit.DEGREES);
+        pose = new Pose2D(DistanceUnit.INCH, 0, 0, AngleUnit.DEGREES, 0);
+        pinpoint.setPosition(pose);
 
-//        limelight = opMode.hardwareMap.get(Limelight3A.class, "limelight");
+
+
+        limelight = opMode.hardwareMap.get(Limelight3A.class, "limelight");
         limelight.setPollRateHz(60);
         limelight.pipelineSwitch(1); // placeholder
         result = limelight.getLatestResult();
@@ -52,20 +53,26 @@ public class Localization {
         limelight.updateRobotOrientation(getPoseRotation());
         result = limelight.getLatestResult();
 
-        mt1Pose = result.getBotpose();
-        mt2Pose = result.getBotpose_MT2();
+        pose = pinpoint.getPosition();
 
-        if (result != null && result.isValid() && isPoseSafe(mt2Pose)) {
-            Pose2D newPose = new Pose2D(DistanceUnit.INCH,
-                    mt2Pose.getPosition().x,
-                    mt2Pose.getPosition().y,
-                    AngleUnit.DEGREES,
-                    mt2Pose.getOrientation().getYaw(AngleUnit.DEGREES));
-            pose = newPose;
-            pinpoint.setPosition(pose);
+        if (result != null && result.isValid()) {
+            mt1Pose = result.getBotpose();
+            mt2Pose = result.getBotpose_MT2();
+            if (mt2Pose != null && isPoseSafe(mt2Pose)) {
+                Pose2D newPose = new Pose2D(DistanceUnit.INCH,
+                        mt2Pose.getPosition().x,
+                        mt2Pose.getPosition().y,
+                        AngleUnit.DEGREES,
+                        mt2Pose.getOrientation().getYaw(AngleUnit.DEGREES));
+                pose = newPose;
+                pinpoint.setPosition(pose);
+            }
         }
-
+        else {
+            pose = pinpoint.getPosition();
+        }
         latestRotation = getPoseRotation();
+
     }
 
     // PINPOINT METHODS
@@ -128,20 +135,12 @@ public class Localization {
         return result.getBotpose_MT2();
     }
     public boolean isPoseSafe(Pose3D pose) {
-        if ((getPoseRotation() - latestRotation) / 0.02 > 360) {
-            return false;
-        }
-        else if (pinpoint.getVelX(DistanceUnit.INCH) > 40) {
-            return false;
-        }
-        else if (pose.getOrientation().getRoll(AngleUnit.DEGREES) != 0  &&
-        pose.getOrientation().getRoll(AngleUnit.DEGREES) != 0) {
-            return false;
-        }
-        else if (pose.getPosition().z != 0) {
-            return false;
-        }
-        return true;
+
+        return !((getPoseRotation() - latestRotation) / 0.02 > 360)
+                || !(pinpoint.getVelX(DistanceUnit.INCH) > 40)
+                || !(pose.getOrientation().getRoll(AngleUnit.DEGREES) < 1  ||
+                pose.getOrientation().getPitch(AngleUnit.DEGREES) < 1)
+                ||(pose.getPosition().z > 0.5);
     }
 
 }
