@@ -4,6 +4,7 @@ import android.graphics.Path;
 
 import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -14,11 +15,13 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
+import org.firstinspires.ftc.teamcode.Constants;
 
 
 public class MecanumDriveSubsystem {
     //Make 4 motors (the four corne`rs)
-    private final BNO055IMU imu;
 //    BHI260AP imu;
     DcMotorEx leftFront;
     DcMotorEx leftBack;
@@ -30,14 +33,17 @@ public class MecanumDriveSubsystem {
 //    DcMotorEx yThroughbore;
     private boolean slowModeOn;
    public MecanumDriveSubsystem(HardwareMap hardwareMap, OpMode opMode){
+
+
+
+
        leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
        leftBack = hardwareMap.get(DcMotorEx.class, "leftBack");
        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
        rightBack = hardwareMap.get(DcMotorEx.class, "rightBack");
 
-       imu = opMode.hardwareMap.get(BNO055IMU.class, "imu");
-       BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-       imu.initialize(parameters);
+
+
        toggle = false;
 
 //       xThroughbore = hardwareMap.get(DcMotorEx.class, "xThroughbore");
@@ -57,11 +63,17 @@ public class MecanumDriveSubsystem {
 
        leftFront.setDirection(DcMotorEx.Direction.REVERSE);
        leftBack.setDirection(DcMotorEx.Direction.FORWARD);
-       rightFront.setDirection(DcMotorEx.Direction.REVERSE);
+       rightFront.setDirection(DcMotorEx.Direction.FORWARD);
        rightBack.setDirection(DcMotorEx.Direction.FORWARD);
 
    }
-    public void operate(Gamepad gamepad, Telemetry telemetry) {
+    public void operate(Gamepad gamepad, Telemetry telemetry, Localization localization) {
+
+        localization.getRobotPose();
+        telemetry.addData("Pose X: ", localization.getPoseX());
+        telemetry.addData("Pose Y: ", localization.getPoseY());
+        telemetry.addData("Rotation: ", localization.getPoseRotation());
+        telemetry.update();
 
 
         double y =  gamepad.left_stick_y;
@@ -69,10 +81,12 @@ public class MecanumDriveSubsystem {
         double rx = gamepad.right_stick_x;
 
 
-        double botHeading = getYawRadians();
+        double botHeading = localization.getRotationRadians();
         double rotX = x * Math.cos(botHeading) - y * Math.sin(botHeading);
         double rotY = x * Math.sin(botHeading) + y * Math.cos(botHeading);
-        double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
+        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
+
+
 
         if(gamepad.x && toggle){
             toggle = false;
@@ -80,24 +94,38 @@ public class MecanumDriveSubsystem {
         else if(gamepad.x){
             toggle = true;
         }
-        if (gamepad.right_trigger > 0.2) {
 
-            leftFront.setPower((-rotY+rotX+rx) / denominator * 0.5);
-            leftBack.setPower((-rotY-rotX+rx) / denominator * 0.5);
-            rightFront.setPower((-rotY-rotX-rx) / denominator * 0.5);
-            rightBack.setPower((-rotY+rotX-rx) / denominator * 0.5);
-        }
+//         slowmode - disabled for showcasing
+
+//        if (gamepad.right_trigger > 0.2) {
+//
+//            leftFront.setPower((-rotY+rotX+rx) / denominator * 0.5);
+//            leftBack.setPower((-rotY-rotX+rx) / denominator * 0.5);
+//            rightFront.setPower((-rotY-rotX-rx) / denominator * 0.5);
+//            rightBack.setPower((-rotY+rotX-rx) / denominator * 0.5);
+//        }
         else {
-            leftFront.setPower((-rotY+rotX+rx) / denominator);
-            leftBack.setPower((-rotY-rotX+rx) / denominator);
-            rightFront.setPower((-rotY-rotX-rx) / denominator);
-            rightBack.setPower((-rotY+rotX-rx)/ denominator);
+            //Field oriented version
+
+//            leftFront.setPower((rotY-rotX-rx) / denominator);
+//            leftBack.setPower((rotY+rotX-rx) / denominator);
+//            rightFront.setPower((rotY+rotX+rx) / denominator);
+//            rightBack.setPower((rotY-rotX+rx)/ denominator);
+
+            //Robot oriented - retired and is no longer needed
+
+            leftFront.setPower((y - x - rx) / denominator);
+            leftBack.setPower((y + x - rx) / denominator);
+            rightFront.setPower((y + x + rx) / denominator);
+            rightBack.setPower((y - x + rx)/ denominator);
+
         }
 
-        telemetry.addData("Slow mode", slowModeOn);
-        telemetry.update();
+
 
     }
+
+
 
     public void setLeftBackPower(double power){
        leftBack.setPower(power);
@@ -121,12 +149,8 @@ public double[] encoderReading () {
 
     return encoderReading;
 }
-public double getYaw(){
-       return imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle;
-    }
-    public double getYawRadians(){
-       return imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.RADIANS).thirdAngle;
-    }
+
+
 
     public void shutdown() {
        leftFront.setPower(0);

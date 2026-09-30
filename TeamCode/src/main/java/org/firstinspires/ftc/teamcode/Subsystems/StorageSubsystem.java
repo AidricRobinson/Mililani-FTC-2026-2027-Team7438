@@ -1,54 +1,36 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
+
+import org.firstinspires.ftc.teamcode.Constants;
 
 public class StorageSubsystem {
-    DcMotorEx storageMotor;
+    CRServo spindexer; //motor for spinning the actual spindexer
+    DcMotorEx storageMotor; //Motor for spinning the roller/wheel that takes the balls out of the spindexer.
 
-    public StorageSubsystem(OpMode opMode) {
-        storageMotor = opMode.hardwareMap.get(DcMotorEx.class, "storageMotor");
-        storageMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        storageMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
-        storageMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+    public StorageSubsystem(OpMode opMode){
+        storageMotor = opMode.hardwareMap.get(DcMotorEx.class,"storageMotor");
+        storageMotor.setDirection(Constants.PayloadConstants.kStorageMotorDirection);
+        storageMotor.setZeroPowerBehavior(Constants.PayloadConstants.kStorageZeroPowerMode);
+        spindexer = opMode.hardwareMap.get(CRServo.class, "spindexer");
+        spindexer.setDirection(Constants.PayloadConstants.kSpindexerDirection);
+
     }
-    public void setStoragePower (double power){
+
+    public void setStoragePower(double power){
         storageMotor.setPower(power);
-    }
-    public void setStorageEncoder(int targetCounts, String Direction){
-        storageMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+   }
 
-        if (Direction == "FOWARD"){
-            storageMotor.setTargetPosition(targetCounts);
-        }
-        else if (Direction == "BACKWARD"){
-            storageMotor.setTargetPosition(-targetCounts);
-        }
-        storageMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    }
-    public double getFlywheelEncoder(){
-        return storageMotor.getCurrentPosition();
-    }
-    public void shutdown (){
+   public void setSpindexerPower(double power){
+        spindexer.setPower(power);
+   }
+
+    public void shutdown(){
         storageMotor.setPower(0);
-    }
-    public boolean isBusyCheck() {
-        boolean isBusy = true;
-        if (storageMotor.isBusy() == true){
-        }
-        else {
-            isBusy = false;
-        }
-        return isBusy;
+        spindexer.setPower(0);
     }
 }
-
-
-
-
-
-
-
-
