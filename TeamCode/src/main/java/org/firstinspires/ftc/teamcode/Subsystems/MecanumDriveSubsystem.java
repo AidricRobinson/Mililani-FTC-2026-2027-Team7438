@@ -33,8 +33,24 @@ public class MecanumDriveSubsystem {
 
 //    DcMotorEx xThroughbore;
 //    DcMotorEx yThroughbore;
+
+    GoBildaPinpointDriver pinpoint;
+
+
+
     private boolean slowModeOn;
    public MecanumDriveSubsystem(HardwareMap hardwareMap, OpMode opMode){
+       pinpoint = opMode.hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
+        pinpoint.setEncoderResolution(Constants.PinpointConstants.kEncoderResolution, DistanceUnit.MM);
+        pinpoint.setOffsets(Constants.PinpointConstants.kPodXOffset,
+                Constants.PinpointConstants.kPodYOffset,
+                DistanceUnit.CM);
+
+        pinpoint.setEncoderDirections(Constants.PinpointConstants.kPodXDirection,
+                Constants.PinpointConstants.kPodYDirection);
+
+        pinpoint.initialize();
+        pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, 12, 12, AngleUnit.DEGREES, 0));
 
 
 
@@ -69,12 +85,12 @@ public class MecanumDriveSubsystem {
        rightBack.setDirection(DcMotorEx.Direction.FORWARD);
 
    }
-    public void operate(Gamepad gamepad, Telemetry telemetry, Localization localization, String alliance) {
+    public void operate(Gamepad gamepad, Telemetry telemetry, String alliance) {
 
-        localization.getRobotPose();
-        telemetry.addData("Pose X: ", localization.getPoseX());
-        telemetry.addData("Pose Y: ", localization.getPoseY());
-        telemetry.addData("Rotation: ", localization.getPoseRotation());
+//        localization.getRobotPose();
+//        telemetry.addData("Pose X: ", localization.getPoseX());
+//        telemetry.addData("Pose Y: ", localization.getPoseY());
+//        telemetry.addData("Rotation: ", localization.getPoseRotation());
         telemetry.update();
 
         if (alliance.equals("RED")){
@@ -90,7 +106,7 @@ public class MecanumDriveSubsystem {
         double rx = gamepad.right_stick_x;
 
 
-        double botHeading = rotationOffset * localization.getRotationRadians();
+        double botHeading = rotationOffset * pinpoint.getHeading(AngleUnit.RADIANS);
         double rotX = x * Math.cos(botHeading) - y * Math.sin(botHeading);
         double rotY = x * Math.sin(botHeading) + y * Math.cos(botHeading);
         double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);

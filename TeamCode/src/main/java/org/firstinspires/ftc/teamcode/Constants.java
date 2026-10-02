@@ -37,6 +37,16 @@ public class Constants {
 
         public static final String blueAlliance = "BLUE";
         public static final String redAlliance = "RED";
+
+
+
+        public static final double kLimeA = 1;
+        public static final double kLimeB = 1;
+        public static final double kLimeC = 1;
+
+        public static final double kPoseA = 1;
+        public static final double kPoseB = 1;
+        public static final double kPoseC = 1;
     }
     public static class EncoderConstants{
 

@@ -143,4 +143,20 @@ public class Localization {
                 ||(pose.getPosition().z > 0.5);
     }
 
+    public double getRPMp (double x) { // pose
+        double a = Constants.PinpointConstants.kPoseA;
+        double b = Constants.PinpointConstants.kPoseB;
+        double c = Constants.PinpointConstants.kPoseC;
+        // 67
+        return a * Math.pow(x, 2) + b * x + c;
+    }
+
+    public double getRPMl (double x) { // based on limelight tA
+        double a = Constants.PinpointConstants.kLimeA;
+        double b = Constants.PinpointConstants.kLimeB;
+        double c = Constants.PinpointConstants.kLimeC;
+
+        return a * Math.pow(x, 2) + b * x + c;
+    }
+
 }
