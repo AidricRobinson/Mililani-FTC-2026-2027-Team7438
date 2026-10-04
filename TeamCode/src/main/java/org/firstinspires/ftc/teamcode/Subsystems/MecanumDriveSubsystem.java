@@ -29,10 +29,10 @@ public class MecanumDriveSubsystem {
     DcMotorEx rightBack;
     boolean toggle;
 
-    double rotationOffset;
 
 //    DcMotorEx xThroughbore;
 //    DcMotorEx yThroughbore;
+    double heading;
 
     GoBildaPinpointDriver pinpoint;
 
@@ -40,7 +40,7 @@ public class MecanumDriveSubsystem {
 
     private boolean slowModeOn;
    public MecanumDriveSubsystem(HardwareMap hardwareMap, OpMode opMode){
-       pinpoint = opMode.hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
+        pinpoint = opMode.hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
         pinpoint.setEncoderResolution(Constants.PinpointConstants.kEncoderResolution, DistanceUnit.MM);
         pinpoint.setOffsets(Constants.PinpointConstants.kPodXOffset,
                 Constants.PinpointConstants.kPodYOffset,
@@ -79,10 +79,10 @@ public class MecanumDriveSubsystem {
        rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
        rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-       leftFront.setDirection(DcMotorEx.Direction.REVERSE);
-       leftBack.setDirection(DcMotorEx.Direction.FORWARD);
-       rightFront.setDirection(DcMotorEx.Direction.FORWARD);
-       rightBack.setDirection(DcMotorEx.Direction.FORWARD);
+       leftFront.setDirection(DcMotorEx.Direction.FORWARD);
+       leftBack.setDirection(DcMotorEx.Direction.REVERSE);
+       rightFront.setDirection(DcMotorEx.Direction.REVERSE);
+       rightBack.setDirection(DcMotorEx.Direction.REVERSE);
 
    }
     public void operate(Gamepad gamepad, Telemetry telemetry, String alliance) {
@@ -92,12 +92,14 @@ public class MecanumDriveSubsystem {
 //        telemetry.addData("Pose Y: ", localization.getPoseY());
 //        telemetry.addData("Rotation: ", localization.getPoseRotation());
         telemetry.update();
-
-        if (alliance.equals("RED")){
-            rotationOffset = 1;
-        }
-        else {
-            rotationOffset = -1;
+        heading = pinpoint.getHeading(AngleUnit.RADIANS);
+        if (alliance.equals(Constants.PinpointConstants.blueAlliance)){
+            heading = Math.toDegrees(heading);
+            heading += 180;
+            if (heading >= 180) {
+                heading -= 360;
+            }
+            heading = Math.toRadians(heading);
         }
 
 
@@ -106,7 +108,7 @@ public class MecanumDriveSubsystem {
         double rx = gamepad.right_stick_x;
 
 
-        double botHeading = rotationOffset * pinpoint.getHeading(AngleUnit.RADIANS);
+        double botHeading = heading;
         double rotX = x * Math.cos(botHeading) - y * Math.sin(botHeading);
         double rotY = x * Math.sin(botHeading) + y * Math.cos(botHeading);
         double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
@@ -124,25 +126,25 @@ public class MecanumDriveSubsystem {
 
 //        if (gamepad.right_trigger > 0.2) {
 //
-//            leftFront.setPower((-rotY+rotX+rx) / denominator * 0.5);
-//            leftBack.setPower((-rotY-rotX+rx) / denominator * 0.5);
-//            rightFront.setPower((-rotY-rotX-rx) / denominator * 0.5);
-//            rightBack.setPower((-rotY+rotX-rx) / denominator * 0.5);
+//            leftFront.setPower((rotY + rotX - rx) / denominator * 0.5);
+//            leftBack.setPower((rotY - rotX - rx) / denominator * 0.5);
+//            rightFront.setPower((rotY - rotX + rx) / denominator * 0.5);
+//            rightBack.setPower((rotY + rotX + rx)/ denominator * 0.5);
 //        }
         else {
             //Field oriented version
 
-//            leftFront.setPower((rotY-rotX-rx) / denominator);
-//            leftBack.setPower((rotY+rotX-rx) / denominator);
-//            rightFront.setPower((rotY+rotX+rx) / denominator);
-//            rightBack.setPower((rotY-rotX+rx)/ denominator);
+            leftFront.setPower((rotY + rotX - rx) / denominator);
+            leftBack.setPower((rotY - rotX - rx) / denominator);
+            rightFront.setPower((rotY - rotX + rx) / denominator);
+            rightBack.setPower((rotY + rotX + rx)/ denominator);
 
             //Robot oriented - retired and is no longer needed
 
-            leftFront.setPower((y - x - rx) / denominator);
-            leftBack.setPower((y + x - rx) / denominator);
-            rightFront.setPower((y + x + rx) / denominator);
-            rightBack.setPower((y - x + rx)/ denominator);
+//            leftFront.setPower((y + x - rx) / denominator);
+//            leftBack.setPower((y - x - rx) / denominator);
+//            rightFront.setPower((y - x + rx) / denominator);
+//            rightBack.setPower((y + x + rx)/ denominator);
 
         }
 
