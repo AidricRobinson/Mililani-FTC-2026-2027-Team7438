@@ -20,6 +20,7 @@ public class Localization {
     private static Pose3D mt1Pose;
     private static Pose3D mt2Pose;
 
+
     private static double latestRotation;
 
     public Localization (OpMode opMode) {
