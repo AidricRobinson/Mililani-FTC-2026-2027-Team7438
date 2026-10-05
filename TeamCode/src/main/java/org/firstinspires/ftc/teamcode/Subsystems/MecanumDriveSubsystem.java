@@ -50,7 +50,7 @@ public class MecanumDriveSubsystem {
                 Constants.PinpointConstants.kPodYDirection);
 
         pinpoint.initialize();
-        pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, 12, 12, AngleUnit.DEGREES, 0));
+        pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, 12, 12, AngleUnit.DEGREES, 90));
 
 
 
@@ -91,6 +91,7 @@ public class MecanumDriveSubsystem {
 //        telemetry.addData("Pose X: ", localization.getPoseX());
 //        telemetry.addData("Pose Y: ", localization.getPoseY());
 //        telemetry.addData("Rotation: ", localization.getPoseRotation());
+        pinpoint.update();
         telemetry.update();
         heading = pinpoint.getHeading(AngleUnit.RADIANS);
         if (alliance.equals(Constants.PinpointConstants.blueAlliance)){
@@ -108,9 +109,8 @@ public class MecanumDriveSubsystem {
         double rx = gamepad.right_stick_x;
 
 
-        double botHeading = heading;
-        double rotX = x * Math.cos(botHeading) - y * Math.sin(botHeading);
-        double rotY = x * Math.sin(botHeading) + y * Math.cos(botHeading);
+        double rotX = x * Math.cos(heading) - y * Math.sin(heading);
+        double rotY = x * Math.sin(heading) + y * Math.cos(heading);
         double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
 
 
@@ -131,22 +131,27 @@ public class MecanumDriveSubsystem {
 //            rightFront.setPower((rotY - rotX + rx) / denominator * 0.5);
 //            rightBack.setPower((rotY + rotX + rx)/ denominator * 0.5);
 //        }
-        else {
-            //Field oriented version
 
-            leftFront.setPower((rotY + rotX - rx) / denominator);
-            leftBack.setPower((rotY - rotX - rx) / denominator);
-            rightFront.setPower((rotY - rotX + rx) / denominator);
-            rightBack.setPower((rotY + rotX + rx)/ denominator);
-
-            //Robot oriented - retired and is no longer needed
-
-//            leftFront.setPower((y + x - rx) / denominator);
-//            leftBack.setPower((y - x - rx) / denominator);
-//            rightFront.setPower((y - x + rx) / denominator);
-//            rightBack.setPower((y + x + rx)/ denominator);
-
-        }
+        leftFront.setPower((rotY - rotX - rx) / denominator);
+        leftBack.setPower((rotY + rotX - rx) / denominator);
+        rightFront.setPower((rotY + rotX + rx) / denominator);
+        rightBack.setPower((rotY - rotX + rx) / denominator);
+//        else {
+//            //Field oriented version
+//
+//            leftFront.setPower((rotY - rotX - rx) / denominator);
+//            leftBack.setPower((rotY + rotX - rx) / denominator);
+//            rightFront.setPower((rotY + rotX + rx) / denominator);
+//            rightBack.setPower((rotY - rotX + rx) / denominator);
+//
+//            //Robot oriented - retired and is no longer needed
+//
+////            leftFront.setPower((y + x - rx) / denominator);
+////            leftBack.setPower((y - x - rx) / denominator);
+////            rightFront.setPower((y - x + rx) / denominator);
+////            rightBack.setPower((y + x + rx)/ denominator);
+//
+//        }
 
 
 
