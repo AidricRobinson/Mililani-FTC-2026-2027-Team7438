@@ -47,13 +47,18 @@ public class ShooterSubsystem {
        return pollenShooter.getVelocity();
     }
 
-    public void setNectarShooterRpm(double rpm){
+    public void setNectarShooterRPM(double rpm){
         nectarShooter.setVelocity(rpm);
     }
-    public void setPollenShooterRpm(double rpm){
+    public void setPollenShooterRPM(double rpm){
         pollenShooter.setVelocity(rpm);
     }
-
+    public double getNectarShooterRPM() {
+        return nectarShooter.getVelocity();
+    }
+    public double getPollenShooterRPM() {
+        return pollenShooter.getVelocity();
+    }
     public void shutdown(){
         pollenShooter.setPower(0);
         nectarShooter.setPower(0);

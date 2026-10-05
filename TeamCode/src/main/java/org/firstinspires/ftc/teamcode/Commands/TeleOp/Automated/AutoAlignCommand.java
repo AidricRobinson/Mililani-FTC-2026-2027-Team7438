@@ -3,10 +3,8 @@ package org.firstinspires.ftc.teamcode.Commands.TeleOp.Automated;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.Constants;
-import org.firstinspires.ftc.teamcode.Subsystems.Localization;
+import org.firstinspires.ftc.teamcode.Localization;
 import org.firstinspires.ftc.teamcode.Subsystems.MecanumDriveSubsystem;
-import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
-import org.firstinspires.ftc.teamcode.Subsystems.StorageSubsystem;
 
 public class AutoAlignCommand {
     MecanumDriveSubsystem mecanumDriveSubsystem;

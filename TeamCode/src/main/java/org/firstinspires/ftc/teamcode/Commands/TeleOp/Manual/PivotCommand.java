@@ -8,6 +8,7 @@ public class PivotCommand {
     PivotSubsystem pivotSubsystem;
     Gamepad gamepad;
     boolean out = false;
+    boolean lastLeftBumper = false;
 
     public PivotCommand(PivotSubsystem pivotSubsystem, Gamepad gamepad){
         this.pivotSubsystem = pivotSubsystem;
@@ -16,17 +17,13 @@ public class PivotCommand {
 
     public void operate(Gamepad gamepad){
 
-        if(gamepad.left_trigger > .2 && !out){
-            out = true;
+        if (gamepad.left_bumper && !lastLeftBumper) {
+            out = !out;
         }
-        else if(gamepad.left_trigger > .2 && out){
-            out = false;
-        }
-
-        if(out){
+        lastLeftBumper = gamepad.left_bumper;
+        if (out) {
             pivotSubsystem.setPosition(1);
-        }
-        else if(!out){
+        } else {
             pivotSubsystem.setPosition(0);
         }
     }

@@ -42,5 +42,8 @@ public class PIDController {
         output = kP * error + kI * integral + kD * derivative + Math.copySign(kFF, error);
         return output;
     }
+    public void resetIntegral() {
+        integral = 0;
+    }
 }
 

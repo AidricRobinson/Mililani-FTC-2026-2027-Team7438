@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.Commands.TeleOp.Automated;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-import org.firstinspires.ftc.teamcode.Subsystems.Localization;
+import org.firstinspires.ftc.teamcode.Localization;
 
 public class PanicResetRotation {
     Gamepad gamepad;
