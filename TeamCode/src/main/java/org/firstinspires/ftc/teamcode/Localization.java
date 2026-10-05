@@ -13,8 +13,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 import org.firstinspires.ftc.robotcore.external.navigation.UnnormalizedAngleUnit;
 
 public class Localization {
-    private GoBildaPinpointDriver pinpoint;
-    private Limelight3A limelight;
+    private LimelightLocalizer limelight;
+    private PinpointLocalizer pinpoint;
+
+
     private LLResult result;
     private static Pose2D estimatedPose;
     private static Pose3D mt1Pose;
@@ -28,53 +30,36 @@ public class Localization {
 
 
 
-    public Localization (OpMode opMode, Pose2D startingPose) {
-
-
-        pinpoint = opMode.hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
-        pinpoint.setEncoderResolution(Constants.PinpointConstants.kEncoderResolution, DistanceUnit.MM);
-        pinpoint.setOffsets(Constants.PinpointConstants.kPodXOffset,
-                Constants.PinpointConstants.kPodYOffset,
-                DistanceUnit.CM);
-
-        pinpoint.setEncoderDirections(Constants.PinpointConstants.kPodXDirection,
-                Constants.PinpointConstants.kPodYDirection);
-
-        limelight = opMode.hardwareMap.get(Limelight3A.class, "limelight");
-        limelight.setPollRateHz(60);
-        limelight.pipelineSwitch(1); // placeholder
-        result = limelight.getLatestResult();
-
-        pinpoint.initialize();
+    public Localization (PinpointLocalizer pinpoint, LimelightLocalizer limelight, OpMode opMode, Pose2D startingPose) {
+        this.pinpoint = pinpoint;
+        this.limelight = limelight;
 
         initialPose = startingPose;
         ekf = new PoseEKF(initialPose);
-        pinpoint.setPosition(initialPose);
+        pinpoint.setPose(initialPose);
 
 
         elapsedTime.startTime();
     }
 
-    public void operate() {
-        double dt = elapsedTime.seconds();
+    public void operate(double dt) {
         elapsedTime.reset();
 
         pinpoint.update();
 
-        ekf.predict(pinpoint.getVelX(DistanceUnit.INCH),
-                pinpoint.getVelY(DistanceUnit.INCH),
-                pinpoint.getHeadingVelocity(UnnormalizedAngleUnit.DEGREES),
-                dt);
+        ekf.predict(pinpoint.getVelocityX(),
+                pinpoint.getVelocityY(),
+                pinpoint.getHeadingVelocity(), dt);
 
-        limelight.updateRobotOrientation(getPoseRotation());
+        limelight.update(pinpoint);
         result = limelight.getLatestResult();
 
-        estimatedPose = pinpoint.getPosition();
+        estimatedPose = pinpoint.getPose();
 
         if (result != null && result.isValid()) {
             mt1Pose = result.getBotpose();
             mt2Pose = result.getBotpose_MT2();
-            if (mt2Pose != null && isPoseSafe(mt2Pose)) {
+            if (mt2Pose != null && isPoseSafe(mt2Pose) && limelight.getTagCount() >= 2) {
 
                 double visionX = mt2Pose.getPosition().x;
                 double visionY = mt2Pose.getPosition().y;
@@ -96,7 +81,7 @@ public class Localization {
                 estimatedPose.getY(DistanceUnit.INCH),
                 AngleUnit.DEGREES,
                 degrees);
-        pinpoint.setHeading(degrees, AngleUnit.DEGREES);
+        pinpoint.setHeading(degrees);
     }
     public static Pose2D getRobotPose() {
         return estimatedPose;
@@ -111,13 +96,13 @@ public class Localization {
         return estimatedPose.getHeading(AngleUnit.DEGREES);
     }
     public double getRotationRadians() {
-        return pinpoint.getHeading(AngleUnit.RADIANS);
+        return pinpoint.getHeading();
     }
 
     public void setPose2d(double x, double y) {
         estimatedPose = new Pose2D(DistanceUnit.INCH, x, y, AngleUnit.DEGREES, getPoseRotation());
-        pinpoint.setPosX(x, DistanceUnit.INCH);
-        pinpoint.setPosY(y, DistanceUnit.INCH);
+        pinpoint.setPosX(x);
+        pinpoint.setPosY(y);
     }
 
     public static double getDistance(double targetX, double targetY) {
@@ -150,9 +135,9 @@ public class Localization {
     }
     public boolean isPoseSafe(Pose3D pose) {
 
-        return !(pinpoint.getVelX(DistanceUnit.INCH) > 40)
-                || !(pinpoint.getVelY(DistanceUnit.INCH) > 40)
-                || !(pinpoint.getHeadingVelocity(UnnormalizedAngleUnit.DEGREES) > 360)
+        return !(pinpoint.getVelocityX() > 40)
+                || !(pinpoint.getVelocityY() > 40)
+                || !(pinpoint.getHeadingVelocity() > 360)
                 || !(pose.getOrientation().getRoll(AngleUnit.DEGREES) < 1  ||
                 pose.getOrientation().getPitch(AngleUnit.DEGREES) < 1)
                 ||(pose.getPosition().z > 0.5);
@@ -179,9 +164,9 @@ public class Localization {
         double predictedY = currentPose.getY(DistanceUnit.INCH);
         double predictedTheta = currentPose.getHeading(AngleUnit.DEGREES);
 
-        predictedX += pinpoint.getVelX(DistanceUnit.INCH) * dt;
-        predictedY += pinpoint.getVelY(DistanceUnit.INCH) * dt;
-        predictedTheta += pinpoint.getHeadingVelocity(UnnormalizedAngleUnit.DEGREES) * dt;
+        predictedX += pinpoint.getVelocityX() * dt;
+        predictedY += pinpoint.getVelocityY() * dt;
+        predictedTheta += pinpoint.getHeadingVelocity() * dt;
 
         return new Pose2D(DistanceUnit.INCH, predictedX, predictedY, AngleUnit.DEGREES, predictedTheta);
     }
