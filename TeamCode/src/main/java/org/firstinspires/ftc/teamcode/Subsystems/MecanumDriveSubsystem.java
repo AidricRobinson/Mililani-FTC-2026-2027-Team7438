@@ -50,7 +50,7 @@ public class MecanumDriveSubsystem {
                 Constants.PinpointConstants.kPodYDirection);
 
         pinpoint.initialize();
-        pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, 12, 12, AngleUnit.DEGREES, 0));
+        pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, 12, 12, AngleUnit.DEGREES, 90));
 
 
 
