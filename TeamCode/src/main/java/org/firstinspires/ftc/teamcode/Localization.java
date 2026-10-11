@@ -58,15 +58,22 @@ public class Localization {
 
                 ekf.update(visionX, visionY, visionHeading);
                 estimatedPose = ekf.getPose();
-                pinpoint.setPose(ekf.getPose());
             }
         }
 
 
 
     }
-    public static double getAngleError(double T, double C) {
-        return ((T - C + 180) % 360) - 180;
+    public static double getAngleError(double target, double current) {
+        double error = (target - current) % 360.0;
+
+        if (error > 180.0) {
+            error -= 360.0;
+        } else if (error < -180.0) {
+            error += 360.0;
+        }
+
+        return error;
     }
 
     // PINPOINT METHODS
@@ -115,7 +122,7 @@ public class Localization {
             return Math.toDegrees(Math.atan2(changeY, changeX));
         }
         if (changeY > 0) {
-            return Math.toDegrees(Math.atan2(changeY, changeX)) + 180;
+            return Math.toDegrees(Math.atan2(changeY, changeX)) +   180;
         }
         return Math.toDegrees(Math.atan2(changeY, changeX)) - 180;
     }
@@ -129,13 +136,31 @@ public class Localization {
         return result.getBotpose_MT2();
     }
     public boolean isPoseSafe(Pose3D pose) {
+        if (pose == null) {
+            return false;
+        }
 
-        return !(Math.abs(pinpoint.getVelocityX()) > 40)
-                || !(Math.abs(pinpoint.getVelocityY()) > 40)
-                || !(pinpoint.getHeadingVelocity() > 360)
-                || !(pose.getOrientation().getRoll(AngleUnit.DEGREES) < 1  ||
-                pose.getOrientation().getPitch(AngleUnit.DEGREES) < 1)
-                ||(pose.getPosition().z > 0.5);
+        if (Math.abs(pinpoint.getVelocityX()) > 40 ||
+                Math.abs(pinpoint.getVelocityY()) > 40 ||
+                Math.abs(pinpoint.getHeadingVelocity()) > 360) {
+            return false;
+        }
+
+        double roll = pose.getOrientation()
+                .getRoll(AngleUnit.DEGREES);
+
+        double pitch = pose.getOrientation()
+                .getPitch(AngleUnit.DEGREES);
+
+        double z = pose.getPosition().z;
+
+        if (Math.abs(roll) > 15 ||
+                Math.abs(pitch) > 15 ||
+                Math.abs(z) > 6) {
+            return false;
+        }
+
+        return true;
     }
 
 

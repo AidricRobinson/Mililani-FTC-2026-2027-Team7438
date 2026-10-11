@@ -32,7 +32,7 @@ public class TestLimelightShootCommand {
         setPollenRPM = new SetPollenRPM(shooterSubsystem);
         x = 0;
     }
-    public void operate() {
+    public void operate(double dt) {
         result = limelight.getLatestResult();
         if (result != null && result.isValid()) {
             x = result.getTa();
@@ -41,12 +41,12 @@ public class TestLimelightShootCommand {
             if (shooterSubsystem.getPollenToggle()) {
                 setPollenRPM.operate(Constants.PinpointConstants.kLimePA * Math.pow(x, 2)
                         + Constants.PinpointConstants.kLimePB * x
-                        + Constants.PinpointConstants.kLimePC);
+                        + Constants.PinpointConstants.kLimePC, dt);
             }
             if (shooterSubsystem.getNectarToggle()) {
                 setNectarRPM.operate(Constants.PinpointConstants.kLimeNA * Math.pow(x, 2)
                         + Constants.PinpointConstants.kLimeNB * x
-                        + Constants.PinpointConstants.kLimeNC);
+                        + Constants.PinpointConstants.kLimeNC, dt);
             }
         }
     }

@@ -51,13 +51,15 @@ public class RedAllianceTeleop extends OpMode {
     private ManualShootCommand manualShootCommand;
     private ManualKickerCommand manualKickerCommand;
 
-    private ElapsedTime elapsedTime;
+    private final ElapsedTime elapsedTime = new ElapsedTime();
+    private double lastTime;
 
     private double time;
     private double dt;
 
 
     public void init() {
+
         pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
         pinpoint.setEncoderResolution(Constants.PinpointConstants.kEncoderResolution, DistanceUnit.MM);
         pinpoint.setOffsets(Constants.PinpointConstants.kPodXOffset,
@@ -97,15 +99,24 @@ public class RedAllianceTeleop extends OpMode {
         manualShootCommand = new ManualShootCommand(shooterSubsystem, gamepad2);
         manualKickerCommand = new ManualKickerCommand(storageSubsystem, gamepad2);
 
+        lastTime = 0;
         elapsedTime.startTime();
         time = 0;
         dt = 0;
     }
+    public void updatetime() {
+        time = elapsedTime.seconds();
+        dt = time - lastTime;
+        lastTime = time;
+
+        if (dt <= 0 || dt >= 0.2) {
+            dt = 0.02;
+        }
+    }
 
     @Override
     public void loop() {
-        dt = elapsedTime.seconds() - time;
-        time = elapsedTime.seconds();
+        updatetime();
         limelight.getLatestResult();
         pinpoint.update();
         localization.operate(dt);
@@ -115,13 +126,13 @@ public class RedAllianceTeleop extends OpMode {
         mecanumDriveSubsystem.operate(gamepad1, this.telemetry, Constants.PinpointConstants.redAlliance);
         autoFlowerIntake.operate();
         autoIntake.operate();
-        autoScore.operate(Constants.PinpointConstants.redAlliance);
+        autoScore.operate(Constants.PinpointConstants.redAlliance, dt);
         panicResetRotation.operate(localization);
         toggleFlywheels.operate();
         brakeCommand.operate();
         pivotCommand.operate(gamepad2);
         manualIntakeCommand.operate();
-        manualShootCommand.operate();
+        manualShootCommand.operate(dt);
         manualKickerCommand.operate();
     }
 

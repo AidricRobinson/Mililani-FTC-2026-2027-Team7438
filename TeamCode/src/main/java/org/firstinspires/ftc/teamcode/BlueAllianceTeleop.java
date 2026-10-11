@@ -51,10 +51,11 @@ public class BlueAllianceTeleop extends OpMode {
     private ManualShootCommand manualShootCommand;
     private ManualKickerCommand manualKickerCommand;
 
-    private ElapsedTime elapsedTime;
+    private final ElapsedTime elapsedTime = new ElapsedTime();
 
     private double time;
     private double dt;
+    private double lastTime;
 
 
     public void init() {
@@ -99,7 +100,17 @@ public class BlueAllianceTeleop extends OpMode {
 
         elapsedTime.startTime();
         time = 0;
+        lastTime = 0;
         dt = 0;
+    }
+    public void updatetime() {
+        time = elapsedTime.seconds();
+        dt = time - lastTime;
+        lastTime = time;
+
+        if (dt <= 0 || dt >= 0.2) {
+            dt = 0.02;
+        }
     }
 
     @Override
@@ -115,13 +126,13 @@ public class BlueAllianceTeleop extends OpMode {
         mecanumDriveSubsystem.operate(gamepad1, this.telemetry, Constants.PinpointConstants.blueAlliance);
         autoFlowerIntake.operate();
         autoIntake.operate();
-        autoScore.operate(Constants.PinpointConstants.blueAlliance);
+        autoScore.operate(Constants.PinpointConstants.blueAlliance, dt);
         panicResetRotation.operate(localization);
         toggleFlywheels.operate();
         brakeCommand.operate();
         pivotCommand.operate(gamepad2);
         manualIntakeCommand.operate();
-        manualShootCommand.operate();
+        manualShootCommand.operate(dt);
         manualKickerCommand.operate();
     }
 

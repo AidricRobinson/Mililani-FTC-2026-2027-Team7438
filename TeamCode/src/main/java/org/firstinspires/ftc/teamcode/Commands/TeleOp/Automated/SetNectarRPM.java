@@ -11,10 +11,10 @@ public class SetNectarRPM {
         this.shooterSubsystem = shooterSubsystem;
         pidController = Constants.PayloadConstants.nectarPID;
     }
-    public void operate(double rpm) {
+    public void operate(double rpm, double dt) {
         pidController.createSetPoint(rpm);
         pidController.setProcessVariable(shooterSubsystem.getNectarShooterRPM());
-        shooterSubsystem.setNectarShooterPower(pidController.getOutput());
+        shooterSubsystem.setNectarShooterPower(pidController.getOutput(dt));
     }
     public void shutdown() {
         pidController.resetIntegral();

@@ -32,7 +32,7 @@ public class TestFlywheelDistance {
         nectarPID = Constants.PayloadConstants.nectarPID;
         pollenPID = Constants.PayloadConstants.pollenPID;
     }
-    public void operate(String alliance) {
+    public void operate(String alliance, double dt) {
         if (gamepad.dpad_up) {
             shooterSubsystem.increaseNectarRPM(200);
         }
@@ -54,7 +54,7 @@ public class TestFlywheelDistance {
         if (gamepad.dpad_left) {
             nectarPID.createSetPoint(shooterSubsystem.getTestNectarRPM());
             nectarPID.setProcessVariable(shooterSubsystem.getNectarShooterRPM());
-            shooterSubsystem.setNectarShooterPower(nectarPID.getOutput());
+            shooterSubsystem.setNectarShooterPower(nectarPID.getOutput(dt));
         }
         else {
             shooterSubsystem.setNectarShooterPower(0);
@@ -63,7 +63,7 @@ public class TestFlywheelDistance {
         if (gamepad.x) {
             pollenPID.createSetPoint(shooterSubsystem.getTestPollenRPM());
             pollenPID.setProcessVariable(shooterSubsystem.getPollenShooterRPM());
-            shooterSubsystem.setPollenShooterPower(pollenPID.getOutput());
+            shooterSubsystem.setPollenShooterPower(pollenPID.getOutput(dt));
         }
         else {
             shooterSubsystem.setPollenShooterPower(0);

@@ -34,10 +34,10 @@ public class PIDController {
         error = setPoint - processVariable;
         return error;
     }
-    public double getOutput(){
+    public double getOutput(double dt){
         error = getError();
         integral += error;
-        derivative = (error - prevError) / 0.02;
+        derivative = (error - prevError) / dt;
 
         output = kP * error + kI * integral + kD * derivative + Math.copySign(kFF, error);
         return output;

@@ -19,32 +19,32 @@ public class TestPollenRPM {
         pidController = new PIDController(0, 0, 0, 0);
         this.telemetry = telemetry;
     }
-    public void operate(Gamepad gamepad) {
+    public void operate(Gamepad gamepad, double dt) {
         if (gamepad.a) {
             pidController.createSetPoint(1500);
             pidController.setProcessVariable(shooterSubsystem.getPollenShooterRPM());
-            shooterSubsystem.setPollenShooterPower(pidController.getOutput());
+            shooterSubsystem.setPollenShooterPower(pidController.getOutput(dt));
             telemetry.addData("Pollen RPM: ", shooterSubsystem.getPollenShooterRPM());
             telemetry.update();
         }
         else if (gamepad.b) {
             pidController.createSetPoint(2000);
             pidController.setProcessVariable(shooterSubsystem.getPollenShooterRPM());
-            shooterSubsystem.setPollenShooterPower(pidController.getOutput());
+            shooterSubsystem.setPollenShooterPower(pidController.getOutput(dt));
             telemetry.addData("Pollen RPM: ", shooterSubsystem.getPollenShooterRPM());
             telemetry.update();
         }
         else if (gamepad.x) {
             pidController.createSetPoint(2500);
             pidController.setProcessVariable(shooterSubsystem.getPollenShooterRPM());
-            shooterSubsystem.setPollenShooterPower(pidController.getOutput());
+            shooterSubsystem.setPollenShooterPower(pidController.getOutput(dt));
             telemetry.addData("Pollen RPM: ", shooterSubsystem.getPollenShooterRPM());
             telemetry.update();
         }
         else if (gamepad.y) {
             pidController.createSetPoint(3000);
             pidController.setProcessVariable(shooterSubsystem.getPollenShooterRPM());
-            shooterSubsystem.setPollenShooterPower(pidController.getOutput());
+            shooterSubsystem.setPollenShooterPower(pidController.getOutput(dt));
             telemetry.addData("Pollen RPM: ", shooterSubsystem.getPollenShooterRPM());
             telemetry.update();
         }

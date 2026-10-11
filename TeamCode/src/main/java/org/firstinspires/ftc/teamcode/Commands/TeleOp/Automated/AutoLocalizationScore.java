@@ -33,7 +33,7 @@ public class AutoLocalizationScore {
         x = 0;
         targetRotation = 0;
     }
-    public void operate(String alliance) {
+    public void operate(String alliance, double dt) {
         if (alliance.equals("RED")) {
             distanceT = Localization.getDistance(Constants.PinpointConstants.kTopRedHive[0], Constants.PinpointConstants.kTopRedHive[1]);
             distanceB = Localization.getDistance(Constants.PinpointConstants.kBottomRedHive[0], Constants.PinpointConstants.kBottomRedHive[1]);
@@ -63,13 +63,13 @@ public class AutoLocalizationScore {
         if (shooterSubsystem.getNectarToggle()) {
             setNectarRPM.operate(Constants.PinpointConstants.kPoseNA * Math.pow(x, 2)
                     + Constants.PinpointConstants.kPoseNB * x
-                    + Constants.PinpointConstants.kPoseNC);
+                    + Constants.PinpointConstants.kPoseNC, dt);
         }
 
         if (shooterSubsystem.getPollenToggle()) {
             setPollenRPM.operate(Constants.PinpointConstants.kPosePA * Math.pow(x, 2)
                     + Constants.PinpointConstants.kPosePB * x
-                    + Constants.PinpointConstants.kPosePC);
+                    + Constants.PinpointConstants.kPosePC, dt);
         }
         error = Localization.getAngleError(targetRotation, Localization.getPoseRotation());
         if (Math.abs(error) >= 0.5) {

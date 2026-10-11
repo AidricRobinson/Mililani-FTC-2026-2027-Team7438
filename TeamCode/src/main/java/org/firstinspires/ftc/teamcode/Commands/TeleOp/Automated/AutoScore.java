@@ -29,7 +29,7 @@ public class AutoScore {
         localizationScore = new AutoLocalizationScore(shooterSubsystem,
                 mecanumDriveSubsystem, storageSubsystem);
     }
-    public void operate(String alliance) {
+    public void operate(String alliance, double dt) {
         double distanceT;
         double distanceB;
         double min;
@@ -39,10 +39,10 @@ public class AutoScore {
 
         if (gamepad.right_bumper) {
             if (shooterSubsystem.getManualToggle()) {
-                autoLimelightScore.operate();
+                autoLimelightScore.operate(dt);
             }
             else {
-                localizationScore.operate(alliance);
+                localizationScore.operate(alliance, dt);
             }
         }
         if (gamepad.rightBumperWasReleased()) {

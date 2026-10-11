@@ -12,10 +12,10 @@ public class SetPollenRPM {
         this.shooterSubsystem = shooterSubsystem;
         pidController = Constants.PayloadConstants.pollenPID;
     }
-    public void operate(double rpm) {
+    public void operate(double rpm, double dt) {
         pidController.createSetPoint(rpm);
         pidController.setProcessVariable(shooterSubsystem.getPollenShooterRPM());
-        shooterSubsystem.setPollenShooterPower(pidController.getOutput());
+        shooterSubsystem.setPollenShooterPower(pidController.getOutput(dt));
     }
     public void shutdown() {
         pidController.resetIntegral();

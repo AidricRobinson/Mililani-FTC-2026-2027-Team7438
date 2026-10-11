@@ -35,7 +35,7 @@ public class AutoLimelightScore {
         setPollenRPM = new SetPollenRPM(shooterSubsystem);
         tx = 0;
     }
-    public void operate() {
+    public void operate(double dt) {
         result = limelight.getLatestResult();
         if (result != null && result.isValid()) {
             tx = result.getTx();
@@ -49,48 +49,47 @@ public class AutoLimelightScore {
         if (shooterSubsystem.getPollenToggle()) {
             setPollenRPM.operate(Constants.PinpointConstants.kLimePA * Math.pow(x, 2)
                     + Constants.PinpointConstants.kLimePB * x
-                    + Constants.PinpointConstants.kLimePC);
+                    + Constants.PinpointConstants.kLimePC, dt);
         }
         if (shooterSubsystem.getNectarToggle()) {
             setNectarRPM.operate(Constants.PinpointConstants.kLimeNA * Math.pow(x, 2)
                     + Constants.PinpointConstants.kLimeNB * x
-                    + Constants.PinpointConstants.kLimeNC);
+                    + Constants.PinpointConstants.kLimeNC, dt);
         }
-        if (Math.abs(tx) >= 0.5) {
-            result = limelight.getLatestResult();
-            tx = 0;
-            if (result != null && result.isValid()) {
-                tx = result.getTx(); // How far left or right the target is (degrees)
-            } else {
-                tx = 0;
-            }
+        boolean aligned = Math.abs(tx) < 0.5;
 
-            output = kP * (tx) + Math.copySign(kFF, tx);
+        boolean nectarReady =
+                !shooterSubsystem.getNectarToggle()
+                        || Math.abs(setNectarRPM.getError()) < 100;
 
+        boolean pollenReady =
+                !shooterSubsystem.getPollenToggle()
+                        || Math.abs(setPollenRPM.getError()) < 100;
+
+        if (!aligned) {
+            output = kP * tx + Math.copySign(kFF, tx);
+
+            // Verify the motor signs on your robot.
             mecanumDriveSubsystem.setLeftFrontPower(output);
             mecanumDriveSubsystem.setLeftBackPower(output);
-            mecanumDriveSubsystem.setRightBackPower(-output);
             mecanumDriveSubsystem.setRightFrontPower(-output);
+            mecanumDriveSubsystem.setRightBackPower(-output);
+
             mecanumDriveSubsystem.setBrakePosition(0);
-            //Renewing the tx
-            result = limelight.getLatestResult();
-            if (result != null && result.isValid()) {
-                tx = result.getTx(); // How far left or right the target is (degrees)
-            } else {
-                tx = 0;
-            }
-        }
-        else {
+
+            storageSubsystem.shutdown();
+        } else {
+            mecanumDriveSubsystem.shutdown();
             storageSubsystem.setSpindexerPower(1);
-            if(!(shooterSubsystem.getNectarToggle() && Math.abs(setNectarRPM.getError()) >= 100)
-                    && !(shooterSubsystem.getPollenToggle() && Math.abs(setPollenRPM.getError()) >= 100)) {
-                storageSubsystem.setStoragePower(0.75);
+            if (nectarReady && pollenReady) {
                 mecanumDriveSubsystem.setBrakePosition(1);
-                mecanumDriveSubsystem.shutdown();
+
+                storageSubsystem.setStoragePower(0.75);
+            } else {
+                storageSubsystem.shutdown();
+                mecanumDriveSubsystem.setBrakePosition(1);
             }
         }
-
-
     }
     public void shutdown() {
         shooterSubsystem.shutdown();
