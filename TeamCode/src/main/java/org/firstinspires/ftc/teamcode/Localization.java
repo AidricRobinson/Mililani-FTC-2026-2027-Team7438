@@ -67,11 +67,16 @@ public class Localization {
                         .getYaw(AngleUnit.DEGREES);
 
                 ekf.update(visionX, visionY, visionHeading);
+                estimatedPose = ekf.getPose();
+                pinpoint.setPose(ekf.getPose());
             }
         }
 
 
 
+    }
+    public static double getAngleError(double T, double C) {
+        return ((T - C + 180) % 360) - 180;
     }
 
     // PINPOINT METHODS
@@ -143,21 +148,6 @@ public class Localization {
                 ||(pose.getPosition().z > 0.5);
     }
 
-    public double getRPMp (double x) { // pose
-        double a = Constants.PinpointConstants.kPoseA;
-        double b = Constants.PinpointConstants.kPoseB;
-        double c = Constants.PinpointConstants.kPoseC;
-        // 67
-        return a * Math.pow(x, 2) + b * x + c;
-    }
-
-    public double getRPMl (double x) { // based on limelight tA
-        double a = Constants.PinpointConstants.kLimeA;
-        double b = Constants.PinpointConstants.kLimeB;
-        double c = Constants.PinpointConstants.kLimeC;
-
-        return a * Math.pow(x, 2) + b * x + c;
-    }
 
     public Pose2D predictedPose(Pose2D currentPose, double dt) {
         double predictedX = currentPose.getX(DistanceUnit.INCH);

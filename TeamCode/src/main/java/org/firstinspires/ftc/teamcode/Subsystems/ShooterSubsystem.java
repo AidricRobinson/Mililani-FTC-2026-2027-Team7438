@@ -6,8 +6,13 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import org.firstinspires.ftc.teamcode.Constants;
 
 public class ShooterSubsystem {
+    private double pollenRPM;
+    private double nectarRPM;
     DcMotorEx nectarShooter;
     DcMotorEx pollenShooter;
+    private static boolean pollenToggle;
+    private static boolean nectarToggle;
+    private static boolean manualToggle;
 
     public ShooterSubsystem(OpMode opMode){
         nectarShooter = opMode.hardwareMap.get(DcMotorEx.class, "nectarShooter");
@@ -18,6 +23,56 @@ public class ShooterSubsystem {
 
         nectarShooter.setZeroPowerBehavior(Constants.PayloadConstants.kNectarShooterZeroPowerMode);
         pollenShooter.setZeroPowerBehavior(Constants.PayloadConstants.kPollenShooterZeroPowerMode);
+
+        pollenToggle = true;
+        nectarToggle = false;
+        manualToggle = false;
+        pollenRPM = 2000;
+        nectarRPM = 2000;
+    }
+
+    public void increasePollenRPM(double rpm) {
+        pollenRPM += rpm;
+    }
+    public void decreasePollenRPM(double rpm) {
+        pollenRPM -= rpm;
+    }
+    public void increaseNectarRPM(double rpm) {
+        nectarRPM += rpm;
+    }
+    public void decreaseNectarRPM(double rpm) {
+        nectarRPM -= rpm;
+    }
+    public double getTestPollenRPM() {
+        return pollenRPM;
+    }
+    public double getTestNectarRPM() {
+        return nectarRPM;
+    }
+    public void setTestPollenRPM(double rpm) {
+        pollenRPM = rpm;
+    }
+    public void setTestNectarRPM(double rpm) {
+        nectarRPM = rpm;
+    }
+
+    public void setNectarToggle(boolean toggle) {
+        nectarToggle = toggle;
+    }
+    public void setPollenToggle(boolean toggle) {
+        pollenToggle = toggle;
+    }
+    public boolean getNectarToggle() {
+        return nectarToggle;
+    }
+    public boolean getPollenToggle() {
+        return pollenToggle;
+    }
+    public void setManualToggle(boolean toggle) {
+        manualToggle = toggle;
+    }
+    public boolean getManualToggle() {
+        return manualToggle;
     }
 
     public void setNectarShooterPower(double power){

@@ -1,15 +1,15 @@
-package org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual;
+package org.firstinspires.ftc.teamcode.Commands.TeleOp.Test;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeSubsystem;
 
-public class IntakeCommand {
-    IntakeSubsystem intakeSubsystem;
-    Gamepad gamepad;
+public class TestIntakeCommand {
+    private IntakeSubsystem intakeSubsystem;
+    private Gamepad gamepad;
 //    Gamepad gamepad2;  // if we need another gamepad for this command
 
-    public IntakeCommand(IntakeSubsystem intakeSubsystem, Gamepad gamepad){
+    public TestIntakeCommand(IntakeSubsystem intakeSubsystem, Gamepad gamepad){
         this.intakeSubsystem = intakeSubsystem;
         this.gamepad = gamepad;
     }

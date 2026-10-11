@@ -5,10 +5,10 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import org.firstinspires.ftc.teamcode.Subsystems.PivotSubsystem;
 
 public class PivotCommand {
-    PivotSubsystem pivotSubsystem;
-    Gamepad gamepad;
-    boolean out = false;
-    boolean lastLeftBumper = false;
+    private PivotSubsystem pivotSubsystem;
+    private Gamepad gamepad;
+    private boolean out = false;
+    private boolean lastLeftBumper = false;
 
     public PivotCommand(PivotSubsystem pivotSubsystem, Gamepad gamepad){
         this.pivotSubsystem = pivotSubsystem;

@@ -1,23 +1,28 @@
 package org.firstinspires.ftc.teamcode;
 
 
-import com.qualcomm.hardware.limelightvision.LLResult;
-import com.qualcomm.hardware.limelightvision.Limelight3A;
+import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
+import org.firstinspires.ftc.teamcode.Commands.TeleOp.Test.TestAutoAlign;
 import org.firstinspires.ftc.teamcode.Subsystems.MecanumDriveSubsystem;
 
 
 @TeleOp(name="TEST ONLY")
 
 public class TestTeleOp extends OpMode {
-    private LLResult result;
+
+    GoBildaPinpointDriver pinpoint;
 
 
 
     //declaring subsystems and commands here
     private MecanumDriveSubsystem mecanumDriveSubsystem;
+
 //    private IntakeCommand intakeCommand;
 //    private StorageCommand storageCommand;
 
@@ -25,14 +30,34 @@ public class TestTeleOp extends OpMode {
 //    private StorageSubsystem storageSubsystem;
 
 
+
+    private TestAutoAlign autoAlignCommand;
+
+
     public void init () {
-        mecanumDriveSubsystem = new MecanumDriveSubsystem(this.hardwareMap,this);
+        pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
+        pinpoint.setEncoderResolution(Constants.PinpointConstants.kEncoderResolution, DistanceUnit.MM);
+        pinpoint.setOffsets(Constants.PinpointConstants.kPodXOffset,
+                Constants.PinpointConstants.kPodYOffset,
+                DistanceUnit.INCH);
+
+        pinpoint.setEncoderDirections(Constants.PinpointConstants.kPodXDirection,
+                Constants.PinpointConstants.kPodYDirection);
+
+        pinpoint.initialize();
+        pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, 12, 12, AngleUnit.DEGREES, 90));
+        mecanumDriveSubsystem = new MecanumDriveSubsystem(hardwareMap,this, pinpoint);
 //        intakeSubsystem = new IntakeSubsystem(this);
 //        storageSubsystem = new StorageSubsystem(this) ;
 
 //        intakeCommand = new IntakeCommand(intakeSubsystem, gamepad1);
 
 //        storageCommand = new StorageCommand(storageSubsystem, gamepad1);
+
+
+
+
+        autoAlignCommand = new TestAutoAlign(mecanumDriveSubsystem, gamepad1);
 
     }
 
@@ -44,7 +69,7 @@ public class TestTeleOp extends OpMode {
 //        storageCommand.operate(gamepad1);
 
 
-
+        autoAlignCommand.shutdown();
     }
     public void stop(){
 //        intakeCommand.shutdown();

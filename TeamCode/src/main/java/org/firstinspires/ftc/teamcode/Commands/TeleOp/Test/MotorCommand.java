@@ -1,10 +1,10 @@
-package org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual;
+package org.firstinspires.ftc.teamcode.Commands.TeleOp.Test;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import org.firstinspires.ftc.teamcode.Subsystems.*;
 
 public class MotorCommand {
-    MotorSubsystem motorSubsystem;
-    Gamepad gamepad;
+    private MotorSubsystem motorSubsystem;
+    private Gamepad gamepad;
 
     public MotorCommand(MotorSubsystem motorSubsystem, Gamepad gamepad){
         this.motorSubsystem = motorSubsystem;

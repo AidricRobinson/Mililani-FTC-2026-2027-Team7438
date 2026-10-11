@@ -1,12 +1,12 @@
-package org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual;
+package org.firstinspires.ftc.teamcode.Commands.TeleOp.Test;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
 
 public class PollenShooterCommand {
-    ShooterSubsystem shooterSubsystem;
-    Gamepad gamepad;
+    private ShooterSubsystem shooterSubsystem;
+    private Gamepad gamepad;
 
     public PollenShooterCommand(ShooterSubsystem shooterSubsystem, Gamepad gamepad){
         this.shooterSubsystem = shooterSubsystem;

@@ -1,13 +1,13 @@
-package org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual;
+package org.firstinspires.ftc.teamcode.Commands.TeleOp.Test;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.Subsystems.StorageSubsystem;
 
-public class StorageCommand {
-    StorageSubsystem storageSubsystem;
-    Gamepad gamepad;
-    public StorageCommand(StorageSubsystem storageSubsystem, Gamepad gamepad){
+public class TestStorageCommand {
+    private StorageSubsystem storageSubsystem;
+    private Gamepad gamepad;
+    public TestStorageCommand(StorageSubsystem storageSubsystem, Gamepad gamepad){
         this.storageSubsystem = storageSubsystem;
         this.gamepad = gamepad;
     }
