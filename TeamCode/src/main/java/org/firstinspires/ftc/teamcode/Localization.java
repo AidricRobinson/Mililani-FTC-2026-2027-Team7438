@@ -25,11 +25,6 @@ public class Localization {
     private static Pose2D initialPose;
     private PoseEKF ekf;
 
-    private ElapsedTime elapsedTime;
-
-
-
-
     public Localization (PinpointLocalizer pinpoint, LimelightLocalizer limelight, OpMode opMode, Pose2D startingPose) {
         this.pinpoint = pinpoint;
         this.limelight = limelight;
@@ -37,18 +32,13 @@ public class Localization {
         initialPose = startingPose;
         ekf = new PoseEKF(initialPose);
         pinpoint.setPose(initialPose);
-
-
-        elapsedTime.startTime();
     }
 
     public void operate(double dt) {
-        elapsedTime.reset();
-
         pinpoint.update();
 
-        ekf.predict(pinpoint.getVelocityX(),
-                pinpoint.getVelocityY(),
+        ekf.predict(pinpoint.getFieldXVelocity(),
+                pinpoint.getFieldYVelocity(),
                 pinpoint.getHeadingVelocity(), dt);
 
         limelight.update(pinpoint);
@@ -140,8 +130,8 @@ public class Localization {
     }
     public boolean isPoseSafe(Pose3D pose) {
 
-        return !(pinpoint.getVelocityX() > 40)
-                || !(pinpoint.getVelocityY() > 40)
+        return !(Math.abs(pinpoint.getVelocityX()) > 40)
+                || !(Math.abs(pinpoint.getVelocityY()) > 40)
                 || !(pinpoint.getHeadingVelocity() > 360)
                 || !(pose.getOrientation().getRoll(AngleUnit.DEGREES) < 1  ||
                 pose.getOrientation().getPitch(AngleUnit.DEGREES) < 1)
@@ -154,8 +144,8 @@ public class Localization {
         double predictedY = currentPose.getY(DistanceUnit.INCH);
         double predictedTheta = currentPose.getHeading(AngleUnit.DEGREES);
 
-        predictedX += pinpoint.getVelocityX() * dt;
-        predictedY += pinpoint.getVelocityY() * dt;
+        predictedX += pinpoint.getFieldXVelocity() * dt;
+        predictedY += pinpoint.getFieldYVelocity() * dt;
         predictedTheta += pinpoint.getHeadingVelocity() * dt;
 
         return new Pose2D(DistanceUnit.INCH, predictedX, predictedY, AngleUnit.DEGREES, predictedTheta);

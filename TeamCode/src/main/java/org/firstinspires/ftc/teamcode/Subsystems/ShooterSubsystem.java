@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Constants;
 
 public class ShooterSubsystem {
@@ -96,10 +97,10 @@ public class ShooterSubsystem {
     }
 
     public double getNectarShooterRpm(){
-        return nectarShooter.getVelocity();
+        return nectarShooter.getVelocity(AngleUnit.DEGREES);
     }
     public double getPollenShooterRpm(){
-       return pollenShooter.getVelocity();
+       return pollenShooter.getVelocity(AngleUnit.DEGREES);
     }
 
     public void setNectarShooterRPM(double rpm){

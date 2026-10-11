@@ -71,6 +71,7 @@ public class AutoLimelightScore {
             mecanumDriveSubsystem.setLeftBackPower(output);
             mecanumDriveSubsystem.setRightBackPower(-output);
             mecanumDriveSubsystem.setRightFrontPower(-output);
+            mecanumDriveSubsystem.setBrakePosition(0);
             //Renewing the tx
             result = limelight.getLatestResult();
             if (result != null && result.isValid()) {
@@ -80,14 +81,12 @@ public class AutoLimelightScore {
             }
         }
         else {
+            storageSubsystem.setSpindexerPower(1);
             if(!(shooterSubsystem.getNectarToggle() && Math.abs(setNectarRPM.getError()) >= 100)
                     && !(shooterSubsystem.getPollenToggle() && Math.abs(setPollenRPM.getError()) >= 100)) {
-                setNectarRPM.shutdown();
-                setPollenRPM.shutdown();
-                shooterSubsystem.setBothShooterPower(0);
-                storageSubsystem.setStoragePower(0);
-                storageSubsystem.setSpindexerPower(0);
-                mecanumDriveSubsystem.setBrakePosition(0);
+                storageSubsystem.setStoragePower(0.75);
+                mecanumDriveSubsystem.setBrakePosition(1);
+                mecanumDriveSubsystem.shutdown();
             }
         }
 

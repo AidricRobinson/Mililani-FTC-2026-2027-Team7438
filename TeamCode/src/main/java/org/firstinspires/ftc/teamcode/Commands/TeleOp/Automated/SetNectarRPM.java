@@ -14,7 +14,7 @@ public class SetNectarRPM {
     public void operate(double rpm) {
         pidController.createSetPoint(rpm);
         pidController.setProcessVariable(shooterSubsystem.getNectarShooterRPM());
-        shooterSubsystem.setPollenShooterPower(pidController.getOutput());
+        shooterSubsystem.setNectarShooterPower(pidController.getOutput());
     }
     public void shutdown() {
         pidController.resetIntegral();

@@ -82,12 +82,12 @@ public class AutoLocalizationScore {
             mecanumDriveSubsystem.setBrakePosition(0);
             storageSubsystem.shutdown();
         } else {
+            storageSubsystem.setSpindexerPower(1);
             if(!(shooterSubsystem.getNectarToggle() && Math.abs(setNectarRPM.getError()) >= 100)
                     && !(shooterSubsystem.getPollenToggle() && Math.abs(setPollenRPM.getError()) >= 100)) {
                 mecanumDriveSubsystem.shutdown();
                 mecanumDriveSubsystem.setBrakePosition(1);
-                storageSubsystem.setSpindexerPower(1);
-                storageSubsystem.setStoragePower(0.5);
+                storageSubsystem.setStoragePower(0.75);
             }
         }
     }

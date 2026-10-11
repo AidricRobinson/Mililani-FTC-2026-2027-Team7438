@@ -54,6 +54,12 @@ public class PinpointLocalizer {
     public double getVelocityY() {
         return pinpoint.getVelY(DistanceUnit.INCH);
     }
+    public double getFieldXVelocity() {
+        return getVelocityX() * Math.cos(Math.toRadians(getHeading()));
+    }
+    public double getFieldYVelocity() {
+        return getVelocityY() * Math.sin(Math.toRadians(getHeading()));
+    }
 
     public double getHeadingVelocity() {
         return pinpoint.getHeadingVelocity(
