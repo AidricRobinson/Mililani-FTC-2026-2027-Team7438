@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Commands.TeleOp.Test;
+package org.firstinspires.ftc.teamcode.Commands.Test;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 
@@ -6,12 +6,12 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.PIDController;
 import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
 
-public class TestPollenRPM {
+public class TestNectarRPM {
     private ShooterSubsystem shooterSubsystem;
     private Gamepad gamepad;
     private PIDController pidController;
     private Telemetry telemetry;
-    public TestPollenRPM(ShooterSubsystem shooterSubsystem,
+    public TestNectarRPM(ShooterSubsystem shooterSubsystem,
                          Gamepad gamepad,
                          Telemetry telemetry) {
         this.shooterSubsystem = shooterSubsystem;
@@ -22,30 +22,30 @@ public class TestPollenRPM {
     public void operate(Gamepad gamepad, double dt) {
         if (gamepad.a) {
             pidController.createSetPoint(1500);
-            pidController.setProcessVariable(shooterSubsystem.getPollenShooterRPM());
-            shooterSubsystem.setPollenShooterPower(pidController.getOutput(dt));
-            telemetry.addData("Pollen RPM: ", shooterSubsystem.getPollenShooterRPM());
+            pidController.setProcessVariable(shooterSubsystem.getNectarShooterRPM());
+            shooterSubsystem.setNectarShooterPower(pidController.getOutput(dt));
+            telemetry.addData("Nectar RPM: ", shooterSubsystem.getNectarShooterRPM());
             telemetry.update();
         }
         else if (gamepad.b) {
             pidController.createSetPoint(2000);
-            pidController.setProcessVariable(shooterSubsystem.getPollenShooterRPM());
-            shooterSubsystem.setPollenShooterPower(pidController.getOutput(dt));
-            telemetry.addData("Pollen RPM: ", shooterSubsystem.getPollenShooterRPM());
+            pidController.setProcessVariable(shooterSubsystem.getNectarShooterRPM());
+            shooterSubsystem.setNectarShooterPower(pidController.getOutput(dt));
+            telemetry.addData("Nectar RPM: ", shooterSubsystem.getNectarShooterRPM());
             telemetry.update();
         }
         else if (gamepad.x) {
             pidController.createSetPoint(2500);
-            pidController.setProcessVariable(shooterSubsystem.getPollenShooterRPM());
-            shooterSubsystem.setPollenShooterPower(pidController.getOutput(dt));
-            telemetry.addData("Pollen RPM: ", shooterSubsystem.getPollenShooterRPM());
+            pidController.setProcessVariable(shooterSubsystem.getNectarShooterRPM());
+            shooterSubsystem.setNectarShooterPower(pidController.getOutput(dt));
+            telemetry.addData("Nectar RPM: ", shooterSubsystem.getNectarShooterRPM());
             telemetry.update();
         }
         else if (gamepad.y) {
             pidController.createSetPoint(3000);
-            pidController.setProcessVariable(shooterSubsystem.getPollenShooterRPM());
-            shooterSubsystem.setPollenShooterPower(pidController.getOutput(dt));
-            telemetry.addData("Pollen RPM: ", shooterSubsystem.getPollenShooterRPM());
+            pidController.setProcessVariable(shooterSubsystem.getNectarShooterRPM());
+            shooterSubsystem.setNectarShooterPower(pidController.getOutput(dt));
+            telemetry.addData("Nectar RPM: ", shooterSubsystem.getNectarShooterRPM());
             telemetry.update();
         }
         else {

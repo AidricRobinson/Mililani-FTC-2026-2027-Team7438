@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Commands.TeleOp.Test;
+package org.firstinspires.ftc.teamcode.Commands.Test;
 
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
