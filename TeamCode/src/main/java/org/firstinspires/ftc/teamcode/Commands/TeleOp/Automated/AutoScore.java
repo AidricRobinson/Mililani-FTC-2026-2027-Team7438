@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.StorageSubsystem;
 
 public class AutoScore {
     private Gamepad gamepad;
-    private AutoLocalizationScore localizationScore;
+//    private AutoLocalizationScore localizationScore;
     private AutoLimelightScore autoLimelightScore;
     private ShooterSubsystem shooterSubsystem;
 
@@ -26,8 +26,8 @@ public class AutoScore {
                 mecanumDriveSubsystem);
 
 
-        localizationScore = new AutoLocalizationScore(shooterSubsystem,
-                mecanumDriveSubsystem, storageSubsystem);
+//        localizationScore = new AutoLocalizationScore(shooterSubsystem,
+//                mecanumDriveSubsystem, storageSubsystem);
     }
     public void operate(String alliance, double dt) {
         double distanceT;
@@ -42,18 +42,18 @@ public class AutoScore {
                 autoLimelightScore.operate(dt);
             }
             else {
-                localizationScore.operate(alliance, dt);
+//                localizationScore.operate(alliance, dt);
             }
         }
         if (gamepad.rightBumperWasReleased()) {
             autoLimelightScore.shutdown();
-            localizationScore.shutdown();
+//            localizationScore.shutdown();
         }
 
     }
     public void shutdown() {
         shooterSubsystem.shutdown();
         autoLimelightScore.shutdown();
-        localizationScore.shutdown();
+//        localizationScore.shutdown();
     }
 }

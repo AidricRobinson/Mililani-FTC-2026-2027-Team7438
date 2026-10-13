@@ -65,11 +65,9 @@ public class TestTeleOp extends OpMode {
     public void loop(){
 
 //        intakeCommand.operate(gamepad1);
-        mecanumDriveSubsystem.operate(gamepad1, telemetry, Constants.PinpointConstants.blueAlliance);
+        mecanumDriveSubsystem.operate(gamepad1, telemetry, Constants.PinpointConstants.redAlliance);
 //        storageCommand.operate(gamepad1);
-
-
-        autoAlignCommand.shutdown();
+        autoAlignCommand.operate(Constants.PinpointConstants.redAlliance, pinpoint);
     }
     public void stop(){
 //        intakeCommand.shutdown();

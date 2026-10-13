@@ -1,22 +1,12 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
-import android.graphics.Path;
-
-import com.qualcomm.hardware.bosch.BHI260IMU;
-import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
-import com.qualcomm.hardware.limelightvision.LLResult;
-import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.*;
 
-import org.firstinspires.ftc.onbotjava.handlers.file.NewFile;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.teamcode.Constants;
 
 
@@ -78,12 +68,12 @@ public class MecanumDriveSubsystem {
 
    }
    public void operate(Gamepad gamepad, Telemetry telemetry, String alliance) {
-
-//        localization.getRobotPose();
-//        telemetry.addData("Pose X: ", localization.getPoseX());
-//        telemetry.addData("Pose Y: ", localization.getPoseY());
-//        telemetry.addData("Rotation: ", localization.getPoseRotation());
        pinpoint.update();
+
+        telemetry.addData("Pose X: ", pinpoint.getPosX(DistanceUnit.INCH));
+        telemetry.addData("Pose Y: ", pinpoint.getPosY(DistanceUnit.INCH));
+        telemetry.addData("Rotation: ", pinpoint.getHeading(AngleUnit.DEGREES));
+
        telemetry.update();
        heading = pinpoint.getHeading(AngleUnit.RADIANS);
        if (alliance.equals(Constants.PinpointConstants.blueAlliance)) {

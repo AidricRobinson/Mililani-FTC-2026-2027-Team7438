@@ -2,15 +2,12 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.hardware.limelightvision.LLResult;
-import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
-import org.firstinspires.ftc.robotcore.external.navigation.UnnormalizedAngleUnit;
 
 public class Localization {
     private LimelightLocalizer limelight;
@@ -114,9 +111,11 @@ public class Localization {
         );
     }
 
-    public static double getTargetRotation(double targetX, double targetY) {
-        double changeX = targetX - getPoseX();
-        double changeY = targetY - getPoseY();
+    public static double getTargetRotation(double targetX, double targetY, GoBildaPinpointDriver pinpoint) {
+//        double changeX = targetX - getPoseX();
+//        double changeY = targetY - getPoseY();
+        double changeX = targetX - pinpoint.getPosX(DistanceUnit.INCH);
+        double changeY = targetY - pinpoint.getPosY(DistanceUnit.INCH);
 
         if (changeX > 0) {
             return Math.toDegrees(Math.atan2(changeY, changeX));

@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode.Commands.Test;
 
+import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Localization;
 import org.firstinspires.ftc.teamcode.Subsystems.MecanumDriveSubsystem;
 
@@ -21,7 +23,7 @@ public class TestAutoAlign {
         kFF = .05;
     }
 
-    public void operate(String alliance) {
+    public void operate(String alliance, GoBildaPinpointDriver pinpoint) {
         double distanceT;
         double distanceB;
         double min;
@@ -54,17 +56,26 @@ public class TestAutoAlign {
 //
 //        }
 
-        targetRotation = Localization.getTargetRotation(72, 72);
+        targetRotation = Localization.getTargetRotation(72, 72, pinpoint);
 
-        error = Localization.getAngleError(targetRotation, Localization.getPoseRotation());
+        error = Localization.getAngleError(targetRotation, pinpoint.getHeading(AngleUnit.DEGREES));
 
-        while (gamepad.left_bumper && Math.abs(error) > 0.5) {
-            error = Localization.getAngleError(targetRotation, Localization.getPoseRotation());
-            output = kP * error + Math.copySign(kFF, error);
-            mecanumDriveSubsystem.setRightFrontPower(output);
-            mecanumDriveSubsystem.setRightBackPower(output);
-            mecanumDriveSubsystem.setLeftFrontPower(-output);
-            mecanumDriveSubsystem.setLeftBackPower(-output);
+        if (gamepad.left_bumper) {
+            if (Math.abs(error) > 0.5) {
+                error = Localization.getAngleError(targetRotation, pinpoint.getHeading(AngleUnit.DEGREES));
+                output = kP * error + Math.copySign(kFF, error);
+                mecanumDriveSubsystem.setRightFrontPower(-output);
+                mecanumDriveSubsystem.setRightBackPower(-output);
+                mecanumDriveSubsystem.setLeftFrontPower(+output);
+                mecanumDriveSubsystem.setLeftBackPower(+output);
+            }
+            else {
+                mecanumDriveSubsystem.shutdown();
+            }
+
+        }
+        if (gamepad.leftBumperWasReleased()) {
+            mecanumDriveSubsystem.shutdown();
         }
 
     }

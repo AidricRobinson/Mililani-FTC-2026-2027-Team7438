@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Commands.Test;
 import com.qualcomm.robotcore.hardware.Gamepad;
-import org.firstinspires.ftc.teamcode.Subsystems.*;
+
+import org.firstinspires.ftc.teamcode.Subsystems.MotorSubsystem;
 
 public class MotorCommand {
     private MotorSubsystem motorSubsystem;
