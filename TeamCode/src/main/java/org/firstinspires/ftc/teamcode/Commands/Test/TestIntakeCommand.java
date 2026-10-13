@@ -14,13 +14,9 @@ public class TestIntakeCommand {
         this.gamepad = gamepad;
     }
 
-    public void operate(Gamepad gamepad){
-        if (gamepad.y){
-            intakeSubsystem.setIntakePower(.6);
-        }
-
-        else if (gamepad.x){
-            intakeSubsystem.setIntakePower(.30);  //decimal values as the power increments in percentages, with 1 as max, or 100%
+    public void operate(Gamepad gamepad, double power){
+        if (gamepad.a){
+            intakeSubsystem.setIntakePower(power);
         }
 
         else{

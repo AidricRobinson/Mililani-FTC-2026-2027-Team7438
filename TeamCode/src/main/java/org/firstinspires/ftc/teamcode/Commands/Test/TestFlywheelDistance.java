@@ -24,44 +24,19 @@ public class TestFlywheelDistance {
     private double distanceT;
     private double distanceB;
 
-    public TestFlywheelDistance(ShooterSubsystem shooterSubsystem, Limelight3A limelight, Gamepad gamepad, Telemetry telemetry) {
+    public TestFlywheelDistance(ShooterSubsystem shooterSubsystem, Limelight3A limelight, Gamepad gamepad, Telemetry telemetry,
+                                double nectarP, double nectarI, double nectarD, double nectarFF,
+                                double pollenP, double pollenI, double pollenD, double pollenFF) {
         this.shooterSubsystem = shooterSubsystem;
         this.gamepad = gamepad;
         this.limelight = limelight;
         this.telemetry = telemetry;
-        nectarPID = Constants.PayloadConstants.nectarPID;
-        pollenPID = Constants.PayloadConstants.pollenPID;
+        nectarPID = new PIDController(nectarP, nectarI, nectarD, nectarFF);
+        pollenPID = new PIDController(pollenP, pollenI, pollenD, pollenFF);
     }
-    public void operate(String alliance, double dt) {
-        if (gamepad.dpad_up) {
-            shooterSubsystem.increaseNectarRPM(200);
-        }
-        if(gamepad.dpad_down) {
-            shooterSubsystem.decreaseNectarRPM(50);
-        }
-        if(gamepad.dpad_right) {
-            shooterSubsystem.setTestNectarRPM(2000);
-        }
-        if (gamepad.y) {
-            shooterSubsystem.increasePollenRPM(200);
-        }
-        if (gamepad.a) {
-            shooterSubsystem.decreasePollenRPM(50);
-        }
-        if (gamepad.b) {
-            shooterSubsystem.setTestPollenRPM(2000);
-        }
-        if (gamepad.dpad_left) {
-            nectarPID.createSetPoint(shooterSubsystem.getTestNectarRPM());
-            nectarPID.setProcessVariable(shooterSubsystem.getNectarShooterRPM());
-            shooterSubsystem.setNectarShooterPower(nectarPID.getOutput(dt));
-        }
-        else {
-            shooterSubsystem.setNectarShooterPower(0);
-            nectarPID.resetIntegral();
-        }
+    public void operate(String alliance, double dt, double pollenRPM, double nectarRPM) {
         if (gamepad.x) {
-            pollenPID.createSetPoint(shooterSubsystem.getTestPollenRPM());
+            pollenPID.createSetPoint(pollenRPM);
             pollenPID.setProcessVariable(shooterSubsystem.getPollenShooterRPM());
             shooterSubsystem.setPollenShooterPower(pollenPID.getOutput(dt));
         }
@@ -69,36 +44,32 @@ public class TestFlywheelDistance {
             shooterSubsystem.setPollenShooterPower(0);
             pollenPID.resetIntegral();
         }
+        if (gamepad.b) {
+            nectarPID.createSetPoint(nectarRPM);
+            nectarPID.setProcessVariable(shooterSubsystem.getNectarShooterRPM());
+            shooterSubsystem.setNectarShooterPower(nectarPID.getOutput(dt));
+        }
+        else {
+            shooterSubsystem.setNectarShooterPower(0);
+            nectarPID.resetIntegral();
+        }
         result = limelight.getLatestResult();
         double ta = 0;
         if (result != null && result.isValid()) {
             ta = result.getTa();
         }
+        x = 0;
         if (alliance.equals("RED")) {
             distanceT = Localization.getDistance(Constants.PinpointConstants.kTopRedHive[0], Constants.PinpointConstants.kTopRedHive[1]);
             distanceB = Localization.getDistance(Constants.PinpointConstants.kBottomRedHive[0], Constants.PinpointConstants.kBottomRedHive[1]);
             min = Math.min(distanceT, distanceB);
             x = min;
-            if (min == distanceT) {
-//                targetRotation = Localization.getTargetRotation(Constants.PinpointConstants.kTopRedHive[0], Constants.PinpointConstants.kTopRedHive[1]);
-            }
-            if (min == distanceB) {
-//                targetRotation = Localization.getTargetRotation(Constants.PinpointConstants.kBottomRedHive[0], Constants.PinpointConstants.kBottomRedHive[1]);
-            }
-
         }
         if (alliance.equals("BLUE")) {
             distanceT = Localization.getDistance(Constants.PinpointConstants.kTopBlueHive[0], Constants.PinpointConstants.kTopBlueHive[1]);
             distanceB = Localization.getDistance(Constants.PinpointConstants.kBottomBlueHive[0], Constants.PinpointConstants.kBottomBlueHive[1]);
             min = Math.min(distanceT, distanceB);
             x = min;
-            if (min == distanceT) {
-//                targetRotation = Localization.getTargetRotation(Constants.PinpointConstants.kTopBlueHive[0], Constants.PinpointConstants.kTopBlueHive[1]);
-            }
-            if (min == distanceB) {
-//                targetRotation = Localization.getTargetRotation(Constants.PinpointConstants.kBottomBlueHive[0], Constants.PinpointConstants.kBottomBlueHive[1]);
-            }
-
         }
 
         telemetry.addData("Pollen RPM: ", shooterSubsystem.getTestPollenRPM());

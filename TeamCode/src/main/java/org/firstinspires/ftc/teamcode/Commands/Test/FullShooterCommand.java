@@ -14,7 +14,7 @@ public class FullShooterCommand {
     }
 
     public void operate(Gamepad gamepad){
-        if(gamepad.right_trigger >= .1){
+        if(gamepad.b){
             shooterSubsystem.setBothShooterPower(.65);
         }
         else if(gamepad.left_trigger >= .1){
