@@ -13,17 +13,16 @@ public class TestAutoAlign {
 
     private double targetRotation = 0;
     private double error;
-    private double kFF;
-    private double kP;
+
 
     public TestAutoAlign(MecanumDriveSubsystem mecanumDriveSubsystem, Gamepad gamepad) {
         this.mecanumDriveSubsystem = mecanumDriveSubsystem;
         this.gamepad = gamepad;
-        kP = .005; // CALCULATED REALISTIC MAX KP (MAX ERROR 180)
-        kFF = .05;
+//        kP = .005; // CALCULATED REALISTIC MAX KP (MAX ERROR 180)
+//        kFF = .05;
     }
 
-    public void operate(String alliance, GoBildaPinpointDriver pinpoint) {
+    public void operate(String alliance, GoBildaPinpointDriver pinpoint, double kP, double kFF) {
         double distanceT;
         double distanceB;
         double min;

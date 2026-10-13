@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -13,7 +14,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.MecanumDriveSubsystem;
 
 
 @TeleOp(name="TEST ONLY")
-
+@Config
 public class TestTeleOp extends OpMode {
 
     GoBildaPinpointDriver pinpoint;
@@ -28,7 +29,8 @@ public class TestTeleOp extends OpMode {
 
 //    private IntakeSubsystem intakeSubsystem;
 //    private StorageSubsystem storageSubsystem;
-
+    public static double alignkP = .005;
+    public static double alignkFF = .05;
 
 
     private TestAutoAlign autoAlignCommand;
@@ -67,7 +69,10 @@ public class TestTeleOp extends OpMode {
 //        intakeCommand.operate(gamepad1);
         mecanumDriveSubsystem.operate(gamepad1, telemetry, Constants.PinpointConstants.redAlliance);
 //        storageCommand.operate(gamepad1);
-        autoAlignCommand.operate(Constants.PinpointConstants.redAlliance, pinpoint);
+        autoAlignCommand.operate(Constants.PinpointConstants.redAlliance, pinpoint, alignkP, alignkFF);
+        telemetry.addData("Align kP: ", alignkP);
+        telemetry.addData("Align kFF: ", alignkFF);
+        telemetry.update();
     }
     public void stop(){
 //        intakeCommand.shutdown();
