@@ -10,6 +10,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Automated.AutoFlowerIntake;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Automated.AutoIntake;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Automated.AutoScore;
+import org.firstinspires.ftc.teamcode.Commands.TeleOp.Automated.LimelightToggle;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Automated.PanicResetRotation;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Automated.ToggleFlywheels;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual.BrakeCommand;
@@ -48,6 +49,7 @@ public class RedAllianceTeleop extends OpMode {
     private ManualIntakeCommand manualIntakeCommand;
     private ManualShootCommand manualShootCommand;
     private ManualKickerCommand manualKickerCommand;
+    private LimelightToggle limelightToggle;
 
     private final ElapsedTime elapsedTime = new ElapsedTime();
     private double lastTime;
@@ -97,6 +99,8 @@ public class RedAllianceTeleop extends OpMode {
         manualShootCommand = new ManualShootCommand(shooterSubsystem, gamepad2);
         manualKickerCommand = new ManualKickerCommand(storageSubsystem, gamepad2);
 
+        limelightToggle = new LimelightToggle(shooterSubsystem, gamepad2);
+
         lastTime = 0;
         elapsedTime.startTime();
         time = 0;
@@ -120,7 +124,7 @@ public class RedAllianceTeleop extends OpMode {
         localization.operate(dt);
         limelightLocalizer.update(pinpointLocalizer);
         pinpointLocalizer.update();
-
+        limelightToggle.operate();
         mecanumDriveSubsystem.operate(gamepad1, this.telemetry, Constants.PinpointConstants.redAlliance);
         autoFlowerIntake.operate();
         autoIntake.operate();
@@ -132,10 +136,17 @@ public class RedAllianceTeleop extends OpMode {
         manualIntakeCommand.operate();
         manualShootCommand.operate(dt);
         manualKickerCommand.operate();
+
+        intakeSubsystem.update();
+        storageSubsystem.update();
+        pivotSubsystem.update();
+        shooterSubsystem.update();
+        mecanumDriveSubsystem.updateBrake();
     }
 
     public void stop() {
         mecanumDriveSubsystem.shutdown();
+        limelightToggle.shutdown();
         intakeSubsystem.shutdown();
         storageSubsystem.shutdown();
         pivotSubsystem.shutdown();

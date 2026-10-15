@@ -42,6 +42,19 @@ public class PoseEKF {
         pY = 1;
         pHeading = 1;
     }
+    // Re-seed the filter from odometry each loop (Pinpoint is the prediction).
+    public void setPose(Pose2D pose) {
+        x = pose.getX(DistanceUnit.INCH);
+        y = pose.getY(DistanceUnit.INCH);
+        heading = pose.getHeading(AngleUnit.DEGREES);
+    }
+
+    // Grow uncertainty over time, since odometry drifts.
+    public void addProcessNoise(double dt) {
+        pX += qX * dt;
+        pY += qY * dt;
+        pHeading += qHeading * dt;
+    }
 
     // PREDICTION STEP:
     // Use odometry velocities to predict where the robot has moved.

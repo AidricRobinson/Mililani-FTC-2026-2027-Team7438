@@ -15,7 +15,7 @@ public class BrakeCommand {
         this.gamepad = gamepad;
     }
     public void operate() {
-        if (gamepad.left_bumper && !lastRightBumper) {
+        if (gamepad.right_bumper && !lastRightBumper) {
             out = !out;
         }
         lastRightBumper = gamepad.right_bumper;

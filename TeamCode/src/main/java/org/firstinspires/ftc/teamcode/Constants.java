@@ -21,6 +21,8 @@ public class Constants {
 
         public static final double kRobotWidth = 8; // placeholder, in inches
         public static final double kRobotLength = 9; // placeholder in inches
+        public static final double kLimelightToFieldOffsetX = 72;
+        public static final double kLimelightToFieldOffsetY = 72;
 
 //        public static final double[] kBLcorner = {0, 0};
 //        public static final double[] kBRcorner = {144, 0};
@@ -68,6 +70,7 @@ public class Constants {
         public static final DcMotorEx.Direction kIntakeMotorDirection = DcMotorEx.Direction.FORWARD;
 
         public static final DcMotorEx.ZeroPowerBehavior kNectarShooterZeroPowerMode = DcMotorEx.ZeroPowerBehavior.FLOAT;
+        public static final double kShooterTicksPerRev = 28;
         public static final DcMotorEx.ZeroPowerBehavior kPollenShooterZeroPowerMode = DcMotorEx.ZeroPowerBehavior.FLOAT;
         public static final DcMotorEx.ZeroPowerBehavior kStorageZeroPowerMode = DcMotorEx.ZeroPowerBehavior.BRAKE;
         public static final DcMotorEx.ZeroPowerBehavior kIntakeMotorZeroPowerMode = DcMotorEx.ZeroPowerBehavior.FLOAT;
