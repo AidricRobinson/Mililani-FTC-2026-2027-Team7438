@@ -29,17 +29,4 @@ public class IntakeSubsystem {
     }
 
 
-    private double requestedPower = 0;
-
-    public void requestPower(double power) {
-        requestedPower = power;
-    }
-
-    /** Call once at the END of loop(). Applies the last request (0 if none). */
-    public void update() {
-        intakeMotor.setPower(requestedPower);
-        requestedPower = 0;
-    }
-
-
 }

@@ -6,40 +6,28 @@ import org.firstinspires.ftc.teamcode.Subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.StorageSubsystem;
 
 public class AutoIntakeCommand {
-    private final IntakeSubsystem intakeSubsystem;
-    private final StorageSubsystem storageSubsystem;
-    private final ElapsedTime timer = new ElapsedTime();
-    private double power;
-    private double durationSeconds;
-    private boolean running = false;
+    IntakeSubsystem intakeSubsystem;
+    StorageSubsystem storageSubsystem;
+    ElapsedTime elapsedTime;
+    double startTime;
 
-    public AutoIntakeCommand(IntakeSubsystem intakeSubsystem, StorageSubsystem storageSubsystem) {
+    public AutoIntakeCommand(IntakeSubsystem intakeSubsystem, StorageSubsystem storageSubsystem, ElapsedTime elapsedTime){
         this.intakeSubsystem = intakeSubsystem;
         this.storageSubsystem = storageSubsystem;
+        this.elapsedTime = elapsedTime;
     }
 
-    public void start(double power, double durationSeconds) {
-        this.power = power;
-        this.durationSeconds = durationSeconds;
-        timer.reset();
-        running = true;
-    }
-
-    /** Call every loop. Returns true when finished (or if not running). */
-    public boolean update() {
-        if (!running) return true;
-        if (timer.seconds() >= durationSeconds) {
-            shutdown();
-            return true;
+    public void operate(double power, int time){
+        startTime = elapsedTime.milliseconds();
+        while(elapsedTime.milliseconds() < startTime + time){
+            intakeSubsystem.setIntakePower(power);
+            storageSubsystem.setStoragePower(.2);
         }
-        intakeSubsystem.setIntakePower(power);
-        storageSubsystem.setStoragePower(.2);
-        return false;
     }
 
-    public void shutdown() {
-        running = false;
+    public void shutdown(){
         intakeSubsystem.shutdown();
         storageSubsystem.shutdown();
     }
+
 }

@@ -15,7 +15,7 @@ public class SetPollenRPM {
     public void operate(double rpm, double dt) {
         pidController.createSetPoint(rpm);
         pidController.setProcessVariable(shooterSubsystem.getPollenShooterRPM());
-        shooterSubsystem.requestPollenPower(pidController.getOutput(dt));
+        shooterSubsystem.setPollenShooterPower(pidController.getOutput(dt));
     }
     public void shutdown() {
         pidController.resetIntegral();

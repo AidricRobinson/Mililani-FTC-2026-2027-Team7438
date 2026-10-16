@@ -96,41 +96,27 @@ public class ShooterSubsystem {
         pollenShooter.setPower(0);
     }
 
+    public double getNectarShooterRpm(){
+        return nectarShooter.getVelocity(AngleUnit.DEGREES);
+    }
+    public double getPollenShooterRpm(){
+       return pollenShooter.getVelocity(AngleUnit.DEGREES);
+    }
 
     public void setNectarShooterRPM(double rpm){
-        nectarShooter.setVelocity(rpm * Constants.PayloadConstants.kShooterTicksPerRev / 60.0);
+        nectarShooter.setVelocity(rpm * 60 / 28);
     }
     public void setPollenShooterRPM(double rpm){
-        pollenShooter.setVelocity(rpm * Constants.PayloadConstants.kShooterTicksPerRev / 60.0);
+        pollenShooter.setVelocity(rpm * 60 / 28); // 28
     }
     public double getNectarShooterRPM() {
-        return nectarShooter.getVelocity() * 60.0 / Constants.PayloadConstants.kShooterTicksPerRev;
+        return nectarShooter.getVelocity(AngleUnit.DEGREES) / 60;
     }
     public double getPollenShooterRPM() {
-        return pollenShooter.getVelocity() * 60.0 / Constants.PayloadConstants.kShooterTicksPerRev;
+        return pollenShooter.getVelocity(AngleUnit.DEGREES) / 60;
     }
     public void shutdown(){
         pollenShooter.setPower(0);
         nectarShooter.setPower(0);
-    }
-
-
-    private double nectarRequest = 0;
-    private double pollenRequest = 0;
-
-    public void requestNectarPower(double power) {
-        nectarRequest = power;
-    }
-
-    public void requestPollenPower(double power) {
-        pollenRequest = power;
-    }
-
-    /** Call once at the END of loop(). Flywheels stop if nobody asked. */
-    public void update() {
-        nectarShooter.setPower(nectarRequest);
-        pollenShooter.setPower(pollenRequest);
-        nectarRequest = 0;
-        pollenRequest = 0;
     }
 }

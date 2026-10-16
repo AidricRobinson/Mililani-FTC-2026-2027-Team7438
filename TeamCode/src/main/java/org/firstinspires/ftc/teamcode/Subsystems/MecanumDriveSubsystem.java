@@ -19,7 +19,7 @@ public class MecanumDriveSubsystem {
     DcMotorEx rightBack;
 
     Servo brake;
-
+    boolean toggle;
 
 
 //    DcMotorEx xThroughbore;
@@ -44,7 +44,7 @@ public class MecanumDriveSubsystem {
 
 
 
-
+       toggle = false;
 
 //       xThroughbore = hardwareMap.get(DcMotorEx.class, "xThroughbore");
 //       yThroughbore = hardwareMap.get(DcMotorEx.class, "yThroughbore");
@@ -68,6 +68,7 @@ public class MecanumDriveSubsystem {
 
    }
    public void operate(Gamepad gamepad, Telemetry telemetry, String alliance) {
+       pinpoint.update();
 
         telemetry.addData("Pose X: ", pinpoint.getPosX(DistanceUnit.INCH));
         telemetry.addData("Pose Y: ", pinpoint.getPosY(DistanceUnit.INCH));
@@ -96,7 +97,11 @@ public class MecanumDriveSubsystem {
        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
 
 
-
+       if (gamepad.x && toggle) {
+           toggle = false;
+       } else if (gamepad.x) {
+           toggle = true;
+       }
 
 //         slowmode - disabled for showcasing
 
@@ -180,20 +185,4 @@ public class MecanumDriveSubsystem {
        rightBack.setPower(0);
     }
 
-
-    private double brakeRequest = 0;
-    private boolean hasBrakeRequest = false;
-
-    public void requestBrake(double position) {
-        brakeRequest = position;
-        hasBrakeRequest = true;
-    }
-
-    /** Call once at the END of loop(). Safe if the brake servo isn't installed. */
-    public void updateBrake() {
-        if (brake != null && hasBrakeRequest) {
-            brake.setPosition(brakeRequest);
-        }
-        hasBrakeRequest = false;
-    }
 }

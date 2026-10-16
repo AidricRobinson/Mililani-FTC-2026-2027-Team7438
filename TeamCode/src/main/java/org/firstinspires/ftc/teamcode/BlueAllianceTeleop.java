@@ -10,7 +10,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Automated.AutoFlowerIntake;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Automated.AutoIntake;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Automated.AutoScore;
-import org.firstinspires.ftc.teamcode.Commands.TeleOp.Automated.LimelightToggle;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Automated.PanicResetRotation;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Automated.ToggleFlywheels;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual.BrakeCommand;
@@ -31,7 +30,6 @@ public class BlueAllianceTeleop extends OpMode {
     private PinpointLocalizer pinpointLocalizer;
     private LimelightLocalizer limelightLocalizer;
     private Localization localization;
-    private LimelightToggle limelightToggle;
 
     private MecanumDriveSubsystem mecanumDriveSubsystem;
     private IntakeSubsystem intakeSubsystem;
@@ -97,7 +95,7 @@ public class BlueAllianceTeleop extends OpMode {
         manualIntakeCommand = new ManualIntakeCommand(intakeSubsystem, gamepad2);
         manualShootCommand = new ManualShootCommand(shooterSubsystem, gamepad2);
         manualKickerCommand = new ManualKickerCommand(storageSubsystem, gamepad2);
-        limelightToggle = new LimelightToggle(shooterSubsystem, gamepad2);
+
         elapsedTime.startTime();
         time = 0;
         lastTime = 0;
@@ -115,9 +113,13 @@ public class BlueAllianceTeleop extends OpMode {
 
     @Override
     public void loop() {
-        updatetime();
+        dt = elapsedTime.seconds() - time;
+        time = elapsedTime.seconds();
+        limelight.getLatestResult();
         pinpoint.update();
         localization.operate(dt);
+        limelightLocalizer.update(pinpointLocalizer);
+        pinpointLocalizer.update();
 
         mecanumDriveSubsystem.operate(gamepad1, this.telemetry, Constants.PinpointConstants.blueAlliance);
         autoFlowerIntake.operate();
@@ -130,13 +132,6 @@ public class BlueAllianceTeleop extends OpMode {
         manualIntakeCommand.operate();
         manualShootCommand.operate(dt);
         manualKickerCommand.operate();
-        limelightToggle.operate();
-
-        intakeSubsystem.update();
-        storageSubsystem.update();
-        pivotSubsystem.update();
-        shooterSubsystem.update();
-        mecanumDriveSubsystem.updateBrake();
     }
 
     public void stop() {
@@ -145,7 +140,5 @@ public class BlueAllianceTeleop extends OpMode {
         storageSubsystem.shutdown();
         pivotSubsystem.shutdown();
         shooterSubsystem.shutdown();
-        limelightToggle.shutdown();
-        limelight.stop();
     }
 }

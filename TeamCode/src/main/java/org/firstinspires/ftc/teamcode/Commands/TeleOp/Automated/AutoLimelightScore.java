@@ -19,7 +19,7 @@ public class AutoLimelightScore {
     private LLResult result;
     double tx;
     double x;
-    double kP = 0.4;
+    double kP = 0.7;
     double kFF = 0.05;
     double output;
 
@@ -35,15 +35,13 @@ public class AutoLimelightScore {
     }
     public void operate(double dt) {
         result = limelight.getLatestResult();
-        boolean hasTarget = result != null && result.isValid() && result.getStaleness() < 100; // ms
-        if (hasTarget) {
+        if (result != null && result.isValid()) {
             tx = result.getTx();
             x = result.getTa();
-        } else {
-            // No fresh target: hold still, don't spin or feed
-            mecanumDriveSubsystem.shutdown();
-            storageSubsystem.shutdown();
-            return;
+        }
+        else {
+            tx = 20;
+            x = 0;
         }
 
         if (shooterSubsystem.getPollenToggle()) {
@@ -67,7 +65,7 @@ public class AutoLimelightScore {
                         || Math.abs(setPollenRPM.getError()) < 100;
 
         if (!aligned) {
-            output = Math.max(-0.4, Math.min(0.4, kP * tx + Math.copySign(kFF, tx)));
+            output = kP * tx + Math.copySign(kFF, tx);
 
             // Verify the motor signs on your robot.
             mecanumDriveSubsystem.setLeftFrontPower(output);
@@ -75,16 +73,20 @@ public class AutoLimelightScore {
             mecanumDriveSubsystem.setRightFrontPower(-output);
             mecanumDriveSubsystem.setRightBackPower(-output);
 
-            mecanumDriveSubsystem.requestBrake(0);
-            // no storage request = storage stays off
+            mecanumDriveSubsystem.setBrakePosition(0);
+
+            storageSubsystem.shutdown();
         } else {
             mecanumDriveSubsystem.shutdown();
-            storageSubsystem.requestSpindexerPower(1);
-            mecanumDriveSubsystem.requestBrake(1);
+            storageSubsystem.setSpindexerPower(1);
             if (nectarReady && pollenReady) {
-                storageSubsystem.requestStoragePower(0.75);
+                mecanumDriveSubsystem.setBrakePosition(1);
+
+                storageSubsystem.setStoragePower(0.75);
+            } else {
+                storageSubsystem.shutdown();
+                mecanumDriveSubsystem.setBrakePosition(1);
             }
-            // not ready yet: no storage request = feed stays off
         }
     }
     public void shutdown() {

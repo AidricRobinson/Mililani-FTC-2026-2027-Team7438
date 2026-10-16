@@ -23,20 +23,4 @@ public class PivotSubsystem {
         servoL.setPosition(0);
         servoR.setPosition(0);
     }
-
-    private double requestedPosition = 0;
-    private boolean hasRequest = false;
-
-    public void requestPosition(double position) {
-        requestedPosition = position;
-        hasRequest = true;
-    }
-
-    /** Call once at the END of loop(). Does nothing if nobody asked. */
-    public void update() {
-        if (hasRequest) {
-            setPosition(requestedPosition);
-        }
-        hasRequest = false;
-    }
 }

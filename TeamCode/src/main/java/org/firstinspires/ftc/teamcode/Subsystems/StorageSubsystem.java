@@ -31,24 +31,4 @@ public class StorageSubsystem {
         storageMotor.setPower(0);
         spindexer.setPower(0);
     }
-
-
-    private double storageRequest = 0;
-    private double spindexerRequest = 0;
-
-    public void requestStoragePower(double power) {
-        storageRequest = power;
-    }
-
-    public void requestSpindexerPower(double power) {
-        spindexerRequest = power;
-    }
-
-    /** Call once at the END of loop(). */
-    public void update() {
-        storageMotor.setPower(storageRequest);
-        spindexer.setPower(spindexerRequest);
-        storageRequest = 0;
-        spindexerRequest = 0;
-    }
 }
