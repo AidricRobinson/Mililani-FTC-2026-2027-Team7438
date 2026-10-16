@@ -65,6 +65,7 @@ public class TestTeleOp extends OpMode {
 
     @Override
     public void loop(){
+        pinpoint.update();
 
 //        intakeCommand.operate(gamepad1);
         mecanumDriveSubsystem.operate(gamepad1, telemetry, Constants.PinpointConstants.redAlliance);

@@ -21,16 +21,10 @@ public class AutoFlowerIntake {
 
     public void operate() {
         if (gamepad.left_trigger >= 0.2) {
-            intakeSubsystem.setIntakePower(0.5);
-            storageSubsystem.setSpindexerPower(1);
-            storageSubsystem.setStoragePower(0.5);
-            pivotSubsystem.setPosition(1);
-        }
-        else {
-            intakeSubsystem.setIntakePower(0);
-            storageSubsystem.setStoragePower(0);
-            storageSubsystem.setSpindexerPower(0);
-            pivotSubsystem.setPosition(0);
+            intakeSubsystem.requestPower(0.5);
+            storageSubsystem.requestSpindexerPower(1);
+            storageSubsystem.requestStoragePower(0.5);
+            pivotSubsystem.requestPosition(1);
         }
     }
     public void shutdown() {

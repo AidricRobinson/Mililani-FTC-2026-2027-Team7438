@@ -8,6 +8,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
+import org.firstinspires.ftc.robotcore.external.navigation.Position;
 
 public class Localization {
     private LimelightLocalizer limelight;
@@ -15,7 +16,8 @@ public class Localization {
 
 
     private LLResult result;
-    private static Pose2D estimatedPose;
+    private static Pose2D estimatedPose  =
+            new Pose2D(DistanceUnit.INCH, 12, 12, AngleUnit.DEGREES, 90);;
     private static Pose3D mt1Pose;
     private static Pose3D mt2Pose;
     private static Pose2D predictedPose;
@@ -32,11 +34,10 @@ public class Localization {
     }
 
     public void operate(double dt) {
-        pinpoint.update();
+        // Pinpoint is updated once per loop by the OpMode
 
-        ekf.predict(pinpoint.getFieldXVelocity(),
-                pinpoint.getFieldYVelocity(),
-                pinpoint.getHeadingVelocity(), dt);
+        ekf.setPose(pinpoint.getPose());
+        ekf.addProcessNoise(dt);
 
         limelight.update(pinpoint);
         result = limelight.getLatestResult();
@@ -47,14 +48,15 @@ public class Localization {
             mt1Pose = result.getBotpose();
             mt2Pose = result.getBotpose_MT2();
             if (mt2Pose != null && isPoseSafe(mt2Pose) && limelight.getTagCount() >= 2) {
-
-                double visionX = mt2Pose.getPosition().x;
-                double visionY = mt2Pose.getPosition().y;
+                Position visionPos = mt2Pose.getPosition().toUnit(DistanceUnit.INCH);
+                double visionX = visionPos.x + Constants.PinpointConstants.kLimelightToFieldOffsetX;
+                double visionY = visionPos.y + Constants.PinpointConstants.kLimelightToFieldOffsetY;
                 double visionHeading = mt2Pose.getOrientation()
                         .getYaw(AngleUnit.DEGREES);
 
                 ekf.update(visionX, visionY, visionHeading);
                 estimatedPose = ekf.getPose();
+                pinpoint.setPose(ekf.getPose());
             }
         }
 
@@ -117,13 +119,7 @@ public class Localization {
         double changeX = targetX - pinpoint.getPosX(DistanceUnit.INCH);
         double changeY = targetY - pinpoint.getPosY(DistanceUnit.INCH);
 
-        if (changeX > 0) {
-            return Math.toDegrees(Math.atan2(changeY, changeX));
-        }
-        if (changeY > 0) {
-            return Math.toDegrees(Math.atan2(changeY, changeX)) +   180;
-        }
-        return Math.toDegrees(Math.atan2(changeY, changeX)) - 180;
+        return Math.toDegrees(Math.atan2(changeY, changeX));
     }
 
     // LIMELIGHT METHODS
@@ -151,11 +147,11 @@ public class Localization {
         double pitch = pose.getOrientation()
                 .getPitch(AngleUnit.DEGREES);
 
-        double z = pose.getPosition().z;
+        double z = pose.getPosition().toUnit(DistanceUnit.INCH).z;
 
         if (Math.abs(roll) > 15 ||
                 Math.abs(pitch) > 15 ||
-                Math.abs(z) > 6) {
+                Math.abs(z) > 1) {
             return false;
         }
 
