@@ -20,9 +20,9 @@ public class PoseEKF {
 
     // Process noise: how much uncertainty odometry adds per second.
     // Increase these values if odometry is less reliable.
-    private double qX = 0.5;
-    private double qY = 0.5;
-    private double qHeading = 2.0;
+    private double qX = 0;
+    private double qY = 0;
+    private double qHeading = 0;
 
     // Measurement noise: how uncertain Limelight measurements are.
     // Larger values make the filter trust Limelight less.
@@ -38,9 +38,9 @@ public class PoseEKF {
         heading = initialPose.getHeading(AngleUnit.DEGREES);
 
         // Start with a small amount of uncertainty.
-        pX = 1;
-        pY = 1;
-        pHeading = 1;
+        pX = 0;
+        pY = 0;
+        pHeading = 0;
     }
     // Re-seed the filter from odometry each loop (Pinpoint is the prediction).
     public void setPose(Pose2D pose) {
