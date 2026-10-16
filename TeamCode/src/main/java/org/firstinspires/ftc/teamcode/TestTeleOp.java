@@ -48,6 +48,7 @@ public class TestTeleOp extends OpMode {
 
         pinpoint.initialize();
         pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, 12, 12, AngleUnit.DEGREES, 90));
+        Localization.setEstimatedPose(pinpoint.getPosition());
         mecanumDriveSubsystem = new MecanumDriveSubsystem(hardwareMap,this, pinpoint);
 //        intakeSubsystem = new IntakeSubsystem(this);
 //        storageSubsystem = new StorageSubsystem(this) ;
@@ -66,6 +67,7 @@ public class TestTeleOp extends OpMode {
     @Override
     public void loop(){
         pinpoint.update();
+        Localization.setPose2d(pinpoint.getPosX(DistanceUnit.INCH), pinpoint.getPosY(DistanceUnit.INCH));
 
 //        intakeCommand.operate(gamepad1);
         mecanumDriveSubsystem.operate(gamepad1, telemetry, Constants.PinpointConstants.redAlliance);

@@ -100,10 +100,13 @@ public class Localization {
         return pinpoint.getHeading();
     }
 
-    public void setPose2d(double x, double y) {
+    public static void setPose2d(double x, double y) {
         estimatedPose = new Pose2D(DistanceUnit.INCH, x, y, AngleUnit.DEGREES, getPoseRotation());
-        pinpoint.setPosX(x);
-        pinpoint.setPosY(y);
+//        pinpoint.setPosX(x);
+////        pinpoint.setPosY(y);
+    }
+    public static void setEstimatedPose(Pose2D pose) {
+        estimatedPose = pose;
     }
 
     public static double getDistance(double targetX, double targetY) {
@@ -114,10 +117,10 @@ public class Localization {
     }
 
     public static double getTargetRotation(double targetX, double targetY, GoBildaPinpointDriver pinpoint) {
-//        double changeX = targetX - getPoseX();
-//        double changeY = targetY - getPoseY();
-        double changeX = targetX - pinpoint.getPosX(DistanceUnit.INCH);
-        double changeY = targetY - pinpoint.getPosY(DistanceUnit.INCH);
+        double changeX = targetX - getPoseX();
+        double changeY = targetY - getPoseY();
+//        double changeX = targetX - pinpoint.getPosX(DistanceUnit.INCH);
+//        double changeY = targetY - pinpoint.getPosY(DistanceUnit.INCH);
 
         return Math.toDegrees(Math.atan2(changeY, changeX));
     }
