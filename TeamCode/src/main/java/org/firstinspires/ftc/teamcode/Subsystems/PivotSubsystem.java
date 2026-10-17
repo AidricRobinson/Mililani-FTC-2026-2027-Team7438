@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class PivotSubsystem {
     Servo servoL;
     Servo servoR;
-    //git test
+
 
     public PivotSubsystem(OpMode opMode){
         servoL = opMode.hardwareMap.get(Servo.class, "leftServoPivot");
