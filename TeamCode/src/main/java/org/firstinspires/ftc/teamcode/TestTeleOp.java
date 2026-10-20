@@ -29,7 +29,7 @@ public class TestTeleOp extends OpMode {
 
 //    private IntakeSubsystem intakeSubsystem;
 //    private StorageSubsystem storageSubsystem;
-    public static double alignkP = .005;
+    public static double alignkP = .02125;
     public static double alignkFF = .05;
 
 
@@ -47,7 +47,7 @@ public class TestTeleOp extends OpMode {
                 Constants.PinpointConstants.kPodYDirection);
 
         pinpoint.initialize();
-        pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, 12, 12, AngleUnit.DEGREES, 90));
+        pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, 12, 12, AngleUnit.DEGREES, 0));
         Localization.setEstimatedPose(pinpoint.getPosition());
         mecanumDriveSubsystem = new MecanumDriveSubsystem(hardwareMap,this, pinpoint);
 //        intakeSubsystem = new IntakeSubsystem(this);

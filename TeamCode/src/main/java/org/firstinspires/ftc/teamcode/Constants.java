@@ -29,10 +29,10 @@ public class Constants {
 //        public static final double[] kTLcorner = {144, 0};
 //        public static final double[] kTRcorner = {144, 144};
 
-        public static final double[] kTopRedHive = {1, 1}; // in inches
-        public static final double[] kBottomRedHive = {1, 0};  // in inches
-        public static final double[] kTopBlueHive = {0, 1};  // in inches
-        public static final double[] kBottomBlueHive = {0, 0};  // in inches
+        public static final double[] kTopRedHive = {57.924, 84.847984}; // in inches
+        public static final double[] kBottomRedHive = {57.924, 56.500017};  // in inches
+        public static final double[] kTopBlueHive = {83.424, 84.847984};  // in inches
+        public static final double[] kBottomBlueHive = {83.424, 56.500017};  // in inches
 
         public static final String blueAlliance = "BLUE";
         public static final String redAlliance = "RED";

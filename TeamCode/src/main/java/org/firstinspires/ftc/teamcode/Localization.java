@@ -116,7 +116,7 @@ public class Localization {
         );
     }
 
-    public static double getTargetRotation(double targetX, double targetY, GoBildaPinpointDriver pinpoint) {
+    public static double getTargetRotation(double targetX, double targetY) {
         double changeX = targetX - getPoseX();
         double changeY = targetY - getPoseY();
 //        double changeX = targetX - pinpoint.getPosX(DistanceUnit.INCH);

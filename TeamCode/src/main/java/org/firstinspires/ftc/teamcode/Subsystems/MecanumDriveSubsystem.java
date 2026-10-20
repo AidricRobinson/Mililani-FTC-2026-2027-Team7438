@@ -63,8 +63,9 @@ public class MecanumDriveSubsystem {
 
        leftFront.setDirection(DcMotorEx.Direction.FORWARD);
        leftBack.setDirection(DcMotorEx.Direction.REVERSE);
-       rightFront.setDirection(DcMotorEx.Direction.REVERSE);
+       rightFront.setDirection(DcMotorEx.Direction.FORWARD);
        rightBack.setDirection(DcMotorEx.Direction.REVERSE);
+
 
    }
    public void operate(Gamepad gamepad, Telemetry telemetry, String alliance) {
@@ -109,10 +110,10 @@ public class MecanumDriveSubsystem {
 //        }
 
        //Field oriented version
-       double lf = (rotY - rotX - rx) / denominator;
-       double lb = (rotY + rotX - rx) / denominator;
-       double rf = (rotY + rotX + rx) / denominator;
-       double rb = (rotY - rotX + rx) / denominator;
+       double lf = (rotY - rotX + rx) / denominator;
+       double lb = (rotY + rotX + rx) / denominator;
+       double rf = (rotY + rotX - rx) / denominator;
+       double rb = (rotY - rotX - rx) / denominator;
        if (gamepad.right_trigger >= 0.2) {
            leftFront.setPower(lf * 0.4);
            leftBack.setPower(lb * 0.4);
