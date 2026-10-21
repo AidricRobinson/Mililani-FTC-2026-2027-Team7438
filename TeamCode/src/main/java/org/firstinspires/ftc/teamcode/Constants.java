@@ -8,10 +8,10 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 public class Constants {
     public static class PinpointConstants {
 
-        public static final double kPodXOffset = -6.46875; // in inches
-        public static final double kPodYOffset = -8.0937; // in inches
-        public static final GoBildaPinpointDriver.EncoderDirection kPodXDirection = GoBildaPinpointDriver.EncoderDirection.REVERSED;
-        public static final GoBildaPinpointDriver.EncoderDirection kPodYDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD;
+        public static final double kPodXOffset = -8.0937; // in inches
+        public static final double kPodYOffset = -6.46875; // in inches
+        public static final GoBildaPinpointDriver.EncoderDirection kPodXDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD;
+        public static final GoBildaPinpointDriver.EncoderDirection kPodYDirection = GoBildaPinpointDriver.EncoderDirection.REVERSED;
 
         public static final double kOmniDiameter = 60; // in mm
         public static final double kOmniCircumference = kOmniDiameter * Math.PI;
