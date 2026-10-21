@@ -8,6 +8,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Constants;
+import org.firstinspires.ftc.teamcode.PinpointLocalizer;
 
 
 public class MecanumDriveSubsystem {
@@ -26,13 +27,13 @@ public class MecanumDriveSubsystem {
 //    DcMotorEx yThroughbore;
     double heading;
 
-    GoBildaPinpointDriver pinpoint;
+
 
 
 
     private boolean slowModeOn;
-   public MecanumDriveSubsystem(HardwareMap hardwareMap, OpMode opMode, GoBildaPinpointDriver pinpoint){
-       this.pinpoint = pinpoint;
+   public MecanumDriveSubsystem(HardwareMap hardwareMap, OpMode opMode){
+
 //       brake = hardwareMap.get(Servo.class, "brake");
 
 
@@ -68,14 +69,14 @@ public class MecanumDriveSubsystem {
 
 
    }
-   public void operate(Gamepad gamepad, Telemetry telemetry, String alliance) {
+   public void operate(Gamepad gamepad, Telemetry telemetry, String alliance, PinpointLocalizer pinpointLocalizer) {
 
-        telemetry.addData("Pose X: ", pinpoint.getPosX(DistanceUnit.INCH));
-        telemetry.addData("Pose Y: ", pinpoint.getPosY(DistanceUnit.INCH));
-        telemetry.addData("Rotation: ", pinpoint.getHeading(AngleUnit.DEGREES));
+        telemetry.addData("Pose X: ", pinpointLocalizer.getX());
+        telemetry.addData("Pose Y: ", pinpointLocalizer.getY());
+        telemetry.addData("Rotation: ", pinpointLocalizer.getHeading());
 
        telemetry.update();
-       heading = pinpoint.getHeading(AngleUnit.RADIANS);
+       heading = pinpointLocalizer.getHeadingRadians();
        if (alliance.equals(Constants.PinpointConstants.blueAlliance)) {
            heading = Math.toDegrees(heading);
            heading += 180;

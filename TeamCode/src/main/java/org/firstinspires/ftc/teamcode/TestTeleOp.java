@@ -23,6 +23,7 @@ public class TestTeleOp extends OpMode {
 
     //declaring subsystems and commands here
     private MecanumDriveSubsystem mecanumDriveSubsystem;
+    private PinpointLocalizer pinpointLocalizer;
 
 //    private IntakeCommand intakeCommand;
 //    private StorageCommand storageCommand;
@@ -37,6 +38,7 @@ public class TestTeleOp extends OpMode {
 
 
     public void init () {
+        pinpointLocalizer = new PinpointLocalizer(pinpoint);
         pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
         pinpoint.setEncoderResolution(Constants.PinpointConstants.kEncoderResolution, DistanceUnit.MM);
         pinpoint.setOffsets(Constants.PinpointConstants.kPodXOffset,
@@ -48,8 +50,8 @@ public class TestTeleOp extends OpMode {
 
         pinpoint.initialize();
         pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, 12, 12, AngleUnit.DEGREES, 0));
-        Localization.setEstimatedPose(pinpoint.getPosition());
-        mecanumDriveSubsystem = new MecanumDriveSubsystem(hardwareMap,this, pinpoint);
+        Localization.setEstimatedPose(pinpointLocalizer.getPose());
+        mecanumDriveSubsystem = new MecanumDriveSubsystem(hardwareMap,this);
 //        intakeSubsystem = new IntakeSubsystem(this);
 //        storageSubsystem = new StorageSubsystem(this) ;
 
@@ -67,12 +69,12 @@ public class TestTeleOp extends OpMode {
     @Override
     public void loop(){
         pinpoint.update();
-        Localization.setPose2d(pinpoint.getPosX(DistanceUnit.INCH), pinpoint.getPosY(DistanceUnit.INCH));
+        Localization.setPose2d(pinpointLocalizer.getX(), pinpointLocalizer.getY());
 
 //        intakeCommand.operate(gamepad1);
-        mecanumDriveSubsystem.operate(gamepad1, telemetry, Constants.PinpointConstants.redAlliance);
+        mecanumDriveSubsystem.operate(gamepad1, telemetry, Constants.PinpointConstants.redAlliance, pinpointLocalizer);
 //        storageCommand.operate(gamepad1);
-        autoAlignCommand.operate(Constants.PinpointConstants.redAlliance, pinpoint, alignkP, alignkFF);
+        autoAlignCommand.operate(Constants.PinpointConstants.redAlliance, pinpointLocalizer, alignkP, alignkFF);
         telemetry.addData("Align kP: ", alignkP);
         telemetry.addData("Align kFF: ", alignkFF);
         telemetry.update();

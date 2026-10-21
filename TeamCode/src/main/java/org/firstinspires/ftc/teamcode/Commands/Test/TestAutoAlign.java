@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.Localization;
+import org.firstinspires.ftc.teamcode.PinpointLocalizer;
 import org.firstinspires.ftc.teamcode.Subsystems.MecanumDriveSubsystem;
 
 public class TestAutoAlign {
@@ -23,7 +24,7 @@ public class TestAutoAlign {
 //        kFF = .05;
     }
 
-    public void operate(String alliance, GoBildaPinpointDriver pinpoint, double kP, double kFF) {
+    public void operate(String alliance, PinpointLocalizer pinpointLocalizer, double kP, double kFF) {
         double distanceT;
         double distanceB;
         double min;
@@ -58,11 +59,11 @@ public class TestAutoAlign {
 
 //        targetRotation = Localization.getTargetRotation(72, 72, pinpoint);
 
-        error = Localization.getAngleError(targetRotation, pinpoint.getHeading(AngleUnit.DEGREES));
+        error = Localization.getAngleError(targetRotation, pinpointLocalizer.getHeading());
 
         if (gamepad.left_bumper) {
             if (Math.abs(error) > 0.5) {
-                error = Localization.getAngleError(targetRotation, pinpoint.getHeading(AngleUnit.DEGREES));
+                error = Localization.getAngleError(targetRotation, pinpointLocalizer.getHeading());
                 output = kP * error + Math.copySign(kFF, error);
                 mecanumDriveSubsystem.setRightFrontPower(-output);
                 mecanumDriveSubsystem.setRightBackPower(-output);

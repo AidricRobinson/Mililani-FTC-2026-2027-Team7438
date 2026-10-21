@@ -35,30 +35,33 @@ public class PinpointLocalizer {
         return pinpoint.getPosition();
     }
 
-    public double getX() {
+    public double getY() {
         return pinpoint.getPosition().getX(DistanceUnit.INCH);
     }
 
-    public double getY() {
+    public double getX() {
         return pinpoint.getPosition().getY(DistanceUnit.INCH);
     }
 
     public double getHeading() {
         return pinpoint.getHeading(AngleUnit.DEGREES);
     }
-
-    public double getVelocityX() {
-        return pinpoint.getVelX(DistanceUnit.INCH);
+    public double getHeadingRadians() {
+        return pinpoint.getHeading(AngleUnit.RADIANS);
     }
 
     public double getVelocityY() {
+        return pinpoint.getVelX(DistanceUnit.INCH);
+    }
+
+    public double getVelocityX() {
         return pinpoint.getVelY(DistanceUnit.INCH);
     }
-    public double getFieldXVelocity() {
-        return getVelocityX() * Math.cos(Math.toRadians(getHeading())) - getVelocityY()*Math.sin(Math.toRadians(getHeading()));
-    }
     public double getFieldYVelocity() {
-        return getVelocityX() * Math.sin(Math.toRadians(getHeading())) + getVelocityY() * Math.cos(Math.toRadians(getHeading()));
+        return getVelocityY() * Math.cos(Math.toRadians(getHeading())) - getVelocityX()*Math.sin(Math.toRadians(getHeading()));
+    }
+    public double getFieldXVelocity() {
+        return getVelocityY() * Math.sin(Math.toRadians(getHeading())) + getVelocityX() * Math.cos(Math.toRadians(getHeading()));
     }
 
     public double getHeadingVelocity() {
