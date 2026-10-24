@@ -2,21 +2,39 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.teamcode.Constants;
 
 public class StorageSubsystem {
-    CRServo spindexer; //motor for spinning the actual spindexer
-    DcMotorEx storageMotor; //Motor for spinning the roller/wheel that takes the balls out of the spindexer.
+    private CRServo spindexer; //motor for spinning the actual spindexer
+    private DcMotorEx storageMotor; //Motor for spinning the roller/wheel that takes the balls out of the spindexer.
 
+    private double testPower;
     public StorageSubsystem(OpMode opMode){
         storageMotor = opMode.hardwareMap.get(DcMotorEx.class,"storageMotor");
         storageMotor.setDirection(Constants.PayloadConstants.kStorageMotorDirection);
         storageMotor.setZeroPowerBehavior(Constants.PayloadConstants.kStorageZeroPowerMode);
+        storageMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
         spindexer = opMode.hardwareMap.get(CRServo.class, "spindexer");
         spindexer.setDirection(Constants.PayloadConstants.kSpindexerDirection);
 
+
+    }
+
+    public void setTestPower(double power) {
+        testPower = power;
+    }
+    public void increasePower(double power) {
+        testPower += power;
+    }
+    public void decreasePower(double power) {
+        testPower -= power;
+    }
+    public double getTestPower() {
+        return testPower;
     }
 
     public void setStoragePower(double power){

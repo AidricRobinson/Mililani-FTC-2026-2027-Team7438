@@ -9,44 +9,28 @@ import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
 public class ManualShootCommand {
     private ShooterSubsystem shooterSubsystem;
     private Gamepad gamepad;
-    private PIDController nectarPID;
-    private PIDController pollenPID;
+    private PIDController pidController;
     public ManualShootCommand(ShooterSubsystem shooterSubsystem, Gamepad gamepad) {
         this.shooterSubsystem = shooterSubsystem;
         this.gamepad = gamepad;
-        nectarPID = Constants.PayloadConstants.nectarPID;
-        pollenPID = Constants.PayloadConstants.pollenPID;
+
+        pidController = Constants.PayloadConstants.shooterPID;
+
     }
     public void operate(double dt) {
         if (gamepad.dpad_up && gamepad.right_trigger >= 0.25) {
-            if (shooterSubsystem.getNectarToggle()) {
-                shooterSubsystem.setNectarShooterPower(-0.9);
-            }
-            if (shooterSubsystem.getPollenToggle()) {
-                shooterSubsystem.setPollenShooterPower(-0.9);
-            }
+            shooterSubsystem.requestPower(-1);
         }
         else if (gamepad.dpad_up) {
-            if (shooterSubsystem.getNectarToggle()) {
-                nectarPID.createSetPoint(4000);
-                nectarPID.setProcessVariable(shooterSubsystem.getNectarShooterRPM());
-                shooterSubsystem.setNectarShooterPower(nectarPID.getOutput(dt));
-            }
-            if (shooterSubsystem.getPollenToggle()) {
-                pollenPID.createSetPoint(4000);
-                pollenPID.setProcessVariable(shooterSubsystem.getPollenShooterRPM());
-                shooterSubsystem.setPollenShooterPower(pollenPID.getOutput(dt));
-            }
+            pidController.createSetPoint(2000);
+            pidController.setProcessVariable(shooterSubsystem.getRPM(dt));
         }
         else {
-            pollenPID.resetIntegral();
-            nectarPID.resetIntegral();
-            shooterSubsystem.setBothShooterPower(0);
+            pidController.resetIntegral();
         }
     }
     public void shutdown() {
-        pollenPID.resetIntegral();
-        nectarPID.resetIntegral();
+        pidController.resetIntegral();
         shooterSubsystem.shutdown();
     }
 }

@@ -11,18 +11,26 @@ public class FullShooterCommand {
     public FullShooterCommand(ShooterSubsystem shooterSubsystem, Gamepad gamepad){
         this.shooterSubsystem = shooterSubsystem;
         this.gamepad = gamepad;
+        shooterSubsystem.setTestPower(0.5);
     }
 
     public void operate(Gamepad gamepad){
-        if(gamepad.b){
-            shooterSubsystem.setBothShooterPower(.65);
+        if(gamepad.y) {
+            shooterSubsystem.increasePower(0.1);
         }
-        else if(gamepad.left_trigger >= .1){
-            shooterSubsystem.setBothShooterPower(.45);
+        if (gamepad.a) {
+            shooterSubsystem.decreasePower(0.05);
         }
-        else{
-            shooterSubsystem.setBothShooterPower(0);
+        if (gamepad.b){
+            shooterSubsystem.setTestPower(0.5);
         }
+        if (gamepad.x) {
+            shooterSubsystem.setPower(shooterSubsystem.getTestPower());
+        }
+        else {
+            shooterSubsystem.setPower(0);
+        }
+
     }
 
     public void shutdown(){

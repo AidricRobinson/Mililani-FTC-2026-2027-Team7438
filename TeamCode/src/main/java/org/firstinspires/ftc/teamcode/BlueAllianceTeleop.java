@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.Commands.TeleOp.Automated.AutoIntake;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Automated.AutoScore;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Automated.LimelightToggle;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Automated.PanicResetRotation;
-import org.firstinspires.ftc.teamcode.Commands.TeleOp.Automated.ToggleFlywheels;
+//import org.firstinspires.ftc.teamcode.Commands.TeleOp.Automated.ToggleFlywheels;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual.BrakeCommand;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual.ManualIntakeCommand;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual.ManualKickerCommand;
@@ -44,7 +44,7 @@ public class BlueAllianceTeleop extends OpMode {
     private AutoScore autoScore;
     private PanicResetRotation panicResetRotation;
 
-    private ToggleFlywheels toggleFlywheels;
+//    private ToggleFlywheels toggleFlywheels;
     private BrakeCommand brakeCommand;
 //    private PivotCommand pivotCommand;
     private ManualIntakeCommand manualIntakeCommand;
@@ -91,7 +91,7 @@ public class BlueAllianceTeleop extends OpMode {
         autoScore = new AutoScore(mecanumDriveSubsystem, storageSubsystem, shooterSubsystem, limelight, gamepad1);
         panicResetRotation = new PanicResetRotation(gamepad1);
 
-        toggleFlywheels = new ToggleFlywheels(shooterSubsystem, gamepad2);
+//        toggleFlywheels = new ToggleFlywheels(shooterSubsystem, gamepad2);
         brakeCommand = new BrakeCommand(mecanumDriveSubsystem, gamepad2);
 //        pivotCommand = new PivotCommand(pivotSubsystem, gamepad2);
         manualIntakeCommand = new ManualIntakeCommand(intakeSubsystem, gamepad2);
@@ -124,7 +124,7 @@ public class BlueAllianceTeleop extends OpMode {
         autoIntake.operate();
         autoScore.operate(Constants.PinpointConstants.blueAlliance, dt);
         panicResetRotation.operate(localization);
-        toggleFlywheels.operate();
+//        toggleFlywheels.operate();
         brakeCommand.operate();
 //        pivotCommand.operate(gamepad2);
         manualIntakeCommand.operate();

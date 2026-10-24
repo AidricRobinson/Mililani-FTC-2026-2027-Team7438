@@ -4,9 +4,9 @@ import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-import org.firstinspires.ftc.teamcode.Commands.TeleOp.Automated.SetNectarRPM;
-import org.firstinspires.ftc.teamcode.Commands.TeleOp.Automated.SetPollenRPM;
+
 import org.firstinspires.ftc.teamcode.Constants;
+import org.firstinspires.ftc.teamcode.PIDController;
 import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.StorageSubsystem;
 
@@ -16,8 +16,7 @@ public class TestLimelightShootCommand {
     private Limelight3A limelight;
     private Gamepad gamepad;
     private LLResult result;
-    private SetPollenRPM setPollenRPM;
-    private SetNectarRPM setNectarRPM;
+    private PIDController pidController;
     double x;
 
     public TestLimelightShootCommand(ShooterSubsystem shooterSubsystem,
@@ -28,8 +27,9 @@ public class TestLimelightShootCommand {
         this.storageSubsystem = storageSubsystem;
         this.limelight = limelight;
         this.gamepad = gamepad;
-        setNectarRPM = new SetNectarRPM(shooterSubsystem);
-        setPollenRPM = new SetPollenRPM(shooterSubsystem);
+
+        pidController = Constants.PayloadConstants.shooterPID;
+
         x = 0;
     }
     public void operate(double dt) {
@@ -38,16 +38,15 @@ public class TestLimelightShootCommand {
             x = result.getTa();
         }
         if (gamepad.right_bumper) {
-            if (shooterSubsystem.getPollenToggle()) {
-                setPollenRPM.operate(Constants.PinpointConstants.kLimePA * Math.pow(x, 2)
-                        + Constants.PinpointConstants.kLimePB * x
-                        + Constants.PinpointConstants.kLimePC, dt);
-            }
-            if (shooterSubsystem.getNectarToggle()) {
-                setNectarRPM.operate(Constants.PinpointConstants.kLimeNA * Math.pow(x, 2)
-                        + Constants.PinpointConstants.kLimeNB * x
-                        + Constants.PinpointConstants.kLimeNC, dt);
-            }
+            pidController.createSetPoint(Constants.PinpointConstants.kLimeA * Math.pow(x, 2)
+            + Constants.PinpointConstants.kLimeB * x
+            + Constants.PinpointConstants.kLimeC);
+            pidController.setProcessVariable(shooterSubsystem.getRPM(dt));
+            shooterSubsystem.setPower(pidController.getOutput(dt));
+        }
+        else {
+            pidController.resetIntegral();
+            shooterSubsystem.shutdown();
         }
     }
 

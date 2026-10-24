@@ -4,6 +4,7 @@ import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 
 import org.firstinspires.ftc.teamcode.Constants;
+import org.firstinspires.ftc.teamcode.PIDController;
 import org.firstinspires.ftc.teamcode.Subsystems.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.StorageSubsystem;
@@ -13,8 +14,9 @@ public class AutoLimelightScore {
     private MecanumDriveSubsystem mecanumDriveSubsystem;
     private StorageSubsystem storageSubsystem;
     private Limelight3A limelight;
-    private SetNectarRPM setNectarRPM;
-    private SetPollenRPM setPollenRPM;
+    private PIDController pidController = Constants.PayloadConstants.shooterPID;
+//    private SetNectarRPM setNectarRPM;
+//    private SetPollenRPM setPollenRPM;
 
     private LLResult result;
     double tx;
@@ -29,13 +31,14 @@ public class AutoLimelightScore {
         this.mecanumDriveSubsystem = mecanumDriveSubsystem;
         this.limelight = limelight;
 
-        setNectarRPM = new SetNectarRPM(shooterSubsystem);
-        setPollenRPM = new SetPollenRPM(shooterSubsystem);
+//        setNectarRPM = new SetNectarRPM(shooterSubsystem);
+//        setPollenRPM = new SetPollenRPM(shooterSubsystem);
         tx = 0;
     }
     public void operate(double dt) {
         result = limelight.getLatestResult();
         boolean hasTarget = result != null && result.isValid() && result.getStaleness() < 100; // ms
+        x = 0;
         if (hasTarget) {
             tx = result.getTx();
             x = result.getTa();
@@ -43,28 +46,23 @@ public class AutoLimelightScore {
             // No fresh target: hold still, don't spin or feed
             mecanumDriveSubsystem.shutdown();
             storageSubsystem.shutdown();
+
             return;
         }
 
-        if (shooterSubsystem.getPollenToggle()) {
-            setPollenRPM.operate(Constants.PinpointConstants.kLimePA * Math.pow(x, 2)
-                    + Constants.PinpointConstants.kLimePB * x
-                    + Constants.PinpointConstants.kLimePC, dt);
-        }
-        if (shooterSubsystem.getNectarToggle()) {
-            setNectarRPM.operate(Constants.PinpointConstants.kLimeNA * Math.pow(x, 2)
-                    + Constants.PinpointConstants.kLimeNB * x
-                    + Constants.PinpointConstants.kLimeNC, dt);
-        }
+
+
         boolean aligned = Math.abs(tx) < 0.5;
+        pidController.createSetPoint(Constants.PinpointConstants.kLimeA * Math.pow(x, 2)
+        + Constants.PinpointConstants.kLimeB * x
+        + Constants.PinpointConstants.kLimeC);
+        pidController.setProcessVariable(shooterSubsystem.getRPM(dt));
+        shooterSubsystem.requestPower(pidController.getOutput(dt));
 
-        boolean nectarReady =
-                !shooterSubsystem.getNectarToggle()
-                        || Math.abs(setNectarRPM.getError()) < 100;
 
-        boolean pollenReady =
-                !shooterSubsystem.getPollenToggle()
-                        || Math.abs(setPollenRPM.getError()) < 100;
+        boolean shooterReady = Math.abs(pidController.getError()) < 100;
+
+
 
         if (!aligned) {
             output = Math.max(-0.4, Math.min(0.4, kP * tx + Math.copySign(kFF, tx)));
@@ -81,8 +79,9 @@ public class AutoLimelightScore {
             mecanumDriveSubsystem.shutdown();
             storageSubsystem.requestSpindexerPower(1);
             mecanumDriveSubsystem.requestBrake(1);
-            if (nectarReady && pollenReady) {
+            if (shooterReady) {
                 storageSubsystem.requestStoragePower(0.75);
+                storageSubsystem.requestSpindexerPower(1);
             }
             // not ready yet: no storage request = feed stays off
         }
@@ -91,7 +90,6 @@ public class AutoLimelightScore {
         shooterSubsystem.shutdown();
         storageSubsystem.shutdown();
         mecanumDriveSubsystem.shutdown();
-        setNectarRPM.shutdown();
-        setPollenRPM.shutdown();
+        pidController.resetIntegral();
     }
 }

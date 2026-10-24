@@ -13,8 +13,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
 public class TestFlywheelDistance {
     private ShooterSubsystem shooterSubsystem;
     private Gamepad gamepad;
-    private PIDController nectarPID;
-    private PIDController pollenPID;
+    private PIDController pidController;
     private Telemetry telemetry;
     private Limelight3A limelight;
     private LLResult result;
@@ -24,34 +23,32 @@ public class TestFlywheelDistance {
     private double distanceT;
     private double distanceB;
 
-    public TestFlywheelDistance(ShooterSubsystem shooterSubsystem, Limelight3A limelight, Gamepad gamepad, Telemetry telemetry,
-                                double nectarP, double nectarI, double nectarD, double nectarFF,
-                                double pollenP, double pollenI, double pollenD, double pollenFF) {
+    public TestFlywheelDistance(ShooterSubsystem shooterSubsystem, Limelight3A limelight, Gamepad gamepad, Telemetry telemetry) {
         this.shooterSubsystem = shooterSubsystem;
         this.gamepad = gamepad;
         this.limelight = limelight;
         this.telemetry = telemetry;
-        nectarPID = new PIDController(nectarP, nectarI, nectarD, nectarFF);
-        pollenPID = new PIDController(pollenP, pollenI, pollenD, pollenFF);
+        pidController = Constants.PayloadConstants.shooterPID;
+        shooterSubsystem.setTestRPM(2000);
     }
-    public void operate(String alliance, double dt, double pollenRPM, double nectarRPM) {
-        if (gamepad.x) {
-            pollenPID.createSetPoint(pollenRPM);
-            pollenPID.setProcessVariable(shooterSubsystem.getPollenShooterRPM());
-            shooterSubsystem.setPollenShooterPower(pollenPID.getOutput(dt));
+    public void operate(String alliance, double dt) {
+        if (gamepad.y) {
+            shooterSubsystem.increaseRPM(200);
         }
-        else {
-            shooterSubsystem.setPollenShooterPower(0);
-            pollenPID.resetIntegral();
+        if (gamepad.a) {
+            shooterSubsystem.decreaseRPM(50);
         }
         if (gamepad.b) {
-            nectarPID.createSetPoint(nectarRPM);
-            nectarPID.setProcessVariable(shooterSubsystem.getNectarShooterRPM());
-            shooterSubsystem.setNectarShooterPower(nectarPID.getOutput(dt));
+            shooterSubsystem.setTestRPM(2000);
+        }
+        if (gamepad.x) {
+            pidController.createSetPoint(shooterSubsystem.getTestRPM());
+            pidController.setProcessVariable(shooterSubsystem.getRPM(dt));
+            shooterSubsystem.setPower(pidController.getOutput(dt));
         }
         else {
-            shooterSubsystem.setNectarShooterPower(0);
-            nectarPID.resetIntegral();
+            shooterSubsystem.shutdown();
+            pidController.resetIntegral();
         }
         result = limelight.getLatestResult();
         double ta = 0;
@@ -72,8 +69,7 @@ public class TestFlywheelDistance {
             x = min;
         }
 
-        telemetry.addData("Pollen RPM: ", shooterSubsystem.getTestPollenRPM());
-        telemetry.addData("Nectar RPM: ", shooterSubsystem.getTestNectarRPM());
+        telemetry.addData("Pollen RPM: ", shooterSubsystem.getTestRPM());
         telemetry.addData("limelight ta: ", ta);
         telemetry.addData("Estimated distance: ", x);
 
@@ -81,7 +77,6 @@ public class TestFlywheelDistance {
     }
     public void shutdown() {
         shooterSubsystem.shutdown();
-        pollenPID.resetIntegral();
-        nectarPID.resetIntegral();
+        pidController.resetIntegral();
     }
 }

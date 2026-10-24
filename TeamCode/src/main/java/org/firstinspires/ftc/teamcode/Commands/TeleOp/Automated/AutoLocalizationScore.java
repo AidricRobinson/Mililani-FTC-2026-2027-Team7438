@@ -1,7 +1,9 @@
 //package org.firstinspires.ftc.teamcode.Commands.TeleOp.Automated;
 //
-//import org.firstinspires.ftc.teamcode.RobotCode.Constants;
+//
+//import org.firstinspires.ftc.teamcode.Constants;
 //import org.firstinspires.ftc.teamcode.Localization;
+//import org.firstinspires.ftc.teamcode.PIDController;
 //import org.firstinspires.ftc.teamcode.Subsystems.MecanumDriveSubsystem;
 //import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
 //import org.firstinspires.ftc.teamcode.Subsystems.StorageSubsystem;
@@ -9,14 +11,13 @@
 //public class AutoLocalizationScore {
 //    private ShooterSubsystem shooterSubsystem;
 //    private MecanumDriveSubsystem mecanumDriveSubsystem;
-//    private SetNectarRPM setNectarRPM;
-//    private SetPollenRPM setPollenRPM;
 //    private StorageSubsystem storageSubsystem;
 //    private double error;
 //    private double kFF;
 //    private double kP;
 //    private double output;
 //    private double targetRotation;
+//    private PIDController pidController = Constants.PayloadConstants.shooterPID;
 //    private double x;
 //    private double distanceT;
 //    private double distanceB;
@@ -25,8 +26,7 @@
 //        this.shooterSubsystem = shooterSubsystem;
 //        this.mecanumDriveSubsystem = mecanumDriveSubsystem;
 //        this.storageSubsystem = storageSubsystem;
-//        setNectarRPM = new SetNectarRPM(shooterSubsystem);
-//        setPollenRPM = new SetPollenRPM(shooterSubsystem);
+//
 //
 //        kP = 0.005;
 //        kFF = 0.05;
@@ -60,18 +60,15 @@
 //            }
 //
 //        }
-//        if (shooterSubsystem.getNectarToggle()) {
-//            setNectarRPM.operate(Constants.PinpointConstants.kPoseNA * Math.pow(x, 2)
-//                    + Constants.PinpointConstants.kPoseNB * x
-//                    + Constants.PinpointConstants.kPoseNC, dt);
-//        }
+//        pidController.createSetPoint(Constants.PinpointConstants.kPoseA * Math.pow(x, 2)
+//        + Constants.PinpointConstants.kPoseB * x
+//        + Constants.PinpointConstants.kPoseC);
+//        pidController.setProcessVariable(shooterSubsystem.getRPM(dt));
+//        shooterSubsystem.requestPower(pidController.getOutput(dt));
 //
-//        if (shooterSubsystem.getPollenToggle()) {
-//            setPollenRPM.operate(Constants.PinpointConstants.kPosePA * Math.pow(x, 2)
-//                    + Constants.PinpointConstants.kPosePB * x
-//                    + Constants.PinpointConstants.kPosePC, dt);
-//        }
-//        error = Localization.getAngleError(targetRotation, Localization.getPoseRotation());
+//
+//
+//        double error = Localization.getAngleError(targetRotation, Localization.getPoseRotation());
 //        if (Math.abs(error) >= 0.5) {
 //            error = Localization.getAngleError(targetRotation, Localization.getPoseRotation());
 //            output = kP * error + Math.copySign(kFF, error);
@@ -83,19 +80,18 @@
 //            storageSubsystem.shutdown();
 //        } else {
 //            storageSubsystem.setSpindexerPower(1);
-//            if(!(shooterSubsystem.getNectarToggle() && Math.abs(setNectarRPM.getError()) >= 100)
-//                    && !(shooterSubsystem.getPollenToggle() && Math.abs(setPollenRPM.getError()) >= 100)) {
+//            if(Math.abs(pidController.getError()) <= 100) {
 //                mecanumDriveSubsystem.shutdown();
 //                mecanumDriveSubsystem.setBrakePosition(1);
-//                storageSubsystem.setStoragePower(0.75);
+//                storageSubsystem.requestSpindexerPower(1);
+//                storageSubsystem.requestStoragePower(0.75);
 //            }
 //        }
 //    }
 //    public void shutdown() {
 //        shooterSubsystem.shutdown();
-//        setPollenRPM.shutdown();
-//        setNectarRPM.shutdown();
 //        storageSubsystem.shutdown();
 //        mecanumDriveSubsystem.shutdown();
+//        pidController.resetIntegral();
 //    }
 //}

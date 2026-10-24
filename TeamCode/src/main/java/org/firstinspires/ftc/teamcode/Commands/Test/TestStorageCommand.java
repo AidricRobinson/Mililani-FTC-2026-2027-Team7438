@@ -10,20 +10,25 @@ public class TestStorageCommand {
     public TestStorageCommand(StorageSubsystem storageSubsystem, Gamepad gamepad){
         this.storageSubsystem = storageSubsystem;
         this.gamepad = gamepad;
+        storageSubsystem.setTestPower(0.5);
     }
 
     public void operate(Gamepad gamepad, double spindexerPower, double kickerPower){
-        if(gamepad.left_bumper){
-            storageSubsystem.setStoragePower(kickerPower);
+        if (gamepad.dpad_up) {
+            storageSubsystem.increasePower(0.1);
+        }
+        if (gamepad.dpad_down) {
+            storageSubsystem.decreasePower(0.05);
+        }
+        if (gamepad.dpad_right) {
+            storageSubsystem.setTestPower(0.5);
+        }
+        if (gamepad.dpad_left) {
+            storageSubsystem.setStoragePower(storageSubsystem.getTestPower());
+            storageSubsystem.setSpindexerPower(1);
         }
         else {
-            storageSubsystem.setStoragePower(0);
-        }
-        if (gamepad.right_bumper) {
-            storageSubsystem.setSpindexerPower(spindexerPower);
-        }
-        else {
-            storageSubsystem.setSpindexerPower(0);
+            storageSubsystem.shutdown();
         }
     }
 
