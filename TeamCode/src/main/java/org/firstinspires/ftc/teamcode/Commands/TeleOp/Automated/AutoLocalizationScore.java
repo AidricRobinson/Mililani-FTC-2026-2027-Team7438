@@ -63,7 +63,7 @@
 //        pidController.createSetPoint(Constants.PinpointConstants.kPoseA * Math.pow(x, 2)
 //        + Constants.PinpointConstants.kPoseB * x
 //        + Constants.PinpointConstants.kPoseC);
-//        pidController.setProcessVariable(shooterSubsystem.getRPM(dt));
+//        pidController.setProcessVariable(shooterSubsystem.getRPM());
 //        shooterSubsystem.requestPower(pidController.getOutput(dt));
 //
 //

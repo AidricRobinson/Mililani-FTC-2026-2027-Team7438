@@ -41,15 +41,15 @@ public class RedAllianceTeleop extends OpMode {
     private AutoFlowerIntake autoFlowerIntake;
     private AutoIntake autoIntake;
     private AutoScore autoScore;
-    private PanicResetRotation panicResetRotation;
+//    private PanicResetRotation panicResetRotation;
 
 //    private ToggleFlywheels toggleFlywheels;
-    private BrakeCommand brakeCommand;
+//    private BrakeCommand brakeCommand;
 //    private PivotCommand pivotCommand;
     private ManualIntakeCommand manualIntakeCommand;
     private ManualShootCommand manualShootCommand;
     private ManualKickerCommand manualKickerCommand;
-    private LimelightToggle limelightToggle;
+//    private LimelightToggle limelightToggle;
 
     private final ElapsedTime elapsedTime = new ElapsedTime();
     private double lastTime;
@@ -90,16 +90,16 @@ public class RedAllianceTeleop extends OpMode {
 //        autoFlowerIntake = new AutoFlowerIntake(intakeSubsystem, storageSubsystem, pivotSubsystem, gamepad1);
         autoIntake = new AutoIntake(intakeSubsystem, storageSubsystem, gamepad1);
         autoScore = new AutoScore(mecanumDriveSubsystem, storageSubsystem, shooterSubsystem, limelight, gamepad1);
-        panicResetRotation = new PanicResetRotation(gamepad1);
+//        panicResetRotation = new PanicResetRotation(gamepad1);
 
 //        toggleFlywheels = new ToggleFlywheels(shooterSubsystem, gamepad2);
-        brakeCommand = new BrakeCommand(mecanumDriveSubsystem, gamepad2);
+//        brakeCommand = new BrakeCommand(mecanumDriveSubsystem, gamepad2);
 //        pivotCommand = new PivotCommand(pivotSubsystem, gamepad2);
         manualIntakeCommand = new ManualIntakeCommand(intakeSubsystem, gamepad2);
         manualShootCommand = new ManualShootCommand(shooterSubsystem, gamepad2);
         manualKickerCommand = new ManualKickerCommand(storageSubsystem, gamepad2);
 
-        limelightToggle = new LimelightToggle(shooterSubsystem, gamepad2);
+//        limelightToggle = new LimelightToggle(shooterSubsystem, gamepad2);
 
         lastTime = 0;
         elapsedTime.startTime();
@@ -124,14 +124,14 @@ public class RedAllianceTeleop extends OpMode {
         localization.operate(dt);
         limelightLocalizer.update(pinpointLocalizer);
         pinpointLocalizer.update();
-        limelightToggle.operate();
+//        limelightToggle.operate();
         mecanumDriveSubsystem.operate(gamepad1, this.telemetry, Constants.PinpointConstants.redAlliance, pinpointLocalizer);
         autoFlowerIntake.operate();
         autoIntake.operate();
         autoScore.operate(Constants.PinpointConstants.redAlliance, dt);
-        panicResetRotation.operate(localization);
+//        panicResetRotation.operate(localization);
 //        toggleFlywheels.operate();
-        brakeCommand.operate();
+//        brakeCommand.operate();
 //        pivotCommand.operate(gamepad2);
         manualIntakeCommand.operate();
         manualShootCommand.operate(dt);
@@ -146,7 +146,7 @@ public class RedAllianceTeleop extends OpMode {
 
     public void stop() {
         mecanumDriveSubsystem.shutdown();
-        limelightToggle.shutdown();
+//        limelightToggle.shutdown();
         intakeSubsystem.shutdown();
         storageSubsystem.shutdown();
 //        pivotSubsystem.shutdown();

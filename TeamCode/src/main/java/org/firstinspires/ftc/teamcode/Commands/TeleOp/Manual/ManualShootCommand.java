@@ -23,7 +23,7 @@ public class ManualShootCommand {
         }
         else if (gamepad.dpad_up) {
             pidController.createSetPoint(2000);
-            pidController.setProcessVariable(shooterSubsystem.getRPM(dt));
+            pidController.setProcessVariable(shooterSubsystem.getRPM());
         }
         else {
             pidController.resetIntegral();

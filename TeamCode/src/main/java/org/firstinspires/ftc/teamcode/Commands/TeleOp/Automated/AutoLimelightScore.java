@@ -56,7 +56,7 @@ public class AutoLimelightScore {
         pidController.createSetPoint(Constants.PinpointConstants.kLimeA * Math.pow(x, 2)
         + Constants.PinpointConstants.kLimeB * x
         + Constants.PinpointConstants.kLimeC);
-        pidController.setProcessVariable(shooterSubsystem.getRPM(dt));
+        pidController.setProcessVariable(shooterSubsystem.getRPM());
         shooterSubsystem.requestPower(pidController.getOutput(dt));
 
 

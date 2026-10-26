@@ -100,8 +100,8 @@ public class ShooterSubsystem {
         currentPosition = getLeftCP();
 
     }
-    public double getRPM(double dt) {
-        return (currentPosition - lastPosition) / dt / 28 * 60;
+    public double getRPM() {
+        return getLeftVelocity() / 28 * 60;
     }
 
 }

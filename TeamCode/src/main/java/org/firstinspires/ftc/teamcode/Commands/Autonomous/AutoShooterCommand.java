@@ -35,7 +35,7 @@ public class AutoShooterCommand {
     public boolean update() {
         if (timer.seconds() < durationSeconds) {
             currentTime = timer.seconds();
-            pidController.setProcessVariable(shooterSubsystem.getLeftVelocity());
+            pidController.setProcessVariable(shooterSubsystem.getRPM());
             shooterSubsystem.setPower(pidController.getOutput(currentTime - lastTime));
             storageSubsystem.setStoragePower(0.5);
             storageSubsystem.setSpindexerPower(1);
