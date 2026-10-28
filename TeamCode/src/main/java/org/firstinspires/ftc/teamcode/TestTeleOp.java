@@ -10,6 +10,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.teamcode.Commands.Test.TestAutoAlign;
+import org.firstinspires.ftc.teamcode.Subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.MecanumDriveSubsystem;
 
 
@@ -17,42 +18,42 @@ import org.firstinspires.ftc.teamcode.Subsystems.MecanumDriveSubsystem;
 @Config
 public class TestTeleOp extends OpMode {
 
-    GoBildaPinpointDriver pinpoint;
+//    GoBildaPinpointDriver pinpoint;
 
 
 
     //declaring subsystems and commands here
-    private MecanumDriveSubsystem mecanumDriveSubsystem;
-    private PinpointLocalizer pinpointLocalizer;
+//    private MecanumDriveSubsystem mecanumDriveSubsystem;
+//    private PinpointLocalizer pinpointLocalizer;
 
 //    private IntakeCommand intakeCommand;
 //    private StorageCommand storageCommand;
 
-//    private IntakeSubsystem intakeSubsystem;
+    private IntakeSubsystem intakeSubsystem;
 //    private StorageSubsystem storageSubsystem;
     public static double alignkP = .02125;
     public static double alignkFF = .05;
 
 
-    private TestAutoAlign autoAlignCommand;
+//    private TestAutoAlign autoAlignCommand;
 
 
     public void init () {
-        pinpointLocalizer = new PinpointLocalizer(pinpoint);
-        pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
-        pinpoint.setEncoderResolution(Constants.PinpointConstants.kEncoderResolution, DistanceUnit.MM);
-        pinpoint.setOffsets(Constants.PinpointConstants.kPodXOffset,
-                Constants.PinpointConstants.kPodYOffset,
-                DistanceUnit.INCH);
-
-        pinpoint.setEncoderDirections(Constants.PinpointConstants.kPodXDirection,
-                Constants.PinpointConstants.kPodYDirection);
-
-        pinpoint.initialize();
-        pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, 12, 12, AngleUnit.DEGREES, 0));
-        Localization.setEstimatedPose(pinpointLocalizer.getPose());
-        mecanumDriveSubsystem = new MecanumDriveSubsystem(hardwareMap,this);
-//        intakeSubsystem = new IntakeSubsystem(this);
+//        pinpointLocalizer = new PinpointLocalizer(pinpoint);
+//        pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
+//        pinpoint.setEncoderResolution(Constants.PinpointConstants.kEncoderResolution, DistanceUnit.MM);
+//        pinpoint.setOffsets(Constants.PinpointConstants.kPodXOffset,
+//                Constants.PinpointConstants.kPodYOffset,
+//                DistanceUnit.INCH);
+//
+//        pinpoint.setEncoderDirections(Constants.PinpointConstants.kPodXDirection,
+//                Constants.PinpointConstants.kPodYDirection);
+//
+//        pinpoint.initialize();
+//        pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, 12, 12, AngleUnit.DEGREES, 0));
+//        Localization.setEstimatedPose(pinpointLocalizer.getPose());
+//        mecanumDriveSubsystem = new MecanumDriveSubsystem(hardwareMap,this);
+        intakeSubsystem = new IntakeSubsystem(this);
 //        storageSubsystem = new StorageSubsystem(this) ;
 
 //        intakeCommand = new IntakeCommand(intakeSubsystem, gamepad1);
@@ -62,26 +63,27 @@ public class TestTeleOp extends OpMode {
 
 
 
-        autoAlignCommand = new TestAutoAlign(mecanumDriveSubsystem, gamepad1);
+//        autoAlignCommand = new TestAutoAlign(mecanumDriveSubsystem, gamepad1);
 
     }
 
     @Override
     public void loop(){
-        pinpoint.update();
-        Localization.setPose2d(pinpointLocalizer.getX(), pinpointLocalizer.getY());
+//        pinpoint.update();
+//        Localization.setPose2d(pinpointLocalizer.getX(), pinpointLocalizer.getY());
 
 //        intakeCommand.operate(gamepad1);
-        mecanumDriveSubsystem.operate(gamepad1, telemetry, Constants.PinpointConstants.redAlliance, pinpointLocalizer);
+//        mecanumDriveSubsystem.operate(gamepad1, telemetry, Constants.PinpointConstants.redAlliance, pinpointLocalizer);
 //        storageCommand.operate(gamepad1);
-        autoAlignCommand.operate(Constants.PinpointConstants.redAlliance, pinpointLocalizer, alignkP, alignkFF);
+//        autoAlignCommand.operate(Constants.PinpointConstants.redAlliance, pinpointLocalizer, alignkP, alignkFF);
         telemetry.addData("Align kP: ", alignkP);
         telemetry.addData("Align kFF: ", alignkFF);
         telemetry.update();
     }
     public void stop(){
+        intakeSubsystem.shutdown();
 //        intakeCommand.shutdown();
-        mecanumDriveSubsystem.shutdown();
+//        mecanumDriveSubsystem.shutdown();
 //        storageCommand.shutdown();
 
     }

@@ -7,7 +7,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import org.firstinspires.ftc.teamcode.Constants;
 
 public class IntakeSubsystem {
-    DcMotorEx intakeMotor; //only one motor right now, rename to motor one and motor two for second one.
+    private DcMotorEx intakeMotor; //only one motor right now, rename to motor one and motor two for second one.
+    private double testPower;
 
     public IntakeSubsystem(OpMode opMode){
         intakeMotor = opMode.hardwareMap.get(DcMotorEx.class, "intakeMotor");
@@ -15,12 +16,28 @@ public class IntakeSubsystem {
         intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         intakeMotor.setZeroPowerBehavior(Constants.PayloadConstants.kIntakeMotorZeroPowerMode);  //Brakes when no powered
 
-
+        testPower = 0;
     }
 
     public void setIntakePower(double power){
         intakeMotor.setPower(power);
 
+    }
+
+    public void increaseTestPower(double power) {
+        testPower += power;
+    }
+    public void decreaseTestPower(double power) {
+        testPower -= power;
+    }
+    public void setTestPower() {
+        intakeMotor.setPower(testPower);
+    }
+    public void zeroTestPower() {
+        testPower = 0;
+    }
+    public double getTestPower() {
+        return testPower;
     }
 // test
 
