@@ -13,14 +13,12 @@ public class ManualSpindexerCommand {
     }
     public void operate() {
         if (gamepad.right_trigger >= 0.25 && gamepad.x) {
-            storageSubsystem.setSpindexerPower(-1);
+            storageSubsystem.requestSpindexerPower(-1);
         }
         else if (gamepad.x) {
-            storageSubsystem.setSpindexerPower(1);
+            storageSubsystem.requestSpindexerPower(1);
         }
-        else {
-            storageSubsystem.setSpindexerPower(0);
-        }
+
     }
     public void shutdown() {
         storageSubsystem.shutdown();

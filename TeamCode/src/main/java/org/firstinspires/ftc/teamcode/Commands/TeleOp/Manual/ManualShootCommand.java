@@ -18,16 +18,22 @@ public class ManualShootCommand {
 
     }
     public void operate(double dt) {
-        if (gamepad.dpad_up && gamepad.right_trigger >= 0.25) {
-            shooterSubsystem.requestPower(-1);
+        if (gamepad.y && gamepad.right_trigger_pressed) {
+            shooterSubsystem.requestPower(-.5);
         }
-        else if (gamepad.dpad_up) {
-            pidController.createSetPoint(2000);
-            pidController.setProcessVariable(shooterSubsystem.getRPM());
+        else if (gamepad.y) {
+            shooterSubsystem.requestPower(.5);
         }
-        else {
-            pidController.resetIntegral();
-        }
+//        if (gamepad.dpad_up && gamepad.right_trigger >= 0.25) {
+//            shooterSubsystem.requestPower(-1);
+//        }
+//        else if (gamepad.dpad_up) {
+//            pidController.createSetPoint(2000);
+//            pidController.setProcessVariable(shooterSubsystem.getRPM());
+//        }
+//        else {
+//            pidController.resetIntegral();
+//        }
     }
     public void shutdown() {
         pidController.resetIntegral();

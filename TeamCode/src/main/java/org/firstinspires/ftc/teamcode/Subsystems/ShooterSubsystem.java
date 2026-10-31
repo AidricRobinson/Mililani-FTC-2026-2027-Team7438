@@ -100,8 +100,13 @@ public class ShooterSubsystem {
         currentPosition = getLeftCP();
 
     }
+
     public double getRPM() {
         return getLeftVelocity() / 28 * 60;
+    }
+    public void setRPM(double rpm) {
+        leftFlywheel.setVelocity(rpm * 28 / 60);
+        rightFlywheel.setVelocity(rpm * 28 / 60);
     }
 
 

@@ -13,14 +13,12 @@ public class ManualKickerCommand {
     }
     public void operate() {
         if (gamepad.right_trigger >= 0.25 && gamepad.b) {
-            storageSubsystem.setStoragePower(-0.75); // placeholder
+            storageSubsystem.requestStoragePower(-.5);
         }
         else if (gamepad.b) {
-            storageSubsystem.setStoragePower(0.75);
+            storageSubsystem.requestStoragePower(.75);
         }
-        else {
-            storageSubsystem.setStoragePower(0);
-        }
+
     }
     public void shutdown() {
         storageSubsystem.shutdown();

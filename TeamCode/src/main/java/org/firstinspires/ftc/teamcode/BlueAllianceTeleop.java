@@ -6,7 +6,9 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Automated.AutoFlowerIntake;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Automated.AutoIntake;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Automated.AutoScore;
@@ -16,7 +18,9 @@ import org.firstinspires.ftc.teamcode.Commands.TeleOp.Automated.PanicResetRotati
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual.BrakeCommand;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual.ManualIntakeCommand;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual.ManualKickerCommand;
+import org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual.ManualScoreCommand;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual.ManualShootCommand;
+import org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual.ManualSpindexerCommand;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual.PivotCommand;
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.MecanumDriveSubsystem;
@@ -27,38 +31,41 @@ import org.firstinspires.ftc.teamcode.Subsystems.StorageSubsystem;
 @TeleOp(name="Blue Teleop")
 public class BlueAllianceTeleop extends OpMode {
     private GoBildaPinpointDriver pinpoint;
-    private Limelight3A limelight;
+    //    private Limelight3A limelight;
     private PinpointLocalizer pinpointLocalizer;
-    private LimelightLocalizer limelightLocalizer;
-    private Localization localization;
-//    private LimelightToggle limelightToggle;
+//    private LimelightLocalizer limelightLocalizer;
+//    private Localization localization;
 
     private MecanumDriveSubsystem mecanumDriveSubsystem;
     private IntakeSubsystem intakeSubsystem;
-//    private PivotSubsystem pivotSubsystem;
+    //    private PivotSubsystem pivotSubsystem;
     private StorageSubsystem storageSubsystem;
     private ShooterSubsystem shooterSubsystem;
 
-//    private AutoFlowerIntake autoFlowerIntake;
+    private AutoFlowerIntake autoFlowerIntake;
     private AutoIntake autoIntake;
-    private AutoScore autoScore;
+//    private AutoScore autoScore;
 //    private PanicResetRotation panicResetRotation;
 
-//    private ToggleFlywheels toggleFlywheels;
+    //    private ToggleFlywheels toggleFlywheels;
 //    private BrakeCommand brakeCommand;
 //    private PivotCommand pivotCommand;
     private ManualIntakeCommand manualIntakeCommand;
     private ManualShootCommand manualShootCommand;
     private ManualKickerCommand manualKickerCommand;
+    private ManualSpindexerCommand manualSpindexerCommand;
+    private ManualScoreCommand manualScoreCommand;
+//    private LimelightToggle limelightToggle;
 
     private final ElapsedTime elapsedTime = new ElapsedTime();
+    private double lastTime;
 
     private double time;
     private double dt;
-    private double lastTime;
 
 
     public void init() {
+
         pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
         pinpoint.setEncoderResolution(Constants.PinpointConstants.kEncoderResolution, DistanceUnit.MM);
         pinpoint.setOffsets(Constants.PinpointConstants.kPodXOffset,
@@ -67,18 +74,18 @@ public class BlueAllianceTeleop extends OpMode {
 
         pinpoint.setEncoderDirections(Constants.PinpointConstants.kPodXDirection,
                 Constants.PinpointConstants.kPodYDirection);
-
+        pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, 0, 0, AngleUnit.DEGREES, 179.99));
         pinpoint.initialize();
-        pinpoint.setPosition(Localization.getRobotPose());
+//        pinpoint.setPosition(Localization.getRobotPose());
 
-        limelight = hardwareMap.get(Limelight3A.class, "limelight");
-        limelight.setPollRateHz(60);
-        limelight.pipelineSwitch(1); //You configure the pipeline in the http://limelight.local:5801/, make sure to press the button on top middle screen, change ID filter
-        limelight.start();
+//        limelight = hardwareMap.get(Limelight3A.class, "limelight");
+//        limelight.setPollRateHz(60);
+//        limelight.pipelineSwitch(0); //You configure the pipeline in the http://limelight.local:5801/, make sure to press the button on top middle screen, change ID filter
+//        limelight.start();
 
         pinpointLocalizer = new PinpointLocalizer(pinpoint);
-        limelightLocalizer = new LimelightLocalizer(limelight);
-        localization = new Localization(pinpointLocalizer, limelightLocalizer, this, Localization.getRobotPose());
+//        limelightLocalizer = new LimelightLocalizer(limelight);
+//        localization = new Localization(pinpointLocalizer, limelightLocalizer, this, Localization.getRobotPose());
 
         mecanumDriveSubsystem = new MecanumDriveSubsystem(this.hardwareMap, this);
         intakeSubsystem = new IntakeSubsystem(this);
@@ -88,7 +95,7 @@ public class BlueAllianceTeleop extends OpMode {
 
 //        autoFlowerIntake = new AutoFlowerIntake(intakeSubsystem, storageSubsystem, pivotSubsystem, gamepad1);
         autoIntake = new AutoIntake(intakeSubsystem, storageSubsystem, gamepad1);
-        autoScore = new AutoScore(mecanumDriveSubsystem, storageSubsystem, shooterSubsystem, limelight, gamepad1);
+//        autoScore = new AutoScore(mecanumDriveSubsystem, storageSubsystem, shooterSubsystem, limelight, gamepad1);
 //        panicResetRotation = new PanicResetRotation(gamepad1);
 
 //        toggleFlywheels = new ToggleFlywheels(shooterSubsystem, gamepad2);
@@ -97,10 +104,14 @@ public class BlueAllianceTeleop extends OpMode {
         manualIntakeCommand = new ManualIntakeCommand(intakeSubsystem, gamepad2);
         manualShootCommand = new ManualShootCommand(shooterSubsystem, gamepad2);
         manualKickerCommand = new ManualKickerCommand(storageSubsystem, gamepad2);
+        manualScoreCommand = new ManualScoreCommand(storageSubsystem, shooterSubsystem, gamepad2);
+
+
 //        limelightToggle = new LimelightToggle(shooterSubsystem, gamepad2);
+
+        lastTime = 0;
         elapsedTime.startTime();
         time = 0;
-        lastTime = 0;
         dt = 0;
     }
     public void updatetime() {
@@ -116,13 +127,16 @@ public class BlueAllianceTeleop extends OpMode {
     @Override
     public void loop() {
         updatetime();
+//        limelight.getLatestResult();
         pinpoint.update();
-        localization.operate(dt);
-
+//        localization.operate(dt);
+//        limelightLocalizer.update(pinpointLocalizer);
+        pinpointLocalizer.update();
+//        limelightToggle.operate();
         mecanumDriveSubsystem.operate(gamepad1, this.telemetry, Constants.PinpointConstants.blueAlliance, pinpointLocalizer);
 //        autoFlowerIntake.operate();
         autoIntake.operate();
-        autoScore.operate(Constants.PinpointConstants.blueAlliance, dt);
+//        autoScore.operate(Constants.PinpointConstants.redAlliance, dt);
 //        panicResetRotation.operate(localization);
 //        toggleFlywheels.operate();
 //        brakeCommand.operate();
@@ -130,7 +144,8 @@ public class BlueAllianceTeleop extends OpMode {
         manualIntakeCommand.operate();
         manualShootCommand.operate(dt);
         manualKickerCommand.operate();
-//        limelightToggle.operate();
+        manualScoreCommand.operate();
+        manualSpindexerCommand.operate();
 
         intakeSubsystem.update();
         storageSubsystem.update();
@@ -141,11 +156,10 @@ public class BlueAllianceTeleop extends OpMode {
 
     public void stop() {
         mecanumDriveSubsystem.shutdown();
+//        limelightToggle.shutdown();
         intakeSubsystem.shutdown();
         storageSubsystem.shutdown();
 //        pivotSubsystem.shutdown();
         shooterSubsystem.shutdown();
-//        limelightToggle.shutdown();
-        limelight.stop();
     }
 }

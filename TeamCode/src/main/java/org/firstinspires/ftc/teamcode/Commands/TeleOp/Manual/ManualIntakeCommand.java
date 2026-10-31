@@ -14,10 +14,10 @@ public class ManualIntakeCommand {
     }
     public void operate() {
         if (gamepad.a && gamepad.right_trigger >= 0.25) {
-            intakeSubsystem.setIntakePower(-0.75); // Test input value
+            intakeSubsystem.requestPower(-1); // Test input value
         }
         else if (gamepad.a) {
-            intakeSubsystem.setIntakePower(0.75); // Test input value
+            intakeSubsystem.requestPower(1); // Test input value
         }
         else {
             intakeSubsystem.setIntakePower(0);
