@@ -17,14 +17,14 @@ public class AutoIntake {
 
     public void operate() {
         if (gamepad.left_bumper) {
-            intakeSubsystem.requestPower(0.5);
-            storageSubsystem.requestSpindexerPower(1);
-            storageSubsystem.requestStoragePower(0.5);
+            intakeSubsystem.requestPower(0.9);
+//            storageSubsystem.requestSpindexerPower(1);
+//            storageSubsystem.requestStoragePower(-.1);
         }
     }
     public void shutdown() {
         intakeSubsystem.shutdown();
-        storageSubsystem.shutdown();
+//        storageSubsystem.shutdown();
     }
 
 }

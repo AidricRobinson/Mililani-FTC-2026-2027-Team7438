@@ -43,7 +43,7 @@ public class TestFlywheelDistance {
         }
         if (gamepad.x) {
             pidController.createSetPoint(shooterSubsystem.getTestRPM());
-            pidController.setProcessVariable(shooterSubsystem.getRPM(dt));
+            pidController.setProcessVariable(shooterSubsystem.getRPM());
             shooterSubsystem.setPower(pidController.getOutput(dt));
         }
         else {

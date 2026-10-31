@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 public class Constants {
     public static class PinpointConstants {
@@ -64,9 +65,9 @@ public class Constants {
         public static final CRServo.Direction kSpindexerDirection = CRServo.Direction.FORWARD;
 //        public static final DcMotorEx.Direction kNectarShooterDirection = DcMotorEx.Direction.FORWARD;
 //        public static final DcMotorEx.Direction kPollenShooterDirection = DcMotorEx.Direction.FORWARD;
-public static final DcMotorEx.Direction kLeftFlywheelDirection = DcMotorEx.Direction.FORWARD;
-        public static final DcMotorEx.Direction kRightFlywheelDirection = DcMotorEx.Direction.FORWARD;
-        public static final DcMotorEx.Direction kIntakeMotorDirection = DcMotorEx.Direction.FORWARD;
+    public static final DcMotorEx.Direction kLeftFlywheelDirection = DcMotorEx.Direction.REVERSE;
+        public static final DcMotorEx.Direction kRightFlywheelDirection = DcMotorEx.Direction.REVERSE;
+        public static final DcMotorEx.Direction kIntakeMotorDirection = DcMotorEx.Direction.REVERSE;
 
         public static final DcMotorEx.ZeroPowerBehavior kLeftFlywheelZeroPowerMode = DcMotorEx.ZeroPowerBehavior.FLOAT;
         public static final double kShooterTicksPerRev = 28;

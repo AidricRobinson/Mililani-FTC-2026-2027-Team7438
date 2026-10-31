@@ -41,7 +41,7 @@ public class TestLimelightShootCommand {
             pidController.createSetPoint(Constants.PinpointConstants.kLimeA * Math.pow(x, 2)
             + Constants.PinpointConstants.kLimeB * x
             + Constants.PinpointConstants.kLimeC);
-            pidController.setProcessVariable(shooterSubsystem.getRPM(dt));
+            pidController.setProcessVariable(shooterSubsystem.getRPM());
             shooterSubsystem.setPower(pidController.getOutput(dt));
         }
         else {

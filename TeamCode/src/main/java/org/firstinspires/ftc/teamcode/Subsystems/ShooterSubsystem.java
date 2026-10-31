@@ -104,4 +104,11 @@ public class ShooterSubsystem {
         return getLeftVelocity() / 28 * 60;
     }
 
+
+    public void setLeftFlywheelPower(double power) {
+        leftFlywheel.setPower(power);
+    }
+    public void setRightFlywheel(double power) {
+        rightFlywheel.setPower(power);
+    }
 }
