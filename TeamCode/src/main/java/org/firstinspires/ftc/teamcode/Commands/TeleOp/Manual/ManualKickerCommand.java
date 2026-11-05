@@ -12,10 +12,8 @@ public class ManualKickerCommand {
         this.gamepad = gamepad;
     }
     public void operate() {
-        if (gamepad.right_trigger >= 0.25 && gamepad.b) {
-            storageSubsystem.requestStoragePower(-.5);
-        }
-        else if (gamepad.b) {
+
+        if (gamepad.left_bumper) {
             storageSubsystem.requestStoragePower(.75);
         }
 

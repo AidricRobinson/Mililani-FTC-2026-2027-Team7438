@@ -70,6 +70,7 @@ public class TestTeleOp extends OpMode {
         pinpoint.initialize();
 
         pinpointLocalizer = new PinpointLocalizer(pinpoint);
+        /*
         mecanumDriveSubsystem = new MecanumDriveSubsystem(hardwareMap,this);
         intakeSubsystem = new IntakeSubsystem(this);
         testIntakeCommand = new TestIntakeCommand(intakeSubsystem, gamepad1);
@@ -91,12 +92,14 @@ public class TestTeleOp extends OpMode {
 
 
 //        autoAlignCommand = new TestAutoAlign(mecanumDriveSubsystem, gamepad1);
-
+        */
     }
 
     @Override
     public void loop(){
         pinpoint.update();
+        pinpointLocalizer.update();
+        /*
 //        Localization.setPose2d(pinpointLocalizer.getX(), pinpointLocalizer.getY());
         testIntakeCommand.operate(this.telemetry);
         fullShooterCommand.operate();
@@ -108,12 +111,16 @@ public class TestTeleOp extends OpMode {
 //        autoAlignCommand.operate(Constants.PinpointConstants.redAlliance, pinpointLocalizer, alignkP, alignkFF);
 //        telemetry.addData("Align kP: ", alignkP);
 //        telemetry.addData("Align kFF: ", alignkFF);
+        storageSubsystem.update();
+        */
+        telemetry.addData("AAAAAAAAAAAAAAAA: ", pinpointLocalizer.getHeading());
+
         telemetry.update();
     }
     public void stop(){
-        intakeSubsystem.shutdown();
-        manualSpindexerCommand.shutdown();
-        shooterSubsystem.shutdown();
+//        intakeSubsystem.shutdown();
+//        manualSpindexerCommand.shutdown();
+//        shooterSubsystem.shutdown();
 //        intakeCommand.shutdown();
 //        mecanumDriveSubsystem.shutdown();
 //        storageCommand.shutdown();

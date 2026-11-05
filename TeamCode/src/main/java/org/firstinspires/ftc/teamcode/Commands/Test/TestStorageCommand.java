@@ -15,20 +15,18 @@ public class TestStorageCommand {
 
     public void operate(){
         if (gamepad.dpad_up) {
-            storageSubsystem.setStoragePower(1);
+            storageSubsystem.requestStoragePower(1);
         }
-        if (gamepad.dpad_left) {
-            storageSubsystem.setStoragePower(.7);
+        else if (gamepad.dpad_left) {
+            storageSubsystem.requestStoragePower(.7);
         }
-        if (gamepad.dpad_right) {
-            storageSubsystem.setStoragePower(.6);
+        else if (gamepad.dpad_right) {
+            storageSubsystem.requestStoragePower(.6);
         }
-        if (gamepad.dpad_down) {
-            storageSubsystem.setStoragePower(.5);
+        else if (gamepad.dpad_down) {
+            storageSubsystem.requestStoragePower(.5);
         }
-        else {
-            storageSubsystem.setStoragePower(0);
-        }
+
     }
 
     public void shutdown(){

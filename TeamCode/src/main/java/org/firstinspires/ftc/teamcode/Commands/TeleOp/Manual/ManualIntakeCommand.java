@@ -13,11 +13,11 @@ public class ManualIntakeCommand {
         this.gamepad = gamepad;
     }
     public void operate() {
-        if (gamepad.a && gamepad.right_trigger >= 0.25) {
-            intakeSubsystem.requestPower(-1); // Test input value
+        if (gamepad.dpad_down) {
+            intakeSubsystem.requestPower(-.5); // Test input value
         }
         else if (gamepad.a) {
-            intakeSubsystem.requestPower(1); // Test input value
+            intakeSubsystem.requestPower(.25); // Test input value
         }
         else {
             intakeSubsystem.setIntakePower(0);

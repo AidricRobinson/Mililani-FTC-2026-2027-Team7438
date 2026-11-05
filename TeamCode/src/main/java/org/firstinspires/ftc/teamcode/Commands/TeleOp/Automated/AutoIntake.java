@@ -16,7 +16,7 @@ public class AutoIntake {
     }
 
     public void operate() {
-        if (gamepad.left_bumper) {
+        if (gamepad.left_trigger_pressed) {
             intakeSubsystem.requestPower(0.9);
 //            storageSubsystem.requestSpindexerPower(1);
 //            storageSubsystem.requestStoragePower(-.1);

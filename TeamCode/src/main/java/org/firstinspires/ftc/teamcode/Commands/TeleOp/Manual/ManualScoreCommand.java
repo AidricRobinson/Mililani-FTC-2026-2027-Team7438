@@ -19,13 +19,13 @@ public class ManualScoreCommand {
     }
 
     public void operate() {
-        if (gamepad.left_trigger_pressed) {
+        if (gamepad.right_trigger_pressed) {
 //            shooterSubsystem.setRPM(2500);
             shooterSubsystem.requestPower(.5);
         }
-        if (gamepad.left_bumper) {
-            storageSubsystem.requestSpindexerPower(1);
-            storageSubsystem.requestStoragePower(.75);
+        if (gamepad.left_trigger_pressed) {
+            storageSubsystem.requestSpindexerPower(-1);
+            storageSubsystem.requestStoragePower(.8);
         }
     }
     public void shutdown() {

@@ -105,6 +105,7 @@ public class RedAllianceTeleop extends OpMode {
         manualShootCommand = new ManualShootCommand(shooterSubsystem, gamepad2);
         manualKickerCommand = new ManualKickerCommand(storageSubsystem, gamepad2);
         manualScoreCommand = new ManualScoreCommand(storageSubsystem, shooterSubsystem, gamepad2);
+        manualSpindexerCommand = new ManualSpindexerCommand(storageSubsystem, gamepad2);
 
 
 //        limelightToggle = new LimelightToggle(shooterSubsystem, gamepad2);

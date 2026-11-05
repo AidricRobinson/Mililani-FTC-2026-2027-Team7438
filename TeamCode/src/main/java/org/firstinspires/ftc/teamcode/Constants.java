@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
@@ -73,6 +74,6 @@ public class Constants {
         public static final double kShooterTicksPerRev = 28;
         public static final DcMotorEx.ZeroPowerBehavior kRightFlywheelZeroPowerMode = DcMotorEx.ZeroPowerBehavior.FLOAT;
         public static final DcMotorEx.ZeroPowerBehavior kStorageZeroPowerMode = DcMotorEx.ZeroPowerBehavior.BRAKE;
-        public static final DcMotorEx.ZeroPowerBehavior kIntakeMotorZeroPowerMode = DcMotorEx.ZeroPowerBehavior.FLOAT;
+        public static final DcMotorEx.ZeroPowerBehavior kIntakeMotorZeroPowerMode = DcMotorEx.ZeroPowerBehavior.BRAKE;
     }
 }

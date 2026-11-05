@@ -18,10 +18,7 @@ public class ManualShootCommand {
 
     }
     public void operate(double dt) {
-        if (gamepad.y && gamepad.right_trigger_pressed) {
-            shooterSubsystem.requestPower(-.5);
-        }
-        else if (gamepad.y) {
+        if (gamepad.right_bumper) {
             shooterSubsystem.requestPower(.5);
         }
 //        if (gamepad.dpad_up && gamepad.right_trigger >= 0.25) {

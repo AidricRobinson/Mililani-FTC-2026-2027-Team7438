@@ -12,10 +12,10 @@ public class ManualSpindexerCommand {
         this.gamepad = gamepad;
     }
     public void operate() {
-        if (gamepad.right_trigger >= 0.25 && gamepad.x) {
+        if (gamepad.dpad_up) {
             storageSubsystem.requestSpindexerPower(-1);
         }
-        else if (gamepad.x) {
+        else if (gamepad.y) {
             storageSubsystem.requestSpindexerPower(1);
         }
 
