@@ -50,6 +50,8 @@ public class Constants {
         public static final double kPoseB = 1;
         public static final double kPoseC = 1;
 
+        public static final PIDController kAlignPID = new PIDController(.02125, 0, 0, .05);
+
     }
     public static class EncoderConstants{
 
