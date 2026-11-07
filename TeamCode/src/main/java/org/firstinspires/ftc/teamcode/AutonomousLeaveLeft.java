@@ -12,17 +12,20 @@ public class AutonomousLeaveLeft extends LinearOpMode {
     private MecanumDriveSubsystem mecanumDriveSubsystem;
 
     private AutoMoveLeft autoMoveLeft;
+    private ElapsedTime elapsedTime;
 
 
 
     @Override
     public void runOpMode() {
+        elapsedTime = new ElapsedTime();
         mecanumDriveSubsystem = new MecanumDriveSubsystem(this.hardwareMap, this);
 
-        autoMoveLeft = new AutoMoveLeft(mecanumDriveSubsystem, this);
+        autoMoveLeft = new AutoMoveLeft(mecanumDriveSubsystem, this, elapsedTime);
 
         waitForStart();
-        autoMoveLeft.operate();
+        elapsedTime.startTime();
+        autoMoveLeft.operate(30);
 
         mecanumDriveSubsystem.shutdown();
     }

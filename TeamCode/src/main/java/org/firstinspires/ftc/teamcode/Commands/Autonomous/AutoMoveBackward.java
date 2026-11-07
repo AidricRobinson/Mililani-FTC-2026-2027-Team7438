@@ -8,14 +8,17 @@ import org.firstinspires.ftc.teamcode.Subsystems.MecanumDriveSubsystem;
 public class AutoMoveBackward {
     private MecanumDriveSubsystem mecanumDriveSubsystem;
     private LinearOpMode linearOpMode;
+    private ElapsedTime elapsedTime;
 
-    public AutoMoveBackward(MecanumDriveSubsystem mecanumDriveSubsystem, LinearOpMode linearOpMode) {
+    public AutoMoveBackward(MecanumDriveSubsystem mecanumDriveSubsystem, LinearOpMode linearOpMode, ElapsedTime elapsedTime) {
         this.mecanumDriveSubsystem = mecanumDriveSubsystem;
         this.linearOpMode = linearOpMode;
+        this.elapsedTime = elapsedTime;
     }
 
-    public void operate() {
-        while(linearOpMode.opModeIsActive()) {
+    public void operate(double seconds) {
+        double start = elapsedTime.seconds();
+        while(linearOpMode.opModeIsActive() && elapsedTime.seconds() < start + seconds) {
             mecanumDriveSubsystem.setLeftFrontPower(-.25);
             mecanumDriveSubsystem.setLeftBackPower(-.25);
             mecanumDriveSubsystem.setRightFrontPower(-.25);

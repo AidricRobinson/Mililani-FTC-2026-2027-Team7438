@@ -8,16 +8,28 @@ public class PivotSubsystem {
     Servo servoR;
 
     public PivotSubsystem(OpMode opMode){
-        servoL = opMode.hardwareMap.get(Servo.class, "leftServoPivot");
-        servoR = opMode.hardwareMap.get(Servo.class, "rightServoPivot");
+        servoL = opMode.hardwareMap.get(Servo.class, "lPivot");
+        servoR = opMode.hardwareMap.get(Servo.class, "rPivot");
 
-        servoL.setDirection(Servo.Direction.FORWARD);
-        servoR.setDirection(Servo.Direction.REVERSE);
     }
 
     public void setPosition(double position){
         servoL.setPosition(position);
         servoR.setPosition(position);
+    }
+    public void setLeftPosition(double position) {
+        servoL.setPosition(position);
+    }
+    public void setRightPosition(double position) {
+        servoR.setPosition(position);
+    }
+    public void setPivotUp() {
+        setLeftPosition(0);
+        setRightPosition(1);
+    }
+    public void setPivotDown() {
+        setLeftPosition(1);
+        setRightPosition(0);
     }
     public void shutdown(){
         servoL.setPosition(0);

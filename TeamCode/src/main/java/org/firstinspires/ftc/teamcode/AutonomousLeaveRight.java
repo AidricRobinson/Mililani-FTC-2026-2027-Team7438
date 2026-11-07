@@ -13,17 +13,21 @@ public class AutonomousLeaveRight extends LinearOpMode {
     private MecanumDriveSubsystem mecanumDriveSubsystem;
 
     private AutoMoveRight autoMoveRight;
+    private ElapsedTime elapsedTime;
+
 
 
     
     @Override
     public void runOpMode() {
+        elapsedTime = new ElapsedTime();
         mecanumDriveSubsystem = new MecanumDriveSubsystem(this.hardwareMap, this);
 
-        autoMoveRight = new AutoMoveRight(mecanumDriveSubsystem, this);
+        autoMoveRight = new AutoMoveRight(mecanumDriveSubsystem, this, elapsedTime);
 
         waitForStart();
-        autoMoveRight.operate();
+
+        autoMoveRight.operate(30);
 
         mecanumDriveSubsystem.shutdown();
     }

@@ -42,11 +42,11 @@ public class FullShooterCommand {
 //        else {
 //            shutdown();
 //        }
-        if (gamepad.right_bumper) {
-            shooterSubsystem.setPower(.5);
+        if (gamepad.right_trigger_pressed) {
+            shooterSubsystem.requestPower(.6);
         }
-        else {
-            shooterSubsystem.shutdown();
+        else if (gamepad.left_trigger_pressed) {
+            shooterSubsystem.requestPower(.5);
         }
 
     }

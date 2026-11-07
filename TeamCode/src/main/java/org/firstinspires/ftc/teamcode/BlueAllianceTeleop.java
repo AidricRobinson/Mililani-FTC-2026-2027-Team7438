@@ -18,6 +18,7 @@ import org.firstinspires.ftc.teamcode.Commands.TeleOp.Automated.PanicResetRotati
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual.BrakeCommand;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual.ManualIntakeCommand;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual.ManualKickerCommand;
+import org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual.ManualPivotCommand;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual.ManualScoreCommand;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual.ManualShootCommand;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual.ManualSpindexerCommand;
@@ -38,7 +39,7 @@ public class BlueAllianceTeleop extends OpMode {
 
     private MecanumDriveSubsystem mecanumDriveSubsystem;
     private IntakeSubsystem intakeSubsystem;
-    //    private PivotSubsystem pivotSubsystem;
+    private PivotSubsystem pivotSubsystem;
     private StorageSubsystem storageSubsystem;
     private ShooterSubsystem shooterSubsystem;
 
@@ -55,6 +56,7 @@ public class BlueAllianceTeleop extends OpMode {
     private ManualKickerCommand manualKickerCommand;
     private ManualSpindexerCommand manualSpindexerCommand;
     private ManualScoreCommand manualScoreCommand;
+    private ManualPivotCommand manualPivotCommand;
 //    private LimelightToggle limelightToggle;
 
     private final ElapsedTime elapsedTime = new ElapsedTime();
@@ -89,7 +91,7 @@ public class BlueAllianceTeleop extends OpMode {
 
         mecanumDriveSubsystem = new MecanumDriveSubsystem(this.hardwareMap, this);
         intakeSubsystem = new IntakeSubsystem(this);
-//        pivotSubsystem = new PivotSubsystem(this);
+        pivotSubsystem = new PivotSubsystem(this);
         storageSubsystem = new StorageSubsystem(this);
         shooterSubsystem = new ShooterSubsystem(this);
 
@@ -106,6 +108,7 @@ public class BlueAllianceTeleop extends OpMode {
         manualKickerCommand = new ManualKickerCommand(storageSubsystem, gamepad2);
         manualScoreCommand = new ManualScoreCommand(storageSubsystem, shooterSubsystem, gamepad2);
         manualSpindexerCommand = new ManualSpindexerCommand(storageSubsystem, gamepad2);
+        manualPivotCommand = new ManualPivotCommand(pivotSubsystem, gamepad2);
 
 //        limelightToggle = new LimelightToggle(shooterSubsystem, gamepad2);
 
@@ -146,6 +149,7 @@ public class BlueAllianceTeleop extends OpMode {
         manualKickerCommand.operate();
         manualScoreCommand.operate();
         manualSpindexerCommand.operate();
+        manualPivotCommand.operate();
 
         intakeSubsystem.update();
         storageSubsystem.update();
@@ -159,7 +163,7 @@ public class BlueAllianceTeleop extends OpMode {
 //        limelightToggle.shutdown();
         intakeSubsystem.shutdown();
         storageSubsystem.shutdown();
-//        pivotSubsystem.shutdown();
+        pivotSubsystem.shutdown();
         shooterSubsystem.shutdown();
     }
 }
