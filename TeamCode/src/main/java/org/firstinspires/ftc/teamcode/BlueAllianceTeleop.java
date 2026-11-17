@@ -17,6 +17,7 @@ import org.firstinspires.ftc.teamcode.Commands.TeleOp.Automated.PanicResetRotati
 //import org.firstinspires.ftc.teamcode.Commands.TeleOp.Automated.ToggleFlywheels;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual.BrakeCommand;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual.ManualIntakeCommand;
+import org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual.ManualJankyAlign;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual.ManualKickerCommand;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual.ManualPivotCommand;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual.ManualScoreCommand;
@@ -57,6 +58,8 @@ public class BlueAllianceTeleop extends OpMode {
     private ManualSpindexerCommand manualSpindexerCommand;
     private ManualScoreCommand manualScoreCommand;
     private ManualPivotCommand manualPivotCommand;
+
+    private ManualJankyAlign manualJankyAlign;
 //    private LimelightToggle limelightToggle;
 
     private final ElapsedTime elapsedTime = new ElapsedTime();
@@ -110,6 +113,8 @@ public class BlueAllianceTeleop extends OpMode {
         manualSpindexerCommand = new ManualSpindexerCommand(storageSubsystem, gamepad2);
         manualPivotCommand = new ManualPivotCommand(pivotSubsystem, gamepad2);
 
+        manualJankyAlign = new ManualJankyAlign(mecanumDriveSubsystem, pinpointLocalizer, gamepad1);
+
 //        limelightToggle = new LimelightToggle(shooterSubsystem, gamepad2);
 
         lastTime = 0;
@@ -150,12 +155,12 @@ public class BlueAllianceTeleop extends OpMode {
         manualScoreCommand.operate();
         manualSpindexerCommand.operate();
         manualPivotCommand.operate();
-
+        manualJankyAlign.operate(Constants.PinpointConstants.blueAlliance);
         intakeSubsystem.update();
         storageSubsystem.update();
 //        pivotSubsystem.update();
         shooterSubsystem.update();
-        mecanumDriveSubsystem.updateBrake();
+//        mecanumDriveSubsystem.updateBrake();
     }
 
     public void stop() {

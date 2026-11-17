@@ -115,13 +115,13 @@ public class MecanumDriveSubsystem {
        double lb = (rotY - rotX - rx) / denominator;
        double rf = (rotY - rotX + rx) / denominator;
        double rb = (rotY + rotX + rx) / denominator;
-       if (gamepad.right_trigger >= 0.2) {
+       if (gamepad.right_trigger_pressed) {
            leftFront.setPower(lf * 0.4);
            leftBack.setPower(lb * 0.4);
            rightFront.setPower(rf * 0.4);
            rightBack.setPower(rb * 0.4);
        }
-       else if (gamepad.left_bumper) {
+       else if (gamepad.left_trigger_pressed) {
            leftFront.setPower(lf * 0.75);
            leftBack.setPower(lb * 0.75);
            rightFront.setPower(rf * 0.75);

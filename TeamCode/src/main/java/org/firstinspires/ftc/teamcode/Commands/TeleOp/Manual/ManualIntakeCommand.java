@@ -17,7 +17,7 @@ public class ManualIntakeCommand {
             intakeSubsystem.requestPower(-.5); // Test input value
         }
         else if (gamepad.a) {
-            intakeSubsystem.requestPower(.25); // Test input value
+            intakeSubsystem.requestPower(.2); // Test input value
         }
         else {
             intakeSubsystem.setIntakePower(0);

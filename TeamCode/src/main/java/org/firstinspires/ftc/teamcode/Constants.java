@@ -64,7 +64,8 @@ public class Constants {
 //        public static final PIDController nectarPID = new PIDController(0, 0, 0, 0);
 //        public static final PIDController pollenPID = new PIDController(0, 0, 0, 0);
         public static final PIDController shooterPID = new PIDController(0, 0, 0, 0);
-        public static final DcMotorEx.Direction kStorageMotorDirection = DcMotorEx.Direction.FORWARD;
+        public static final DcMotorEx.Direction kStorageMotorDirection = DcMotorEx.Direction.REVERSE
+                ;
         public static final CRServo.Direction kSpindexerDirection = CRServo.Direction.FORWARD;
 //        public static final DcMotorEx.Direction kNectarShooterDirection = DcMotorEx.Direction.FORWARD;
 //        public static final DcMotorEx.Direction kPollenShooterDirection = DcMotorEx.Direction.FORWARD;

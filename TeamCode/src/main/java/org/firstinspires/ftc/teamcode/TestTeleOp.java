@@ -15,11 +15,13 @@ import org.firstinspires.ftc.teamcode.Commands.Test.TestAutoAlign;
 import org.firstinspires.ftc.teamcode.Commands.Test.TestFlowerArm;
 import org.firstinspires.ftc.teamcode.Commands.Test.TestIntakeCommand;
 import org.firstinspires.ftc.teamcode.Commands.Test.TestStorageCommand;
+import org.firstinspires.ftc.teamcode.Commands.Test.TestTransferCommand;
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.PivotSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.StorageSubsystem;
+import org.firstinspires.ftc.teamcode.Subsystems.TransferSubsystem;
 
 
 @TeleOp(name="TEST ONLY")
@@ -37,16 +39,18 @@ public class TestTeleOp extends OpMode {
 
 //    private IntakeCommand intakeCommand;
 //    private StorageCommand storageCommand;
+    private TestTransferCommand testTransferCommand;
 
     private IntakeSubsystem intakeSubsystem;
     private TestIntakeCommand testIntakeCommand;
-    private StorageSubsystem storageSubsystem;
+//    private StorageSubsystem storageSubsystem;
 //    private ManualSpindexerCommand manualSpindexerCommand;
 
 
     private ShooterSubsystem shooterSubsystem;
     private FullShooterCommand fullShooterCommand;
-    private TestStorageCommand testStorageCommand;
+//    private TestStorageCommand testStorageCommand;
+    private TransferSubsystem transferSubsystem;
     private TestFlowerArm testFlowerArm;
     public static double alignkP = .02125;
     public static double alignkFF = .05;
@@ -80,13 +84,15 @@ public class TestTeleOp extends OpMode {
         intakeSubsystem = new IntakeSubsystem(this);
         testIntakeCommand = new TestIntakeCommand(intakeSubsystem, gamepad2);
 
-        storageSubsystem = new StorageSubsystem(this);
+//        storageSubsystem = new StorageSubsystem(this);
+        transferSubsystem = new TransferSubsystem(this);
 //        manualSpindexerCommand = new ManualSpindexerCommand(storageSubsystem, gamepad2);
 
         shooterSubsystem = new ShooterSubsystem(this);
         fullShooterCommand = new FullShooterCommand(shooterSubsystem, gamepad2);
 
-        testStorageCommand = new TestStorageCommand(storageSubsystem, gamepad2);
+//        testStorageCommand = new TestStorageCommand(storageSubsystem, gamepad2);
+        testTransferCommand = new TestTransferCommand(transferSubsystem, gamepad1);
         testFlowerArm = new TestFlowerArm(pivotSubsystem, gamepad2);
 //        storageSubsystem = new StorageSubsystem(this) ;
 
@@ -109,7 +115,8 @@ public class TestTeleOp extends OpMode {
 //        Localization.setPose2d(pinpointLocalizer.getX(), pinpointLocalizer.getY());
         testIntakeCommand.operate(this.telemetry);
         fullShooterCommand.operate();
-        testStorageCommand.operate();
+//        testStorageCommand.operate();
+        testTransferCommand.operate();
         testFlowerArm.operate();
 //        intakeCommand.operate(gamepad1);
         mecanumDriveSubsystem.operate(gamepad1, telemetry, Constants.PinpointConstants.redAlliance, pinpointLocalizer);
@@ -117,7 +124,8 @@ public class TestTeleOp extends OpMode {
 //        autoAlignCommand.operate(Constants.PinpointConstants.redAlliance, pinpointLocalizer, alignkP, alignkFF);
 //        telemetry.addData("Align kP: ", alignkP);
 //        telemetry.addData("Align kFF: ", alignkFF);
-        storageSubsystem.update();
+//        storageSubsystem.update();
+        transferSubsystem.update();
         shooterSubsystem.update();
         intakeSubsystem.update();
 
@@ -129,7 +137,8 @@ public class TestTeleOp extends OpMode {
         intakeSubsystem.shutdown();
 //        manualSpindexerCommand.shutdown();
         shooterSubsystem.shutdown();
-        storageSubsystem.shutdown();
+//        storageSubsystem.shutdown();
+        transferSubsystem.shutdown();
 //        intakeCommand.shutdown();
         mecanumDriveSubsystem.shutdown();
 //        storageCommand.shutdown();

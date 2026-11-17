@@ -25,7 +25,7 @@ public class ManualScoreCommand {
         }
         if (gamepad.left_trigger_pressed) {
             storageSubsystem.requestSpindexerPower(-1);
-            storageSubsystem.requestStoragePower(.8);
+            storageSubsystem.requestStoragePower(1);
         }
     }
     public void shutdown() {
