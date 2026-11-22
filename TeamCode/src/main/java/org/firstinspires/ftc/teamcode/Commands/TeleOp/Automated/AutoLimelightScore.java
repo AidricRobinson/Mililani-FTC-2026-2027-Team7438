@@ -5,6 +5,7 @@ import com.qualcomm.hardware.limelightvision.Limelight3A;
 
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.PIDController;
+import org.firstinspires.ftc.teamcode.SpeedPIDController;
 import org.firstinspires.ftc.teamcode.Subsystems.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.StorageSubsystem;
@@ -14,7 +15,7 @@ public class AutoLimelightScore {
     private MecanumDriveSubsystem mecanumDriveSubsystem;
     private StorageSubsystem storageSubsystem;
     private Limelight3A limelight;
-    private PIDController pidController = Constants.PayloadConstants.shooterPID;
+    private SpeedPIDController pidController = Constants.PIDConstants.kShooterPID;
 //    private SetNectarRPM setNectarRPM;
 //    private SetPollenRPM setPollenRPM;
 
@@ -35,7 +36,7 @@ public class AutoLimelightScore {
 //        setPollenRPM = new SetPollenRPM(shooterSubsystem);
         tx = 0;
     }
-    public void operate(double dt) {
+    public void operate() {
         result = limelight.getLatestResult();
         boolean hasTarget = result != null && result.isValid() && result.getStaleness() < 100; // ms
         x = 0;
@@ -57,7 +58,7 @@ public class AutoLimelightScore {
         + Constants.PinpointConstants.kLimeB * x
         + Constants.PinpointConstants.kLimeC);
         pidController.setProcessVariable(shooterSubsystem.getRPM());
-        shooterSubsystem.requestPower(pidController.getOutput(dt));
+        shooterSubsystem.requestPower(pidController.getOutput());
 
 
         boolean shooterReady = Math.abs(pidController.getError()) < 100;
@@ -90,6 +91,6 @@ public class AutoLimelightScore {
         shooterSubsystem.shutdown();
         storageSubsystem.shutdown();
         mecanumDriveSubsystem.shutdown();
-        pidController.resetIntegral();
+
     }
 }

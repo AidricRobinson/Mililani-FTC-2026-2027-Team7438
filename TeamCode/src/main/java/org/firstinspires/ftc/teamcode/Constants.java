@@ -50,8 +50,16 @@ public class Constants {
         public static final double kPoseB = 1;
         public static final double kPoseC = 1;
 
-        public static final PIDController kAlignPID = new PIDController(.02125, 0, 0, .05);
 
+
+    }
+
+    public static class PIDConstants {
+        public static final PIDController kAlignPID = new PIDController(.02125, .05);
+        public static final PIDController kMovePID = new PIDController(0, 0);
+        public static final SpeedPIDController kShooterPID = new SpeedPIDController(0, 0);
+        public static final SpeedPIDController kIntakePID = new SpeedPIDController(0, 0);
+        public static final SpeedPIDController kStoragePID = new SpeedPIDController(0, 0);
     }
     public static class EncoderConstants{
 
@@ -61,9 +69,6 @@ public class Constants {
     }
 
     public static class PayloadConstants {
-//        public static final PIDController nectarPID = new PIDController(0, 0, 0, 0);
-//        public static final PIDController pollenPID = new PIDController(0, 0, 0, 0);
-        public static final PIDController shooterPID = new PIDController(0, 0, 0, 0);
         public static final DcMotorEx.Direction kStorageMotorDirection = DcMotorEx.Direction.REVERSE
                 ;
         public static final CRServo.Direction kSpindexerDirection = CRServo.Direction.FORWARD;

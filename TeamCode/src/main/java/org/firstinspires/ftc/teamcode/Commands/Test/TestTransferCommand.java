@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.Commands.Test;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-import org.firstinspires.ftc.teamcode.Subsystems.StorageSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.TransferSubsystem;
 
 public class TestTransferCommand {
@@ -16,16 +15,16 @@ public class TestTransferCommand {
 
     public void operate(){
         if (gamepad.a) {
-            transferSubsystem.setStoragePower(.5);
+            transferSubsystem.setTopHarvesterPower(.5);
         }
         else if (gamepad.b) {
-            transferSubsystem.setStoragePower(.25);
+            transferSubsystem.setTopHarvesterPower(.25);
         }
         else if (gamepad.x) {
-            transferSubsystem.setStoragePower(.75);
+            transferSubsystem.setTopHarvesterPower(.75);
         }
         else if (gamepad.y) {
-            transferSubsystem.setStoragePower(1);
+            transferSubsystem.setTopHarvesterPower(1);
         }
     }
 

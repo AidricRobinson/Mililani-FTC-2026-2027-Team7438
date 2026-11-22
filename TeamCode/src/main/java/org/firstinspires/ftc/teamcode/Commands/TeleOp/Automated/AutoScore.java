@@ -39,7 +39,7 @@ public class AutoScore {
 
         if (gamepad.right_bumper) {
             if (shooterSubsystem.getManualToggle()) {
-                autoLimelightScore.operate(dt);
+                autoLimelightScore.operate();
             }
             else {
 //                localizationScore.operate(alliance, dt);
