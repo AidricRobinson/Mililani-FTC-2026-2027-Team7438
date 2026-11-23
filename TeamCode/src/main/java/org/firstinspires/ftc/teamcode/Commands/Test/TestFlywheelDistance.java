@@ -8,12 +8,13 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.Localization;
 import org.firstinspires.ftc.teamcode.PIDController;
+import org.firstinspires.ftc.teamcode.SpeedPIDController;
 import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
 
 public class TestFlywheelDistance {
     private ShooterSubsystem shooterSubsystem;
     private Gamepad gamepad;
-    private PIDController pidController;
+    private SpeedPIDController pidController;
     private Telemetry telemetry;
     private Limelight3A limelight;
     private LLResult result;
@@ -28,7 +29,7 @@ public class TestFlywheelDistance {
         this.gamepad = gamepad;
         this.limelight = limelight;
         this.telemetry = telemetry;
-        pidController = Constants.PayloadConstants.shooterPID;
+        pidController = Constants.PIDConstants.kShooterPID;
         shooterSubsystem.setTestRPM(2000);
     }
     public void operate(String alliance, double dt) {
@@ -44,11 +45,10 @@ public class TestFlywheelDistance {
         if (gamepad.x) {
             pidController.createSetPoint(shooterSubsystem.getTestRPM());
             pidController.setProcessVariable(shooterSubsystem.getRPM());
-            shooterSubsystem.setPower(pidController.getOutput(dt));
+            shooterSubsystem.setPower(pidController.getOutput());
         }
         else {
             shooterSubsystem.shutdown();
-            pidController.resetIntegral();
         }
         result = limelight.getLatestResult();
         double ta = 0;
@@ -77,6 +77,5 @@ public class TestFlywheelDistance {
     }
     public void shutdown() {
         shooterSubsystem.shutdown();
-        pidController.resetIntegral();
     }
 }

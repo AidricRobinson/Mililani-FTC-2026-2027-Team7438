@@ -4,17 +4,18 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.PIDController;
+import org.firstinspires.ftc.teamcode.SpeedPIDController;
 import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
 
 public class ManualShootCommand {
     private ShooterSubsystem shooterSubsystem;
     private Gamepad gamepad;
-    private PIDController pidController;
+    private SpeedPIDController pidController;
     public ManualShootCommand(ShooterSubsystem shooterSubsystem, Gamepad gamepad) {
         this.shooterSubsystem = shooterSubsystem;
         this.gamepad = gamepad;
 
-        pidController = Constants.PayloadConstants.shooterPID;
+        pidController = Constants.PIDConstants.kShooterPID;
 
     }
     public void operate(double dt) {
@@ -33,7 +34,6 @@ public class ManualShootCommand {
 //        }
     }
     public void shutdown() {
-        pidController.resetIntegral();
         shooterSubsystem.shutdown();
     }
 }

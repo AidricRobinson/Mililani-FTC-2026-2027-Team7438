@@ -9,18 +9,15 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
-import org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual.ManualSpindexerCommand;
 import org.firstinspires.ftc.teamcode.Commands.Test.FullShooterCommand;
 import org.firstinspires.ftc.teamcode.Commands.Test.TestAutoAlign;
 import org.firstinspires.ftc.teamcode.Commands.Test.TestFlowerArm;
 import org.firstinspires.ftc.teamcode.Commands.Test.TestIntakeCommand;
-import org.firstinspires.ftc.teamcode.Commands.Test.TestStorageCommand;
 import org.firstinspires.ftc.teamcode.Commands.Test.TestTransferCommand;
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.PivotSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
-import org.firstinspires.ftc.teamcode.Subsystems.StorageSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.TransferSubsystem;
 
 
@@ -36,6 +33,7 @@ public class TestTeleOp extends OpMode {
     private MecanumDriveSubsystem mecanumDriveSubsystem;
     private PinpointLocalizer pinpointLocalizer;
     private PivotSubsystem pivotSubsystem;
+    private TransferSubsystem transferSubsystem;
 
 //    private IntakeCommand intakeCommand;
 //    private StorageCommand storageCommand;
@@ -50,7 +48,6 @@ public class TestTeleOp extends OpMode {
     private ShooterSubsystem shooterSubsystem;
     private FullShooterCommand fullShooterCommand;
 //    private TestStorageCommand testStorageCommand;
-    private TransferSubsystem transferSubsystem;
     private TestFlowerArm testFlowerArm;
     public static double alignkP = .02125;
     public static double alignkFF = .05;
@@ -82,14 +79,14 @@ public class TestTeleOp extends OpMode {
         mecanumDriveSubsystem = new MecanumDriveSubsystem(hardwareMap,this);
         pivotSubsystem = new PivotSubsystem(this);
         intakeSubsystem = new IntakeSubsystem(this);
-        testIntakeCommand = new TestIntakeCommand(intakeSubsystem, gamepad2);
+        testIntakeCommand = new TestIntakeCommand(intakeSubsystem, gamepad1);
 
 //        storageSubsystem = new StorageSubsystem(this);
         transferSubsystem = new TransferSubsystem(this);
 //        manualSpindexerCommand = new ManualSpindexerCommand(storageSubsystem, gamepad2);
 
         shooterSubsystem = new ShooterSubsystem(this);
-        fullShooterCommand = new FullShooterCommand(shooterSubsystem, gamepad2);
+        fullShooterCommand = new FullShooterCommand(shooterSubsystem, gamepad1);
 
 //        testStorageCommand = new TestStorageCommand(storageSubsystem, gamepad2);
         testTransferCommand = new TestTransferCommand(transferSubsystem, gamepad1);

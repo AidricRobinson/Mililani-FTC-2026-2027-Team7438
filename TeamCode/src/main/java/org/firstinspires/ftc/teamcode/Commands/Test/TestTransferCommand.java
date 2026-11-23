@@ -14,17 +14,24 @@ public class TestTransferCommand {
     }
 
     public void operate(){
-        if (gamepad.a) {
-            transferSubsystem.setTopHarvesterPower(.5);
+        if (gamepad.dpad_down) {
+            transferSubsystem.setBottomHarvesterPower(1);
+            transferSubsystem.setTopHarvesterPower(.2);
         }
-        else if (gamepad.b) {
-            transferSubsystem.setTopHarvesterPower(.25);
+        else if (gamepad.dpad_right) {
+            transferSubsystem.setBottomHarvesterPower(1);
+            transferSubsystem.setTopHarvesterPower(.4);
         }
         else if (gamepad.x) {
-            transferSubsystem.setTopHarvesterPower(.75);
+            transferSubsystem.setBottomHarvesterPower(1);
+            transferSubsystem.setTopHarvesterPower(.6);
         }
         else if (gamepad.y) {
-            transferSubsystem.setTopHarvesterPower(1);
+            transferSubsystem.setBottomHarvesterPower(1);
+            transferSubsystem.setTopHarvesterPower(.8);
+        }
+        else {
+            transferSubsystem.shutdown();
         }
     }
 

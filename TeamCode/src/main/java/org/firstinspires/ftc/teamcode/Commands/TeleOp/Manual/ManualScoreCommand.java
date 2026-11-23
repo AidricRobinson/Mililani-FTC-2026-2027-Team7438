@@ -3,18 +3,18 @@ package org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
-import org.firstinspires.ftc.teamcode.Subsystems.StorageSubsystem;
+import org.firstinspires.ftc.teamcode.Subsystems.TransferSubsystem;
 
 public class ManualScoreCommand {
-    private StorageSubsystem storageSubsystem;
+    private TransferSubsystem transferSubsystem;
     private ShooterSubsystem shooterSubsystem;
     private Gamepad gamepad;
 
-    public ManualScoreCommand (StorageSubsystem storageSubsystem,
+    public ManualScoreCommand (TransferSubsystem transferSubsystem,
                                ShooterSubsystem shooterSubsystem,
                                Gamepad gamepad) {
         this.shooterSubsystem = shooterSubsystem;
-        this.storageSubsystem = storageSubsystem;
+        this.transferSubsystem = transferSubsystem;
         this.gamepad = gamepad;
     }
 
@@ -24,12 +24,12 @@ public class ManualScoreCommand {
             shooterSubsystem.requestPower(.5);
         }
         if (gamepad.left_trigger_pressed) {
-            storageSubsystem.requestSpindexerPower(-1);
-            storageSubsystem.requestStoragePower(1);
+            transferSubsystem.requestBottomHarvester(1);
+            transferSubsystem.requestTopHarvester(.5);
         }
     }
     public void shutdown() {
         shooterSubsystem.shutdown();
-        storageSubsystem.shutdown();
+        transferSubsystem.shutdown();
     }
 }

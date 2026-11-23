@@ -13,14 +13,14 @@ import org.firstinspires.ftc.teamcode.Commands.Autonomous.AutoTurn;
 import org.firstinspires.ftc.teamcode.Commands.Autonomous.AutonomousShoot;
 import org.firstinspires.ftc.teamcode.Subsystems.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
-import org.firstinspires.ftc.teamcode.Subsystems.StorageSubsystem;
+import org.firstinspires.ftc.teamcode.Subsystems.TransferSubsystem;
 
 import java.sql.Time;
 
 @Autonomous(name="Blue Score and Park", group = "Linear OpMode")
 public class BlueScoreAndPark extends LinearOpMode {
     private ShooterSubsystem shooterSubsystem;
-    private StorageSubsystem storageSubsystem;
+    private TransferSubsystem transferSubsystem;
     private MecanumDriveSubsystem mecanumDriveSubsystem;
     private GoBildaPinpointDriver pinpoint;
     private PinpointLocalizer pinpointLocalizer;
@@ -47,19 +47,19 @@ public class BlueScoreAndPark extends LinearOpMode {
 
         mecanumDriveSubsystem = new MecanumDriveSubsystem(hardwareMap, this);
         shooterSubsystem = new ShooterSubsystem(this);
-        storageSubsystem = new StorageSubsystem(this);
+        transferSubsystem = new TransferSubsystem(this);
 
         autoMoveLeft = new AutoMoveLeft(mecanumDriveSubsystem, this, elapsedTime);
         autoTurn = new AutoTurn(mecanumDriveSubsystem, pinpointLocalizer, this);
         autonomousShoot = new AutonomousShoot(this,
-                shooterSubsystem, storageSubsystem, elapsedTime);
+                shooterSubsystem, transferSubsystem, elapsedTime);
 
 
         waitForStart();
         elapsedTime.startTime();
-        autonomousShoot.operate();
+        autonomousShoot.operate(2500);
         shooterSubsystem.shutdown();
-        storageSubsystem.shutdown();
+        transferSubsystem.shutdown();
         autoMoveLeft.operate(3);
         autoTurn.operate(179.99);
         autoMoveLeft.operate(30);

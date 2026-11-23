@@ -7,28 +7,29 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.PIDController;
+import org.firstinspires.ftc.teamcode.SpeedPIDController;
 import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
-import org.firstinspires.ftc.teamcode.Subsystems.StorageSubsystem;
+import org.firstinspires.ftc.teamcode.Subsystems.TransferSubsystem;
 
 public class TestLimelightShootCommand {
     private ShooterSubsystem shooterSubsystem;
-    private StorageSubsystem storageSubsystem;
+    private TransferSubsystem transferSubsystem;
     private Limelight3A limelight;
     private Gamepad gamepad;
     private LLResult result;
-    private PIDController pidController;
+    private SpeedPIDController pidController;
     double x;
 
     public TestLimelightShootCommand(ShooterSubsystem shooterSubsystem,
-                                     StorageSubsystem storageSubsystem,
+                                     TransferSubsystem transferSubsystem,
                                      Limelight3A limelight,
                                      Gamepad gamepad) {
         this.shooterSubsystem = shooterSubsystem;
-        this.storageSubsystem = storageSubsystem;
+        this.transferSubsystem = transferSubsystem;
         this.limelight = limelight;
         this.gamepad = gamepad;
 
-        pidController = Constants.PayloadConstants.shooterPID;
+        pidController = Constants.PIDConstants.kShooterPID;
 
         x = 0;
     }
@@ -42,10 +43,9 @@ public class TestLimelightShootCommand {
             + Constants.PinpointConstants.kLimeB * x
             + Constants.PinpointConstants.kLimeC);
             pidController.setProcessVariable(shooterSubsystem.getRPM());
-            shooterSubsystem.setPower(pidController.getOutput(dt));
+            shooterSubsystem.setPower(pidController.getOutput());
         }
         else {
-            pidController.resetIntegral();
             shooterSubsystem.shutdown();
         }
     }

@@ -6,22 +6,23 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.SpeedPIDController;
 import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
-import org.firstinspires.ftc.teamcode.Subsystems.StorageSubsystem;
+import org.firstinspires.ftc.teamcode.Subsystems.TransferSubsystem;
+
 
 public class AutonomousShoot {
     private LinearOpMode linearOpMode;
     private ShooterSubsystem shooterSubsystem;
-    private StorageSubsystem storageSubsystem;
+    private TransferSubsystem transferSubsystem;
     private ElapsedTime elapsedTime;
     private SpeedPIDController shooterPID;
 
     public AutonomousShoot(LinearOpMode linearOpMode,
                            ShooterSubsystem shooterSubsystem,
-                           StorageSubsystem storageSubsystem,
+                           TransferSubsystem transferSubsystem,
                            ElapsedTime elapsedTime) {
         this.linearOpMode = linearOpMode;
         this.shooterSubsystem = shooterSubsystem;
-        this.storageSubsystem = storageSubsystem;
+        this.transferSubsystem = transferSubsystem;
         this.shooterPID = Constants.PIDConstants.kShooterPID;
         this.elapsedTime = elapsedTime;
     }
@@ -33,15 +34,15 @@ public class AutonomousShoot {
             shooterSubsystem.setPower(shooterPID.getOutput());
 
             if (elapsedTime.seconds() >= startTime + 2) {
-                storageSubsystem.setSpindexerPower(1);
-                storageSubsystem.setStoragePower(.5);
+                transferSubsystem.setBottomHarvesterPower(1);
+                transferSubsystem.setTopHarvesterPower(.5);
             }
         }
         shooterSubsystem.shutdown();
-        storageSubsystem.shutdown();
+        transferSubsystem.shutdown();
     }
     public void shutdown() {
         shooterSubsystem.shutdown();
-        storageSubsystem.shutdown();
+        transferSubsystem.shutdown();
     }
 }

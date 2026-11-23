@@ -33,6 +33,12 @@ public class TransferSubsystem {
     public boolean beamBroken() {
         return irSensor.getState();
     }
+    public double getVelocity() {
+        return topHarvester.getVelocity();
+    }
+    public double getRPM() {
+        return getVelocity() / 28 * 60;
+    }
 
     public void setTestPower(double power) {
         testPower = power;

@@ -36,6 +36,12 @@ public class IntakeSubsystem {
     public void zeroTestPower() {
         testPower = 0;
     }
+    public double getVelocity() {
+        return intakeMotor.getVelocity();
+    }
+    public double getRPM() {
+        return getVelocity() / 28 * 60;
+    }
     public double getTestPower() {
         return testPower;
     }

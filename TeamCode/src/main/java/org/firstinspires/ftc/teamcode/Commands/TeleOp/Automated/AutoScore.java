@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.Subsystems.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
-import org.firstinspires.ftc.teamcode.Subsystems.StorageSubsystem;
+import org.firstinspires.ftc.teamcode.Subsystems.TransferSubsystem;
 
 public class AutoScore {
     private Gamepad gamepad;
@@ -14,14 +14,14 @@ public class AutoScore {
     private ShooterSubsystem shooterSubsystem;
 
     public AutoScore(MecanumDriveSubsystem mecanumDriveSubsystem,
-                     StorageSubsystem storageSubsystem,
+                     TransferSubsystem transferSubsystem,
                      ShooterSubsystem shooterSubsystem,
                      Limelight3A limelight,
                      Gamepad gamepad) {
         this.gamepad = gamepad;
         this.shooterSubsystem = shooterSubsystem;
         autoLimelightScore = new AutoLimelightScore(shooterSubsystem,
-                storageSubsystem,
+                transferSubsystem,
                 limelight,
                 mecanumDriveSubsystem);
 

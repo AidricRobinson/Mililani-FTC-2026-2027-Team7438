@@ -42,31 +42,31 @@ public class TestIntakeCommand {
 
 
 
-//        if (gamepad.y) {
-//            intakeSubsystem.setIntakePower(1);
-//        }
-//        else if (gamepad.x) {
-//            intakeSubsystem.setIntakePower(.9);
-//        }
-//        else if (gamepad.b){
-//            intakeSubsystem.setIntakePower(.8);
-//        }
-//        else if (gamepad.a) {
-//            intakeSubsystem.setIntakePower(.7);
-//        }
-//        else {
-//            intakeSubsystem.setIntakePower(0);
-//        }
-
-        if (gamepad.a) {
-            intakeSubsystem.requestPower(.8);
+        if (gamepad.y) {
+            intakeSubsystem.setIntakePower(1);
         }
-        else if (gamepad.dpad_down) {
-            intakeSubsystem.requestPower(-.8);
+        else if (gamepad.x) {
+            intakeSubsystem.setIntakePower(.9);
+        }
+        else if (gamepad.b){
+            intakeSubsystem.setIntakePower(.8);
+        }
+        else if (gamepad.a) {
+            intakeSubsystem.setIntakePower(.7);
+        }
+        else {
+            intakeSubsystem.setIntakePower(0);
         }
 
-        telemetry.addData("Intake test power: ", intakeSubsystem.getTestPower());
-        telemetry.update();
+//        if (gamepad.a) {
+//            intakeSubsystem.requestPower(.8);
+//        }
+//        else if (gamepad.dpad_down) {
+//            intakeSubsystem.requestPower(-.8);
+//        }
+
+//        telemetry.addData("Intake test power: ", intakeSubsystem.getTestPower());
+//        telemetry.update();
     }
 
     public void shutdown(){

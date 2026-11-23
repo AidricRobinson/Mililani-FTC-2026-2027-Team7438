@@ -3,19 +3,19 @@ package org.firstinspires.ftc.teamcode.Commands.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeSubsystem;
-import org.firstinspires.ftc.teamcode.Subsystems.StorageSubsystem;
+import org.firstinspires.ftc.teamcode.Subsystems.TransferSubsystem;
 
 public class AutoIntakeCommand {
     private final IntakeSubsystem intakeSubsystem;
-    private final StorageSubsystem storageSubsystem;
+    private final TransferSubsystem transferSubsystem;
     private final ElapsedTime timer = new ElapsedTime();
     private double power;
     private double durationSeconds;
     private boolean running = false;
 
-    public AutoIntakeCommand(IntakeSubsystem intakeSubsystem, StorageSubsystem storageSubsystem) {
+    public AutoIntakeCommand(IntakeSubsystem intakeSubsystem, TransferSubsystem transferSubsystem) {
         this.intakeSubsystem = intakeSubsystem;
-        this.storageSubsystem = storageSubsystem;
+        this.transferSubsystem = transferSubsystem;
     }
 
     public void start(double power, double durationSeconds) {
@@ -33,13 +33,16 @@ public class AutoIntakeCommand {
             return true;
         }
         intakeSubsystem.setIntakePower(power);
-        storageSubsystem.setStoragePower(.2);
+        transferSubsystem.setBottomHarvesterPower(1);
+        if (!transferSubsystem.beamBroken()) {
+            transferSubsystem.setTopHarvesterPower(0.5);
+        }
         return false;
     }
 
     public void shutdown() {
         running = false;
         intakeSubsystem.shutdown();
-        storageSubsystem.shutdown();
+        transferSubsystem.shutdown();
     }
 }

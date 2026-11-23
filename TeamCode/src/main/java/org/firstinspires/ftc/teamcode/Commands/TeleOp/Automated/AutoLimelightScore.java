@@ -8,12 +8,12 @@ import org.firstinspires.ftc.teamcode.PIDController;
 import org.firstinspires.ftc.teamcode.SpeedPIDController;
 import org.firstinspires.ftc.teamcode.Subsystems.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
-import org.firstinspires.ftc.teamcode.Subsystems.StorageSubsystem;
+import org.firstinspires.ftc.teamcode.Subsystems.TransferSubsystem;
 
 public class AutoLimelightScore {
     private ShooterSubsystem shooterSubsystem;
     private MecanumDriveSubsystem mecanumDriveSubsystem;
-    private StorageSubsystem storageSubsystem;
+    private TransferSubsystem transferSubsystem;
     private Limelight3A limelight;
     private SpeedPIDController pidController = Constants.PIDConstants.kShooterPID;
 //    private SetNectarRPM setNectarRPM;
@@ -26,9 +26,9 @@ public class AutoLimelightScore {
     double kFF = 0.05;
     double output;
 
-    public AutoLimelightScore(ShooterSubsystem shooterSubsystem, StorageSubsystem storageSubsystem, Limelight3A limelight, MecanumDriveSubsystem mecanumDriveSubsystem) {
+    public AutoLimelightScore(ShooterSubsystem shooterSubsystem, TransferSubsystem transferSubsystem, Limelight3A limelight, MecanumDriveSubsystem mecanumDriveSubsystem) {
         this.shooterSubsystem = shooterSubsystem;
-        this.storageSubsystem = storageSubsystem;
+        this.transferSubsystem = transferSubsystem;
         this.mecanumDriveSubsystem = mecanumDriveSubsystem;
         this.limelight = limelight;
 
@@ -46,7 +46,7 @@ public class AutoLimelightScore {
         } else {
             // No fresh target: hold still, don't spin or feed
             mecanumDriveSubsystem.shutdown();
-            storageSubsystem.shutdown();
+            transferSubsystem.shutdown();
 
             return;
         }
@@ -78,18 +78,17 @@ public class AutoLimelightScore {
             // no storage request = storage stays off
         } else {
             mecanumDriveSubsystem.shutdown();
-            storageSubsystem.requestSpindexerPower(1);
             mecanumDriveSubsystem.requestBrake(1);
             if (shooterReady) {
-                storageSubsystem.requestStoragePower(0.75);
-                storageSubsystem.requestSpindexerPower(1);
+                transferSubsystem.requestBottomHarvester(1);
+                transferSubsystem.requestTopHarvester(.5);
             }
             // not ready yet: no storage request = feed stays off
         }
     }
     public void shutdown() {
         shooterSubsystem.shutdown();
-        storageSubsystem.shutdown();
+        transferSubsystem.shutdown();
         mecanumDriveSubsystem.shutdown();
 
     }
