@@ -10,13 +10,13 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 import org.firstinspires.ftc.teamcode.Constants;
 
 public class TransferSubsystem {
-    private DcMotorEx topHarvester; //Motor for spinning the roller/wheel that takes the balls out of the spindexer.
+    private DcMotor topHarvester; //Motor for spinning the roller/wheel that takes the balls out of the spindexer.
     private CRServo leftServo;
     private CRServo rightServo;
-    private DigitalChannel irSensor;
+//    private DigitalChannel irSensor;
     private double testPower;
     public TransferSubsystem(OpMode opMode){
-        topHarvester = opMode.hardwareMap.get(DcMotorEx.class,"top");
+        topHarvester = opMode.hardwareMap.get(DcMotor.class,"top");
         topHarvester.setDirection(Constants.PayloadConstants.kStorageMotorDirection);
         topHarvester.setZeroPowerBehavior(Constants.PayloadConstants.kStorageZeroPowerMode);
         topHarvester.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -27,18 +27,18 @@ public class TransferSubsystem {
         rightServo = opMode.hardwareMap.get(CRServo.class, "rHarv");
         rightServo.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        irSensor = opMode.hardwareMap.get(DigitalChannel.class, "ir");
-        irSensor.setMode(DigitalChannel.Mode.OUTPUT);
+//        irSensor = opMode.hardwareMap.get(DigitalChannel.class, "ir");
+//        irSensor.setMode(DigitalChannel.Mode.OUTPUT);
     }
-    public boolean beamBroken() {
-        return irSensor.getState();
-    }
-    public double getVelocity() {
-        return topHarvester.getVelocity();
-    }
-    public double getRPM() {
-        return getVelocity() / 28 * 60;
-    }
+//    public boolean beamBroken() {
+//        return irSensor.getState();
+//    }
+//    public double getVelocity() {
+//        return topHarvester.setTargetPosition();
+//    }
+//    public double getRPM() {
+//        return getVelocity() / 28 * 60;
+//    }
 
     public void setTestPower(double power) {
         testPower = power;

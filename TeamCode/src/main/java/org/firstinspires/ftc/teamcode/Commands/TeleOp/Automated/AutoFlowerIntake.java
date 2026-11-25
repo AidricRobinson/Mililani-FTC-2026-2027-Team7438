@@ -25,9 +25,9 @@ public class AutoFlowerIntake {
             transferSubsystem.requestBottomHarvester(1);
             pivotSubsystem.requestPosition(1);
 
-            if (!transferSubsystem.beamBroken()) {
+//            if (!transferSubsystem.beamBroken()) {
                 transferSubsystem.requestTopHarvester(.5);
-            }
+//            }
         }
     }
     public void shutdown() {

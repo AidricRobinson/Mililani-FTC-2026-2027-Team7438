@@ -21,14 +21,15 @@ public class AutoIntake {
             intakeSubsystem.requestPower(0.9);
 
             transferSubsystem.requestBottomHarvester(1);
-            if (!transferSubsystem.beamBroken()) {
+//            if (!transferSubsystem.beamBroken()) {
                 transferSubsystem.requestTopHarvester(.5);
-            }
+//            }
         }
     }
     public void shutdown() {
         intakeSubsystem.shutdown();
 //        storageSubsystem.shutdown();
+        transferSubsystem.shutdown();
     }
 
 }

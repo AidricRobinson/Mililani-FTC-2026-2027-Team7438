@@ -34,9 +34,9 @@ public class AutoIntakeCommand {
         }
         intakeSubsystem.setIntakePower(power);
         transferSubsystem.setBottomHarvesterPower(1);
-        if (!transferSubsystem.beamBroken()) {
+//        if (!transferSubsystem.beamBroken()) {
             transferSubsystem.setTopHarvesterPower(0.5);
-        }
+//        }
         return false;
     }
 
