@@ -18,22 +18,24 @@ import org.firstinspires.ftc.teamcode.Commands.TeleOp.Automated.PanicResetRotati
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual.BrakeCommand;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual.ManualIntakeCommand;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual.ManualJankyAlign;
-import org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual.ManualKickerCommand;
+//import org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual.ManualKickerCommand;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual.ManualPivotCommand;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual.ManualScoreCommand;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual.ManualShootCommand;
-import org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual.ManualSpindexerCommand;
+//import org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual.ManualSpindexerCommand;
+import org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual.ManualTransferCommand;
 import org.firstinspires.ftc.teamcode.Commands.TeleOp.Manual.PivotCommand;
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.PivotSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
-import org.firstinspires.ftc.teamcode.Subsystems.StorageSubsystem;
+//import org.firstinspires.ftc.teamcode.Subsystems.StorageSubsystem;
+import org.firstinspires.ftc.teamcode.Subsystems.TransferSubsystem;
 
 @TeleOp(name="Red Teleop")
 public class RedAllianceTeleop extends OpMode {
     private GoBildaPinpointDriver pinpoint;
-//    private Limelight3A limelight;
+    //    private Limelight3A limelight;
     private PinpointLocalizer pinpointLocalizer;
 //    private LimelightLocalizer limelightLocalizer;
 //    private Localization localization;
@@ -41,25 +43,25 @@ public class RedAllianceTeleop extends OpMode {
     private MecanumDriveSubsystem mecanumDriveSubsystem;
     private IntakeSubsystem intakeSubsystem;
     private PivotSubsystem pivotSubsystem;
-    private StorageSubsystem storageSubsystem;
+    private TransferSubsystem transferSubsystem;
     private ShooterSubsystem shooterSubsystem;
 
     private AutoFlowerIntake autoFlowerIntake;
     private AutoIntake autoIntake;
+    private ManualJankyAlign manualJankyAlign;
 //    private AutoScore autoScore;
 //    private PanicResetRotation panicResetRotation;
 
-//    private ToggleFlywheels toggleFlywheels;
+    //    private ToggleFlywheels toggleFlywheels;
 //    private BrakeCommand brakeCommand;
 //    private PivotCommand pivotCommand;
     private ManualIntakeCommand manualIntakeCommand;
     private ManualShootCommand manualShootCommand;
-    private ManualKickerCommand manualKickerCommand;
-    private ManualSpindexerCommand manualSpindexerCommand;
+    private ManualTransferCommand manualTransferCommand;
     private ManualScoreCommand manualScoreCommand;
-    private ManualPivotCommand manualPivotCommand;
+//    private ManualPivotCommand manualPivotCommand;
 
-    private ManualJankyAlign manualJankyAlign;
+
 //    private LimelightToggle limelightToggle;
 
     private final ElapsedTime elapsedTime = new ElapsedTime();
@@ -79,7 +81,7 @@ public class RedAllianceTeleop extends OpMode {
 
         pinpoint.setEncoderDirections(Constants.PinpointConstants.kPodXDirection,
                 Constants.PinpointConstants.kPodYDirection);
-        pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, 0, 0, AngleUnit.DEGREES, 0));
+        pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, 0, 0, AngleUnit.DEGREES, 179.99));
         pinpoint.initialize();
 //        pinpoint.setPosition(Localization.getRobotPose());
 
@@ -95,11 +97,11 @@ public class RedAllianceTeleop extends OpMode {
         mecanumDriveSubsystem = new MecanumDriveSubsystem(this.hardwareMap, this);
         intakeSubsystem = new IntakeSubsystem(this);
         pivotSubsystem = new PivotSubsystem(this);
-        storageSubsystem = new StorageSubsystem(this);
+        transferSubsystem = new TransferSubsystem(this);
         shooterSubsystem = new ShooterSubsystem(this);
 
 //        autoFlowerIntake = new AutoFlowerIntake(intakeSubsystem, storageSubsystem, pivotSubsystem, gamepad1);
-        autoIntake = new AutoIntake(intakeSubsystem, storageSubsystem, gamepad1);
+        autoIntake = new AutoIntake(intakeSubsystem, transferSubsystem, gamepad1);
 //        autoScore = new AutoScore(mecanumDriveSubsystem, storageSubsystem, shooterSubsystem, limelight, gamepad1);
 //        panicResetRotation = new PanicResetRotation(gamepad1);
 
@@ -108,13 +110,9 @@ public class RedAllianceTeleop extends OpMode {
 //        pivotCommand = new PivotCommand(pivotSubsystem, gamepad2);
         manualIntakeCommand = new ManualIntakeCommand(intakeSubsystem, gamepad2);
         manualShootCommand = new ManualShootCommand(shooterSubsystem, gamepad2);
-        manualKickerCommand = new ManualKickerCommand(storageSubsystem, gamepad2);
-        manualScoreCommand = new ManualScoreCommand(storageSubsystem, shooterSubsystem, gamepad2);
-        manualSpindexerCommand = new ManualSpindexerCommand(storageSubsystem, gamepad2);
-        manualPivotCommand = new ManualPivotCommand(pivotSubsystem, gamepad2);
-
+        manualScoreCommand = new ManualScoreCommand(transferSubsystem, shooterSubsystem, gamepad2);
+        manualTransferCommand = new ManualTransferCommand(transferSubsystem, gamepad2);
         manualJankyAlign = new ManualJankyAlign(mecanumDriveSubsystem, pinpointLocalizer, gamepad1);
-
 
 //        limelightToggle = new LimelightToggle(shooterSubsystem, gamepad2);
 
@@ -140,26 +138,24 @@ public class RedAllianceTeleop extends OpMode {
         pinpoint.update();
 //        localization.operate(dt);
 //        limelightLocalizer.update(pinpointLocalizer);
-        pinpointLocalizer.update();
 //        limelightToggle.operate();
+        pinpointLocalizer.update();
+//        manualJankyAlign.operate(Constants.PinpointConstants.redAlliance);
         mecanumDriveSubsystem.operate(gamepad1, this.telemetry, Constants.PinpointConstants.redAlliance, pinpointLocalizer);
-//        autoFlowerIntake.operate();
+        autoFlowerIntake.operate();
         autoIntake.operate();
-        manualJankyAlign.operate(Constants.PinpointConstants.redAlliance);
 //        autoScore.operate(Constants.PinpointConstants.redAlliance, dt);
 //        panicResetRotation.operate(localization);
 //        toggleFlywheels.operate();
 //        brakeCommand.operate();
 //        pivotCommand.operate(gamepad2);
         manualIntakeCommand.operate();
-        manualShootCommand.operate(dt);
-        manualKickerCommand.operate();
+        manualShootCommand.operate();
         manualScoreCommand.operate();
-        manualSpindexerCommand.operate();
-        manualPivotCommand.operate();
+        manualTransferCommand.operate();
         intakeSubsystem.update();
-        storageSubsystem.update();
-//        pivotSubsystem.update();
+        pivotSubsystem.update();
+        transferSubsystem.update();
         shooterSubsystem.update();
 //        mecanumDriveSubsystem.updateBrake();
     }
@@ -168,9 +164,8 @@ public class RedAllianceTeleop extends OpMode {
         mecanumDriveSubsystem.shutdown();
 //        limelightToggle.shutdown();
         intakeSubsystem.shutdown();
-        storageSubsystem.shutdown();
-//        pivotSubsystem.shutdown();
-        shooterSubsystem.shutdown();
+        transferSubsystem.shutdown();
         pivotSubsystem.shutdown();
+        shooterSubsystem.shutdown();
     }
 }

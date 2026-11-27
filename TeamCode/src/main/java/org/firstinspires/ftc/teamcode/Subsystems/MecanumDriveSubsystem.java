@@ -121,7 +121,7 @@ public class MecanumDriveSubsystem {
            rightFront.setPower(rf * 0.4);
            rightBack.setPower(rb * 0.4);
        }
-       else if (gamepad.left_trigger_pressed) {
+       else if (gamepad.left_trigger_pressed || gamepad.left_bumper) {
            leftFront.setPower(lf * 0.75);
            leftBack.setPower(lb * 0.75);
            rightFront.setPower(rf * 0.75);

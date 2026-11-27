@@ -20,7 +20,7 @@ public class AutoFlowerIntake {
     }
 
     public void operate() {
-        if (gamepad.left_trigger >= 0.2) {
+        if (gamepad.left_bumper) {
             intakeSubsystem.requestPower(0.5);
             transferSubsystem.requestBottomHarvester(1);
             pivotSubsystem.requestPosition(1);

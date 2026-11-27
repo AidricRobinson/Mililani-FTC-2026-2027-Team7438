@@ -26,35 +26,35 @@ public class ManualJankyAlign {
 
     }
     public void operate(String alliance) {
-        if (gamepad.left_bumper && alliance.equals(Constants.PinpointConstants.redAlliance)
-        || gamepad.right_bumper && alliance.equals(Constants.PinpointConstants.blueAlliance)) {
-            setPoint = -90;
-            error = Localization.getAngleError(setPoint, pinpointLocalizer.getHeading());
-            double output = 0;
-            pinpointLocalizer.update();
-            output = kP * error * Math.copySign(kFF, error);
-
-            mecanumDriveSubsystem.setRightFrontPower(-output);
-            mecanumDriveSubsystem.setRightBackPower(-output);
-            mecanumDriveSubsystem.setLeftFrontPower(+output);
-            mecanumDriveSubsystem.setLeftBackPower(+output);
-        }
-        else if (gamepad.right_bumper && alliance.equals(Constants.PinpointConstants.redAlliance)
-        || gamepad.left_bumper && alliance.equals(Constants.PinpointConstants.blueAlliance)) {
-            setPoint = 90;
-            error = Localization.getAngleError(setPoint, pinpointLocalizer.getHeading());
-            double output = 0;
-            pinpointLocalizer.update();
-            output = kP * error * Math.copySign(kFF, error);
-
-            mecanumDriveSubsystem.setRightFrontPower(-output);
-            mecanumDriveSubsystem.setRightBackPower(-output);
-            mecanumDriveSubsystem.setLeftFrontPower(+output);
-            mecanumDriveSubsystem.setLeftBackPower(+output);
-        }
-        if (gamepad.leftBumperWasReleased() || gamepad.rightBumperWasReleased()) {
-            mecanumDriveSubsystem.shutdown();
-        }
+//        if (gamepad.left_bumper && alliance.equals(Constants.PinpointConstants.redAlliance)
+//        || gamepad.right_bumper && alliance.equals(Constants.PinpointConstants.blueAlliance)) {
+//            setPoint = -90;
+//            error = Localization.getAngleError(setPoint, pinpointLocalizer.getHeading());
+//            double output = 0;
+//            pinpointLocalizer.update();
+//            output = kP * error * Math.copySign(kFF, error);
+//
+//            mecanumDriveSubsystem.setRightFrontPower(-output);
+//            mecanumDriveSubsystem.setRightBackPower(-output);
+//            mecanumDriveSubsystem.setLeftFrontPower(+output);
+//            mecanumDriveSubsystem.setLeftBackPower(+output);
+//        }
+//        else if (gamepad.right_bumper && alliance.equals(Constants.PinpointConstants.redAlliance)
+//        || gamepad.left_bumper && alliance.equals(Constants.PinpointConstants.blueAlliance)) {
+//            setPoint = 90;
+//            error = Localization.getAngleError(setPoint, pinpointLocalizer.getHeading());
+//            double output = 0;
+//            pinpointLocalizer.update();
+//            output = kP * error * Math.copySign(kFF, error);
+//
+//            mecanumDriveSubsystem.setRightFrontPower(-output);
+//            mecanumDriveSubsystem.setRightBackPower(-output);
+//            mecanumDriveSubsystem.setLeftFrontPower(+output);
+//            mecanumDriveSubsystem.setLeftBackPower(+output);
+//        }
+//        if (gamepad.leftBumperWasReleased() || gamepad.rightBumperWasReleased()) {
+//            mecanumDriveSubsystem.shutdown();
+//        }
 
 
     }

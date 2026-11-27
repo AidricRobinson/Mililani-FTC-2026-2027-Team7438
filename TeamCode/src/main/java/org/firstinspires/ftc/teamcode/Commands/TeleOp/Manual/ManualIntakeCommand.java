@@ -14,13 +14,10 @@ public class ManualIntakeCommand {
     }
     public void operate() {
         if (gamepad.dpad_down) {
-            intakeSubsystem.requestPower(-.5); // Test input value
+            intakeSubsystem.requestPower(-.75); // Test input value
         }
         else if (gamepad.a) {
-            intakeSubsystem.requestPower(.2); // Test input value
-        }
-        else {
-            intakeSubsystem.setIntakePower(0);
+            intakeSubsystem.requestPower(.25); // Test input value
         }
     }
     public void shutdown() {

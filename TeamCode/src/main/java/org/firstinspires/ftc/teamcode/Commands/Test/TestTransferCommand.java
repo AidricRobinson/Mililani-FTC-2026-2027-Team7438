@@ -16,19 +16,19 @@ public class TestTransferCommand {
     public void operate(){
         if (gamepad.dpad_down) {
             transferSubsystem.setBottomHarvesterPower(1);
-            transferSubsystem.setTopHarvesterPower(.2);
+            transferSubsystem.setTopHarvesterPower(.7);
         }
         else if (gamepad.dpad_right) {
             transferSubsystem.setBottomHarvesterPower(1);
-            transferSubsystem.setTopHarvesterPower(.4);
+            transferSubsystem.setTopHarvesterPower(.8);
         }
         else if (gamepad.x) {
             transferSubsystem.setBottomHarvesterPower(1);
-            transferSubsystem.setTopHarvesterPower(.6);
+            transferSubsystem.setTopHarvesterPower(.9);
         }
         else if (gamepad.y) {
             transferSubsystem.setBottomHarvesterPower(1);
-            transferSubsystem.setTopHarvesterPower(.8);
+            transferSubsystem.setTopHarvesterPower(1);
         }
         else {
             transferSubsystem.shutdown();

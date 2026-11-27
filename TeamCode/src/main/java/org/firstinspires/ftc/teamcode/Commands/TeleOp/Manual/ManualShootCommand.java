@@ -18,20 +18,13 @@ public class ManualShootCommand {
         pidController = Constants.PIDConstants.kShooterPID;
 
     }
-    public void operate(double dt) {
-        if (gamepad.right_bumper) {
-            shooterSubsystem.requestPower(.5);
+    public void operate() {
+        if (gamepad.y) {
+            shooterSubsystem.requestPower(1);
         }
-//        if (gamepad.dpad_up && gamepad.right_trigger >= 0.25) {
-//            shooterSubsystem.requestPower(-1);
-//        }
-//        else if (gamepad.dpad_up) {
-//            pidController.createSetPoint(2000);
-//            pidController.setProcessVariable(shooterSubsystem.getRPM());
-//        }
-//        else {
-//            pidController.resetIntegral();
-//        }
+        else if (gamepad.dpad_up) {
+            shooterSubsystem.requestPower(-1);
+        }
     }
     public void shutdown() {
         shooterSubsystem.shutdown();

@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.Constants;
 public class TransferSubsystem {
     private DcMotor topHarvester; //Motor for spinning the roller/wheel that takes the balls out of the spindexer.
     private CRServo leftServo;
-    private CRServo rightServo;
+//    private CRServo rightServo;
 //    private DigitalChannel irSensor;
     private double testPower;
     public TransferSubsystem(OpMode opMode){
@@ -24,8 +24,8 @@ public class TransferSubsystem {
         leftServo = opMode.hardwareMap.get(CRServo.class, "lHarv");
         leftServo.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        rightServo = opMode.hardwareMap.get(CRServo.class, "rHarv");
-        rightServo.setDirection(DcMotorSimple.Direction.REVERSE);
+//        rightServo = opMode.hardwareMap.get(CRServo.class, "rHarv");
+//        rightServo.setDirection(DcMotorSimple.Direction.REVERSE);
 
 //        irSensor = opMode.hardwareMap.get(DigitalChannel.class, "ir");
 //        irSensor.setMode(DigitalChannel.Mode.OUTPUT);
@@ -54,12 +54,12 @@ public class TransferSubsystem {
     }
     public void setBottomHarvesterPower(double power) {
         leftServo.setPower(0);
-        rightServo.setPower(0);
+//        rightServo.setPower(0);
     }
     public void shutdown(){
         topHarvester.setPower(0);
         leftServo.setPower(0);
-        rightServo.setPower(0);
+//        rightServo.setPower(0);
     }
 
 
@@ -78,7 +78,7 @@ public class TransferSubsystem {
     public void update() {
         topHarvester.setPower(topHarvesterRequest);
         leftServo.setPower(bottomHarvesterRequest);
-        rightServo.setPower(bottomHarvesterRequest);
+//        rightServo.setPower(bottomHarvesterRequest);
         topHarvesterRequest = 0;
         bottomHarvesterRequest = 0;
     }

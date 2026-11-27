@@ -46,13 +46,13 @@ public class TestIntakeCommand {
             intakeSubsystem.setIntakePower(1);
         }
         else if (gamepad.x) {
-            intakeSubsystem.setIntakePower(.9);
+            intakeSubsystem.setIntakePower(.84);
         }
         else if (gamepad.b){
-            intakeSubsystem.setIntakePower(.8);
+            intakeSubsystem.setIntakePower(.67);
         }
         else if (gamepad.a) {
-            intakeSubsystem.setIntakePower(.7);
+            intakeSubsystem.setIntakePower(.5);
         }
         else {
             intakeSubsystem.setIntakePower(0);

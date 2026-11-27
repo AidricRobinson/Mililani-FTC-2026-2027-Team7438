@@ -12,6 +12,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.teamcode.Commands.Test.FullShooterCommand;
 import org.firstinspires.ftc.teamcode.Commands.Test.TestAutoAlign;
 import org.firstinspires.ftc.teamcode.Commands.Test.TestFlowerArm;
+import org.firstinspires.ftc.teamcode.Commands.Test.TestFlywheelPID;
 import org.firstinspires.ftc.teamcode.Commands.Test.TestIntakeCommand;
 import org.firstinspires.ftc.teamcode.Commands.Test.TestTransferCommand;
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeSubsystem;
@@ -48,6 +49,7 @@ public class TestTeleOp extends OpMode {
     private ShooterSubsystem shooterSubsystem;
     private FullShooterCommand fullShooterCommand;
 //    private TestStorageCommand testStorageCommand;
+    private TestFlywheelPID testFlywheelPID;
     private TestFlowerArm testFlowerArm;
     public static double alignkP = .02125;
     public static double alignkFF = .05;
@@ -90,6 +92,7 @@ public class TestTeleOp extends OpMode {
 
 //        testStorageCommand = new TestStorageCommand(storageSubsystem, gamepad2);
         testTransferCommand = new TestTransferCommand(transferSubsystem, gamepad1);
+//        testFlywheelPID = new TestFlywheelPID(shooterSubsystem, gamepad1);
         testFlowerArm = new TestFlowerArm(pivotSubsystem, gamepad2);
 //        storageSubsystem = new StorageSubsystem(this) ;
 
@@ -121,6 +124,7 @@ public class TestTeleOp extends OpMode {
 //        autoAlignCommand.operate(Constants.PinpointConstants.redAlliance, pinpointLocalizer, alignkP, alignkFF);
 //        telemetry.addData("Align kP: ", alignkP);
 //        telemetry.addData("Align kFF: ", alignkFF);
+//        testFlywheelPID.operate(telemetry);
 //        storageSubsystem.update();
         transferSubsystem.update();
         shooterSubsystem.update();
