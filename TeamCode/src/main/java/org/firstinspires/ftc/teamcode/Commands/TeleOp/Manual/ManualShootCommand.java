@@ -22,7 +22,7 @@ public class ManualShootCommand {
         if (gamepad.y) {
             shooterSubsystem.requestPower(1);
         }
-        else if (gamepad.dpad_up) {
+        else if (gamepad.dpad_up || gamepad.right_trigger_pressed) {
             shooterSubsystem.requestPower(-1);
         }
     }

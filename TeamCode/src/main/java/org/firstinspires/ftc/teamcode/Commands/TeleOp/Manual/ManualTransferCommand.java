@@ -13,11 +13,7 @@ public class ManualTransferCommand {
         this.gamepad = gamepad;
     }
     public void operate() {
-        if (gamepad.right_trigger_pressed) {
-            transferSubsystem.requestTopHarvester(1);
-            transferSubsystem.requestBottomHarvester(1);
-        }
-        else if (gamepad.right_bumper) {
+        if (gamepad.right_trigger_pressed || gamepad.right_bumper) {
             transferSubsystem.requestTopHarvester(-1);
             transferSubsystem.requestBottomHarvester(-1);
         }

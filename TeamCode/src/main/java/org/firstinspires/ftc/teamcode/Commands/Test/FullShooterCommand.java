@@ -43,7 +43,7 @@ public class FullShooterCommand {
 //            shutdown();
 //        }
         if (gamepad.left_bumper) {
-            shooterSubsystem.setPower(.5);
+            shooterSubsystem.setPower(.45);
 //            shooterSubsystem.setRPM(2500); // for testing rpms
         }
         else if (gamepad.right_bumper) {

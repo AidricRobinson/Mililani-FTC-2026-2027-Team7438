@@ -53,7 +53,7 @@ public class TransferSubsystem {
         topHarvester.setPower(power);
     }
     public void setBottomHarvesterPower(double power) {
-        leftServo.setPower(0);
+        leftServo.setPower(power);
 //        rightServo.setPower(0);
     }
     public void shutdown(){

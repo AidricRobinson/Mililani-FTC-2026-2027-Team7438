@@ -106,7 +106,7 @@ public class ShooterSubsystem {
     }
     public void setRPM(double rpm) {
         leftFlywheel.setVelocity(rpm * 28 / 60);
-        rightFlywheel.setVelocity(rpm * 28 / 60);
+        rightFlywheel.setVelocity(rpm * 28 / 6);
     }
 
 

@@ -17,13 +17,13 @@ public class PivotCommand {
 
     public void operate(){
 
-        if(gamepad.dpad_left && toggle1 && toggle2)
+        if(gamepad.right_bumper && toggle1 && toggle2)
         {
             pivotSubsystem.setPivotDown();
             toggle1 = false;
             toggle2 = false;
         }
-        else if(gamepad.dpad_left && !toggle1 && toggle2)
+        else if(gamepad.right_bumper && !toggle1 && toggle2)
         {
             pivotSubsystem.setPivotUp();
             toggle1 = true;

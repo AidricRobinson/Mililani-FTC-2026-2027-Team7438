@@ -126,9 +126,9 @@ public class TestTeleOp extends OpMode {
 //        telemetry.addData("Align kFF: ", alignkFF);
 //        testFlywheelPID.operate(telemetry);
 //        storageSubsystem.update();
-        transferSubsystem.update();
-        shooterSubsystem.update();
-        intakeSubsystem.update();
+//        transferSubsystem.update();
+//        shooterSubsystem.update();
+//        intakeSubsystem.update();
 
         telemetry.addData("AAAAAAAAAAAAAAAA: ", pinpointLocalizer.getHeading());
 

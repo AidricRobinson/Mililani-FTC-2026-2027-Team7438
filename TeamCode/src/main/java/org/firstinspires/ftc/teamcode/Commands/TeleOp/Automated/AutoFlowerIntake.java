@@ -23,11 +23,14 @@ public class AutoFlowerIntake {
         if (gamepad.left_bumper) {
             intakeSubsystem.requestPower(0.5);
             transferSubsystem.requestBottomHarvester(1);
-            pivotSubsystem.requestPosition(1);
+            pivotSubsystem.setPivotDown();
 
 //            if (!transferSubsystem.beamBroken()) {
                 transferSubsystem.requestTopHarvester(.5);
 //            }
+        }
+        else{
+            pivotSubsystem.setPivotUp();
         }
     }
     public void shutdown() {
